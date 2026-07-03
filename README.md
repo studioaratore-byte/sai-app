@@ -3,6 +3,14 @@
 > 좋은 시간을 찾지 말고, **싫은 시간만 익명으로 지우세요.**
 > Toss Designer Challenge 2026 출품작.
 
+**🌐 라이브 데모: https://studioaratore-byte.github.io/sai-app/**
+
+| 바로가기 | |
+|---|---|
+| ▶ [앱 실행](https://studioaratore-byte.github.io/sai-app/prototype/) | 전체 플로우가 동작하는 프로토타입 |
+| 📐 [화면 설계 스펙](https://studioaratore-byte.github.io/sai-app/docs/design-spec.html) | 14화면 · 아이콘 시스템 · 유저 플로우 · 라이트/다크 |
+| 💠 [브랜드 자산](https://studioaratore-byte.github.io/sai-app/docs/brand-assets.html) | S2 로고 · 유리 링크 · 공유 아이콘 |
+
 사이는 팀 회의 시간을 잡는 모바일 앱입니다. 기존 도구의 "가능한 시간 고르기"를 반전시켜 —
 참석자가 **부담스러운 시간만 익명으로 지우면(veto)**, 남은 시간 중에서 주최자가 확정합니다.
 설문(N=26)에서 84.6%가 "곤란한데 눈치 때문에 괜찮다고 한 적 있다"고 답한, **가짜 합의** 문제를 풉니다.
