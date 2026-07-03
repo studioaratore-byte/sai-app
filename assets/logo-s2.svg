@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 104">
+  <!-- 사이 (Sai) — S2 frosted-glass logo, vector recreation -->
+  <defs>
+    <g id="s2p">
+      <path d="M54 30.5C51 21.5 40 17 30.5 19.5C20 22.3 15.5 31 19 38.5C22 44.5 29 46.5 36 48.3C43.5 50.2 50.5 52.8 53 59.5C55.8 67.3 50 75.5 40 77.5C30 79.5 20.5 75.5 17.5 67.5"/>
+      <path d="M82.5 28.5C82.5 18 93 13 103 16C113 19 117.8 29 112.5 37.5C106 48 92 59.5 84.5 74Q83 76.5 83 78H122"/>
+    </g>
+    <linearGradient id="s2g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7EA3FA"/><stop offset=".5" stop-color="#4A7BF0"/><stop offset="1" stop-color="#3A62DE"/>
+    </linearGradient>
+    <filter id="s2sh" x="-25%" y="-25%" width="150%" height="175%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6.5" flood-color="#2F55C4" flood-opacity=".33"/>
+    </filter>
+    <filter id="s2bl" x="-35%" y="-35%" width="170%" height="170%"><feGaussianBlur stdDeviation="2.4"/></filter>
+  </defs>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#s2sh)">
+    <use href="#s2p" stroke="url(#s2g)" stroke-width="17"/>
+    <use href="#s2p" stroke="#B3CAFF" stroke-opacity=".42" stroke-width="9.5" filter="url(#s2bl)" transform="translate(0 -1.8)"/>
+    <use href="#s2p" stroke="#E6EEFF" stroke-opacity=".3" stroke-width="3.4" filter="url(#s2bl)" transform="translate(-.4 -2.6)"/>
+  </g>
+</svg>

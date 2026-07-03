@@ -1,0 +1,37 @@
+/* ─────────────────────────────────────────────────────────────
+   TYPOGRAPHY — TDS type scale, rendered in Pretendard.
+   Korean UI runs tight: negative letter-spacing, 1.4–1.5 leading.
+   Weights: 400 Regular · 500 Medium · 600 SemiBold · 700 Bold.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* Families */
+  --font-sans: "Pretendard", -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --font-mono: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace;
+
+  /* Weights */
+  --fw-regular: 400;   /* @kind other */
+  --fw-medium: 500;    /* @kind other */
+  --fw-semibold: 600;  /* @kind other */
+  --fw-bold: 700;      /* @kind other */
+
+  /* ── Type ramp (size / line-height) ──
+     Names follow TDS: Display, Title, Head, Body, Label, Caption */
+  --font-display-1: 700 32px/1.32 var(--font-sans);   /* hero numbers, splash */
+  --font-display-2: 700 28px/1.34 var(--font-sans);
+  --font-title-1:   700 24px/1.38 var(--font-sans);   /* screen title */
+  --font-title-2:   700 20px/1.40 var(--font-sans);   /* section title */
+  --font-title-3:   600 18px/1.44 var(--font-sans);   /* card title */
+  --font-head:      600 17px/1.47 var(--font-sans);   /* list row title */
+  --font-body-1:    400 16px/1.50 var(--font-sans);   /* body */
+  --font-body-2:    400 15px/1.53 var(--font-sans);   /* dense body */
+  --font-label:     600 15px/1.40 var(--font-sans);   /* buttons */
+  --font-caption-1: 400 13px/1.46 var(--font-sans);   /* captions */
+  --font-caption-2: 500 12px/1.40 var(--font-sans);   /* badges, meta */
+
+  /* Global tracking — Korean text reads best slightly tight */
+  --tracking-tight: -0.03em;   /* @kind other */
+  --tracking-normal: -0.02em;  /* @kind other */
+  --tracking-loose: 0;         /* @kind other */
+}

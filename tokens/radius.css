@@ -1,0 +1,39 @@
+/* ─────────────────────────────────────────────────────────────
+   RADIUS & SHADOW
+   TDS is soft but restrained: generous rounding, whisper-light
+   shadows. Most separation comes from fills & 1px borders, not
+   heavy drop shadows.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* Corner radii */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;   /* inputs, small cards */
+  --radius-lg: 16px;   /* buttons, cards */
+  --radius-xl: 20px;   /* large cards, sheets top */
+  --radius-2xl: 28px;  /* hero cards */
+  --radius-full: 999px;/* pills, avatars, chips */
+
+  /* Elevation — kept subtle */
+  --shadow-none: none;
+  --shadow-xs: 0 1px 2px rgba(23, 31, 40, 0.04);
+  --shadow-sm: 0 2px 6px rgba(23, 31, 40, 0.06);
+  --shadow-md: 0 4px 16px rgba(23, 31, 40, 0.08);
+  --shadow-lg: 0 8px 28px rgba(23, 31, 40, 0.12);
+  --shadow-sheet: 0 -8px 28px rgba(23, 31, 40, 0.14); /* bottom sheet */
+  --shadow-fab: 0 6px 20px rgba(49, 130, 246, 0.32);  /* blue floating */
+
+  /* Focus ring */
+  --ring-primary: 0 0 0 3px rgba(49, 130, 246, 0.28);
+  --ring-negative: 0 0 0 3px rgba(240, 68, 82, 0.24);
+
+  /* Motion — TDS easing: quick, gentle, no bounce */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);  /* @kind other */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);      /* @kind other */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);          /* @kind other */
+  --dur-fast: 120ms;     /* @kind other */
+  --dur-base: 200ms;     /* @kind other */
+  --dur-slow: 320ms;     /* @kind other */
+  --press-scale: 0.97;   /* @kind other */
+}

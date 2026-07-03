@@ -1,0 +1,67 @@
+<!-- @dsCard group="Components" viewport="700x620" name="사이 App" subtitle="VetoCell · ProposalCard — the core veto & result pieces" -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  html, body { margin: 0; background: var(--surface-page); font-family: var(--font-sans); }
+  #root { padding: 24px; display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; }
+  .col { display: flex; flex-direction: column; gap: 12px; }
+  .lbl { font: var(--font-caption-2); color: var(--text-weak); letter-spacing: var(--tracking-normal); margin: 0; }
+  .vgrid { display: grid; grid-template-columns: repeat(4, 74px); gap: 8px; }
+  .prop { width: 320px; display: flex; flex-direction: column; gap: 12px; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { VetoCell, ProposalCard } = window.TDSDesignSystem_58842e;
+
+function Demo() {
+  const [veto, setVeto] = React.useState({});
+  const times = ["오전 10시","오전 11시","오후 1시","오후 2시","오후 3시","오후 4시","오후 5시","저녁 6시"];
+  const agg = [0, 1, 4, 2, 0, 5, 3, 6];
+  const toggle = (i) => setVeto((s) => ({ ...s, [i]: !s[i] }));
+
+  return (
+    <>
+      <div className="col">
+        <p className="lbl">VetoCell · input — 싫은 시간을 지워요</p>
+        <div className="vgrid">
+          {times.map((t, i) => (
+            <VetoCell key={i} label={t.replace(/(오전|오후|저녁) /,"")} sublabel={t.split(" ")[0]} vetoed={!!veto[i]} onToggle={() => toggle(i)} />
+          ))}
+        </div>
+        <p className="lbl" style={{ marginTop: 12 }}>VetoCell · aggregate — 거부 집계</p>
+        <div className="vgrid">
+          {times.map((t, i) => (
+            <VetoCell key={i} mode="aggregate" label={t.replace(/(오전|오후|저녁) /,"")} sublabel={t.split(" ")[0]} vetoCount={agg[i]} totalPeople={6} />
+          ))}
+        </div>
+        <p className="lbl" style={{ marginTop: 12 }}>VetoCell · aggregate + reasons (사유 칩)</p>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: 340 }}>
+          <VetoCell mode="aggregate" label="오후 2시" sublabel="화" vetoCount={3} totalPeople={6}
+            reasons={[{label:"외근",count:2},{label:"점심 직후",count:1}]} />
+          <VetoCell mode="aggregate" label="오전 10시" sublabel="화" vetoCount={0} totalPeople={6} />
+        </div>
+      </div>
+
+      <div className="prop">
+        <p className="lbl">ProposalCard</p>
+        <ProposalCard recommended date="4월 2일 화요일" time="오전 10시" vetoCount={0} onConfirm={()=>{}} />
+        <ProposalCard date="4월 3일 수요일" time="오후 2시" vetoCount={3}
+          reasons={[{label:"외근",count:2},{label:"점심 직후",count:1}]} onConfirm={()=>{}} />
+      </div>
+    </>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

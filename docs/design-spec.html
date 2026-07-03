@@ -1,0 +1,1338 @@
+<title>사이 (Sai) · 화면 설계</title>
+<style>
+:root{
+  /* ── Brand / Toss Blue ── */
+  --blue-50:#E8F3FF;--blue-100:#C9E2FF;--blue-200:#90C2FF;--blue-400:#4593FC;
+  --blue-500:#3182F6;--blue-600:#2272EB;--blue-700:#1B64DA;--blue-800:#1957C2;
+  /* ── Grey ── */
+  --grey-0:#FFFFFF;--grey-50:#F9FAFB;--grey-100:#F2F4F6;--grey-200:#E5E8EB;--grey-300:#D1D6DB;
+  --grey-400:#B0B8C1;--grey-500:#8B95A1;--grey-600:#6B7684;--grey-700:#4E5968;--grey-800:#333D4B;--grey-900:#191F28;
+  /* ── Semantic ── */
+  --red-50:#FDEEEE;--red-500:#F04452;--red-600:#E42939;--green-50:#E7F9F1;--green-500:#1BC47D;--green-600:#12A968;
+  --yellow-50:#FFF8E6;--yellow-500:#FFB020;
+  --text-strong:var(--grey-900);--text-body:var(--grey-800);--text-sub:var(--grey-600);--text-weak:var(--grey-500);--text-disabled:var(--grey-400);
+  --surface-page:var(--grey-100);--surface-card:var(--grey-0);--surface-sunken:var(--grey-50);--surface-scrim:rgba(0,0,0,.55);
+  --primary:var(--blue-500);--primary-pressed:var(--blue-700);--primary-weak-bg:var(--blue-50);--primary-weak-fg:var(--blue-600);
+  --fill-weak:var(--grey-100);--fill-medium:var(--grey-200);--fill-dark:var(--grey-800);
+  --border-subtle:var(--grey-200);--border-default:var(--grey-300);
+  --negative:var(--red-500);--negative-bg:var(--red-50);--positive:var(--green-500);--positive-bg:var(--green-50);--warning:var(--yellow-500);--warning-bg:var(--yellow-50);
+  --veto:var(--red-500);--veto-bg:var(--red-50);--available:var(--blue-500);--available-bg:var(--blue-50);--neutral-slot:var(--grey-100);
+  /* ── Type ── */
+  --font-sans:"Pretendard","Pretendard Variable",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",system-ui,sans-serif;
+  --tk-tight:-0.03em;--tk:-0.02em;
+  /* ── Radius / shadow ── */
+  --r-xs:6px;--r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:20px;--r-2xl:28px;--r-full:999px;
+  --sh-xs:0 1px 2px rgba(23,31,40,.04);--sh-sm:0 2px 6px rgba(23,31,40,.06);--sh-md:0 4px 16px rgba(23,31,40,.08);
+  --sh-lg:0 8px 28px rgba(23,31,40,.12);--sh-sheet:0 -8px 28px rgba(23,31,40,.14);--sh-fab:0 6px 20px rgba(49,130,246,.32);
+  /* doc chrome — studio grey to match the frosted-glass logo render */
+  --canvas:#F1F2F5;--doc-ink:#191F28;--doc-mut:#5B6470;--doc-faint:#8A93A0;--line:#E2E5EA;
+  --logo-hi:#7EA3FA;--logo-lo:#3A62DE;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:var(--font-sans);color:var(--doc-ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  background:
+    radial-gradient(1300px 760px at 50% -14%,#FCFDFF 0%,rgba(252,253,255,0) 62%),
+    radial-gradient(900px 560px at 90% 4%,rgba(94,133,244,.09) 0%,transparent 55%),
+    radial-gradient(820px 640px at 4% 92%,rgba(94,133,244,.07) 0%,transparent 55%),
+    var(--canvas);
+  letter-spacing:var(--tk);position:relative;min-height:100%;
+}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:radial-gradient(rgba(49,130,246,.05) 1px,transparent 1px);
+  background-size:26px 26px;mask-image:linear-gradient(180deg,#000,transparent 82%);-webkit-mask-image:linear-gradient(180deg,#000,transparent 82%)}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+.tnum{font-variant-numeric:tabular-nums}
+
+/* ── doc header ── */
+header.doc{padding:82px 0 34px}
+.kick{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.66);border:1px solid rgba(255,255,255,.9);
+  box-shadow:0 1px 0 rgba(255,255,255,.6) inset,0 6px 22px -14px rgba(23,31,40,.5);
+  padding:7px 15px 7px 8px;border-radius:var(--r-full);font-size:11.5px;font-weight:700;color:var(--doc-mut);letter-spacing:.05em;text-transform:uppercase;backdrop-filter:blur(10px)}
+.kick .lg{width:24px;height:20px;object-fit:contain}
+.doc .lock{display:flex;align-items:flex-end;gap:30px;margin-top:34px;flex-wrap:wrap}
+.doc .bigmark{display:none}
+.doc .appmark{width:168px;height:125px;flex:none}
+.doc .appmark svg{display:block;width:100%;height:100%;overflow:visible}
+img[alt="사이"]{display:none}
+.minimark{width:38px;height:28px;flex:none;display:inline-flex}
+.minimark svg{width:100%;height:100%;display:block;overflow:visible}
+.shareic{display:block;filter:drop-shadow(0 6px 12px rgba(23,31,40,.16))}
+.doc h1{font-size:clamp(38px,7vw,76px);font-weight:800;letter-spacing:-.04em;color:var(--doc-ink);line-height:1}
+.doc h1 .en{display:block;font-size:.3em;font-weight:600;letter-spacing:.02em;color:var(--grey-400);margin-top:18px}
+.doc .sub{margin-top:32px;font-size:clamp(19px,2.8vw,26px);font-weight:700;color:var(--doc-ink);letter-spacing:-.025em;word-break:keep-all;text-wrap:balance;max-width:30ch;line-height:1.45}
+.doc .sub b{color:var(--primary)}
+.doc .desc{margin-top:18px;max-width:58ch;font-size:15.5px;color:var(--doc-mut);line-height:1.7;word-break:keep-all}
+.metafoot{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.mtag{font-size:12px;font-weight:600;color:var(--doc-mut);background:rgba(255,255,255,.62);border:1px solid rgba(255,255,255,.85);border-radius:9px;padding:7px 12px;backdrop-filter:blur(8px);box-shadow:0 4px 14px -10px rgba(40,60,110,.35)}
+.mtag b{color:var(--primary);font-weight:700}
+
+/* ── icon showcase ── */
+.showcase{margin-top:8px;background:linear-gradient(180deg,rgba(255,255,255,.86),rgba(255,255,255,.66));
+  border:1px solid rgba(255,255,255,.9);border-radius:26px;padding:30px 30px 26px;
+  box-shadow:0 30px 60px -42px rgba(23,31,40,.5),0 1px 0 rgba(255,255,255,.7) inset;backdrop-filter:blur(6px)}
+.showcase .sc-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.sc-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--primary)}
+.showcase h3{font-size:22px;font-weight:800;letter-spacing:-.03em;color:var(--doc-ink);margin-top:9px}
+.showcase .sc-note{font-size:13px;color:var(--doc-mut);max-width:34ch;line-height:1.5}
+.iconwall{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:12px}
+.itile{display:flex;flex-direction:column;align-items:center;gap:9px;padding:16px 8px 12px;border-radius:16px;
+  background:var(--surface-card);border:1px solid var(--border-subtle);box-shadow:var(--sh-xs);
+  transition:transform .22s var(--ease,cubic-bezier(.16,1,.3,1)),box-shadow .22s,border-color .22s}
+.itile:hover{transform:translateY(-4px);box-shadow:0 14px 26px -16px rgba(23,31,40,.4);border-color:var(--blue-200)}
+.itile .glyph{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;background:var(--grey-50);color:var(--grey-800);transition:.22s}
+.itile:hover .glyph{background:var(--primary-weak-bg);color:var(--primary)}
+.itile.hero-icon .glyph{background:var(--primary);color:#fff}
+.itile.hero-icon:hover .glyph{background:var(--primary-pressed);color:#fff}
+.itile .nm{font-size:11px;font-weight:600;color:var(--text-weak);letter-spacing:0}
+.sc-specs{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;padding-top:18px;border-top:1px solid var(--border-subtle)}
+.spec{font-size:11.5px;font-weight:600;color:var(--grey-700);background:var(--grey-50);border:1px solid var(--border-subtle);border-radius:8px;padding:6px 10px;display:inline-flex;align-items:center;gap:6px}
+.spec i{width:6px;height:6px;border-radius:2px;background:var(--primary);display:inline-block}
+.duo-row{display:flex;align-items:center;gap:22px;margin-top:18px;padding:18px 18px;border-radius:16px;
+  background:linear-gradient(180deg,var(--blue-50),rgba(232,243,255,.4));border:1px solid #DCEBFF;flex-wrap:wrap}
+.duo-lab{flex:1;min-width:220px}
+.duo-lab p{margin-top:8px;font-size:12.5px;color:var(--doc-mut);line-height:1.5;max-width:40ch}
+.duo-lab p b{color:var(--primary);font-weight:700}
+.duo-tiles{display:flex;flex-wrap:wrap;gap:9px}
+.duo-t{width:44px;height:44px;border-radius:12px;background:var(--surface-card);border:1px solid #CFE4FF;color:var(--primary);
+  display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px -8px rgba(49,130,246,.6)}
+
+/* ── flow section label ── */
+.flowhead{display:flex;align-items:center;gap:16px;margin:56px 0 28px}
+.flowhead .no{font-size:13px;font-weight:800;letter-spacing:.1em;color:#fff;background:var(--doc-ink);width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:10px;flex:none}
+.flowhead h2{font-size:21px;font-weight:800;letter-spacing:-.03em;color:var(--doc-ink)}
+.flowhead .ln{flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+
+/* ── gallery ── */
+.gal{display:flex;flex-wrap:wrap;gap:34px 26px;align-items:flex-start}
+.cell{width:340px;display:flex;flex-direction:column;gap:14px}
+.cap{padding:0 2px}
+.cap b{display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:700;color:var(--doc-ink);letter-spacing:-.015em}
+.cap b::before{content:"";width:7px;height:7px;border-radius:2px;background:var(--primary);flex:none}
+.cap span{display:block;font-size:12.5px;color:var(--doc-mut);line-height:1.55;margin-top:5px}
+.cap .why{display:block;margin-top:9px;font-size:12px;color:var(--grey-700);background:rgba(255,255,255,.66);border:1px solid rgba(255,255,255,.85);border-radius:11px;padding:9px 12px;line-height:1.5;backdrop-filter:blur(8px);box-shadow:0 6px 18px -14px rgba(40,60,110,.4);word-break:keep-all}
+.cap .why::before{content:"↳ ";color:var(--primary);font-weight:800}
+.cap span{word-break:keep-all}
+.cap .next{display:inline-flex;align-items:center;margin-top:9px;font-size:11px;font-weight:700;font-style:normal;color:var(--primary-weak-fg);background:var(--blue-50);border:1px solid #D8E8FF;border-radius:7px;padding:4px 9px;letter-spacing:0}
+
+/* ── user-flow map ── */
+.flowmap .lanes{display:flex;flex-direction:column;gap:10px}
+.lane{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lane-tag{font-size:11px;font-weight:800;letter-spacing:.06em;color:#fff;border-radius:7px;padding:5px 9px;flex:none}
+.lane-tag.org{background:var(--doc-ink)}
+.lane-tag.part{background:var(--primary)}
+.node{font-size:12.5px;font-weight:600;color:var(--doc-ink);background:var(--surface-card);border:1px solid var(--border-subtle);border-radius:9px;padding:7px 11px;white-space:nowrap;box-shadow:var(--sh-xs)}
+.node.anon{border:1.4px dashed var(--primary);color:var(--primary-weak-fg);background:var(--blue-bg,#F4F9FF)}
+.node.emph{background:var(--primary);border-color:var(--primary);color:#fff}
+.arr{color:var(--grey-400);font-size:13px;font-weight:700;flex:none}
+.bridge{display:flex;justify-content:center;gap:34px;padding:2px 0;flex-wrap:wrap}
+.bridge span{font-size:11.5px;font-weight:600;color:var(--doc-faint)}
+.bridge b{color:var(--primary);font-weight:700}
+.flow-note{margin-top:16px;padding-top:14px;border-top:1px solid var(--border-subtle);font-size:12px;color:var(--doc-faint);display:flex;gap:18px;flex-wrap:wrap}
+.flow-note i{font-style:normal;display:inline-flex;align-items:center;gap:6px}
+.flow-note .sw-anon{width:16px;height:10px;border:1.4px dashed var(--primary);border-radius:4px;display:inline-block}
+:root[data-theme="dark"] .node{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.12);color:var(--doc-ink);box-shadow:none}
+:root[data-theme="dark"] .node.anon{background:rgba(49,130,246,.12);border-color:rgba(126,163,250,.6);color:#9FC1FF}
+:root[data-theme="dark"] .cap .next{background:rgba(49,130,246,.14);border-color:rgba(49,130,246,.3);color:#8FB8FF}
+:root[data-theme="dark"] .flow-note{border-top-color:rgba(255,255,255,.08)}
+
+/* ── motion / reveal ── */
+.reveal{opacity:0;transform:translateY(18px)}
+.reveal.in{opacity:1;transform:none;transition:opacity .6s var(--ease,cubic-bezier(.16,1,.3,1)),transform .6s var(--ease,cubic-bezier(.16,1,.3,1))}
+.cell .dev .phone{transition:transform .3s var(--ease,cubic-bezier(.16,1,.3,1)),box-shadow .3s}
+.cell:hover .dev .phone{transform:translateY(-6px);box-shadow:0 40px 80px -38px rgba(23,31,40,.36)}
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1!important;transform:none!important}
+  .cell:hover .dev .phone{transform:none}
+  .itile:hover{transform:none}
+}
+
+/* ═══════════ PHONE FRAME (390×844 scaled to 340) ═══════════ */
+.dev{width:390px;height:844px;transform:scale(.8718);transform-origin:top left;margin-bottom:-108px}
+.phone{width:390px;height:844px;border-radius:44px;background:var(--surface-card);
+  border:1px solid rgba(40,60,110,.05);
+  box-shadow:0 2px 4px rgba(40,60,110,.03),0 14px 30px -14px rgba(40,60,110,.15),0 40px 84px -34px rgba(40,60,110,.24),0 0 0 1px rgba(255,255,255,.65) inset;
+  overflow:hidden;display:flex;flex-direction:column;position:relative}
+.statusbar{position:relative;height:54px;flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:8px 32px 0;z-index:40}
+.statusbar .time{font-size:16px;font-weight:600;color:var(--grey-900);letter-spacing:.01em;font-variant-numeric:tabular-nums}
+.island{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:118px;height:34px;border-radius:20px;background:#000}
+.sb-icons{display:flex;gap:7px;align-items:center}
+.home-ind{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:var(--grey-900);opacity:.9;z-index:60}
+.stage{flex:1;min-height:0;display:flex;flex-direction:column;position:relative}
+.scroll{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.scroll.page{background:var(--surface-page)}
+
+/* nav / top */
+.nav{position:relative;height:56px;flex-shrink:0;display:grid;grid-template-columns:44px 1fr 44px;align-items:center;background:var(--surface-card);z-index:30}
+.nav .back{height:44px;width:44px;display:flex;align-items:center;justify-content:center;font-size:28px;line-height:1;color:var(--text-strong);background:none;border:none}
+.nav .ttl{text-align:center;font-size:18px;font-weight:600;color:var(--text-strong);letter-spacing:var(--tk);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav .ttl.hid{opacity:0}
+.nav .rt{display:flex;align-items:center;justify-content:flex-end;padding-right:8px}
+.iconbtn{width:36px;height:36px;border:none;background:none;display:flex;align-items:center;justify-content:center;position:relative}
+.top{padding:8px 20px 16px}
+.top h1{font-size:24px;font-weight:700;color:var(--text-strong);letter-spacing:var(--tk-tight);text-wrap:balance;line-height:1.38}
+.top p{margin-top:8px;font-size:15px;color:var(--text-sub);line-height:1.53}
+.lh{padding:20px 20px 8px;display:flex;flex-direction:column}
+.lh .row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.lh .t{font-size:18px;font-weight:600;color:var(--text-strong);letter-spacing:var(--tk)}
+.lh .d{margin-top:4px;font-size:13px;color:var(--text-sub)}
+
+/* generic text helpers */
+.head{font-size:17px;font-weight:600;color:var(--text-strong);letter-spacing:var(--tk)}
+.cap1{font-size:13px;color:var(--text-sub)}
+.cap2{font-size:12px;font-weight:500;color:var(--text-weak)}
+.b2{font-size:15px;color:var(--text-body)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:none;font-family:inherit;font-weight:600;letter-spacing:var(--tk);cursor:default;width:100%}
+.btn.lg{height:56px;font-size:17px;border-radius:var(--r-lg)}
+.btn.md{height:48px;font-size:15px;border-radius:var(--r-md)}
+.btn.sm{height:40px;font-size:14px;border-radius:var(--r-sm);width:auto;padding:0 14px}
+.btn.pri{background:var(--primary);color:#fff}
+.btn.weak{background:var(--primary-weak-bg);color:var(--primary-weak-fg)}
+.btn.dark{background:var(--fill-dark);color:#fff}
+.btn.ghost{background:transparent;color:var(--text-body)}
+.btn.disabled{background:var(--fill-medium);color:var(--text-disabled)}
+.dock{margin-top:auto;flex-shrink:0;display:flex;gap:8px;padding:12px 20px 26px;background:linear-gradient(to top,var(--surface-card) 72%,rgba(255,255,255,0))}
+.dock.solid{background:var(--surface-card)}
+
+/* chips */
+.chip{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:38px;padding:0 14px;border-radius:var(--r-full);
+  font-size:14px;font-weight:600;letter-spacing:var(--tk);white-space:nowrap;border:1.5px solid transparent;background:var(--fill-weak);color:var(--text-sub)}
+.chip.on{background:var(--primary-weak-bg);color:var(--primary-weak-fg);border-color:var(--primary)}
+.chip.onneg{background:var(--negative-bg);color:var(--red-600);border-color:var(--negative)}
+
+/* asset */
+.asset{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.asset.sq{border-radius:var(--r-lg)}.asset.ci{border-radius:var(--r-full)}
+.asset.t-neutral{background:var(--grey-100)}.asset.t-primary{background:var(--primary-weak-bg)}
+.asset.t-positive{background:var(--positive-bg)}.asset.t-warning{background:var(--warning-bg)}
+
+/* badge */
+.badge{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:var(--r-full);font-size:12px;font-weight:500;letter-spacing:var(--tk);white-space:nowrap}
+.badge.primary{background:var(--primary-weak-bg);color:var(--primary-weak-fg)}
+.badge.positive{background:var(--positive-bg);color:var(--green-600)}
+
+/* avatar */
+.av{border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:600;border:2px solid var(--surface-card);box-sizing:border-box;flex-shrink:0;user-select:none}
+.stack{display:flex;align-items:center}
+.stack>*{margin-left:-10px}.stack>*:first-child{margin-left:0}
+.av-more{border-radius:50%;background:var(--grey-100);color:var(--text-sub);border:2px solid var(--surface-card);box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:600}
+
+/* switch */
+.sw{width:52px;height:32px;border-radius:var(--r-full);border:none;padding:3px;display:flex;align-items:center;background:var(--grey-300);flex-shrink:0}
+.sw.on{background:var(--primary)}
+.sw i{width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:var(--sh-sm);display:block}
+.sw.on i{transform:translateX(20px)}
+
+/* listrow */
+.lr{display:flex;align-items:center;gap:14px;padding:12px 20px;min-height:60px}
+.lr .mid{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.lr .mid .t{font-size:17px;font-weight:600;color:var(--text-strong);letter-spacing:var(--tk);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lr .mid .d{font-size:13px;color:var(--text-sub)}
+.lr .rt{flex-shrink:0;display:flex;align-items:center;gap:6px}
+.chev{flex-shrink:0;color:var(--grey-400);font-size:22px;line-height:1}
+.bd{height:1px;background:var(--border-subtle)}
+
+/* icons */
+/* fill/stroke set on the <svg> host so they INHERIT across the <use> shadow boundary into the symbol paths */
+.ic{display:block;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* meeting card */
+.mcard{background:var(--surface-card);border-radius:var(--r-lg);box-shadow:var(--sh-xs);padding:16px 18px}
+.mcard .hd{display:flex;align-items:flex-start;gap:12px}
+.mcard .nm{font-size:17px;font-weight:600;color:var(--text-strong);letter-spacing:var(--tk);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mcard .meta{font-size:13px;color:var(--text-sub);margin-top:4px}
+.prog{height:6px;border-radius:3px;background:var(--grey-100);margin-top:14px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--primary);border-radius:3px}
+
+/* vetocell */
+.vgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 20px}
+.vcell{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:56px;padding:8px 10px;
+  border-radius:var(--r-md);font-size:15px;font-weight:600;letter-spacing:var(--tk);background:var(--neutral-slot);color:var(--text-body);border:1.5px solid transparent}
+.vcell .sub{font-size:12px;font-weight:500;opacity:.8}
+.vcell.veto{background:var(--veto-bg);color:var(--veto);border-color:var(--veto)}
+.vcell.veto .main{text-decoration:line-through;opacity:.85}
+.vcell .corner{position:absolute;top:6px;right:8px;font-size:11px;opacity:.9}
+.vcell.clear{background:var(--available-bg);color:var(--available);border-color:var(--available)}
+
+/* aggregate expanded row */
+.aggrow{display:flex;flex-direction:column;gap:10px;padding:14px 16px;border-radius:var(--r-md);background:var(--veto-bg)}
+.aggrow .top{display:flex;align-items:center;gap:8px}
+.aggrow .top .cnt{margin-left:auto;font-size:15px;color:var(--red-600)}
+.rchips{display:flex;flex-wrap:wrap;gap:6px}
+.rchip{display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 11px;border-radius:var(--r-full);font-size:12px;font-weight:500;letter-spacing:var(--tk)}
+.rchip.white{background:var(--surface-card);color:var(--red-600)}
+.rchip.tint{background:var(--negative-bg);color:var(--red-600)}
+.rchip b{font-weight:700}
+
+/* proposal card */
+.pcard{border-radius:var(--r-xl);background:var(--surface-card);border:1px solid var(--border-subtle);box-shadow:var(--sh-xs);padding:20px;display:flex;flex-direction:column;gap:14px}
+.pcard.rec{border:1.5px solid var(--primary);box-shadow:var(--sh-md)}
+.pcard .ph{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.pcard .date{font-size:13px;color:var(--text-sub)}
+.pcard .time{font-size:24px;font-weight:700;color:var(--text-strong);letter-spacing:var(--tk-tight)}
+.recbadge{display:inline-flex;align-items:center;gap:4px;height:26px;padding:0 11px 0 8px;border-radius:var(--r-full);background:var(--primary-weak-bg);color:var(--primary-weak-fg);font-size:12px;font-weight:600;flex-shrink:0}
+.pstatus{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:var(--r-md);font-size:15px;letter-spacing:var(--tk)}
+.pstatus.clear{background:var(--available-bg);color:var(--primary-weak-fg)}
+.pstatus.warn{background:var(--veto-bg);color:var(--red-600)}
+
+/* banner (anonymity notice) */
+.banner{display:flex;align-items:center;gap:8px;margin:0 20px 8px;padding:10px 14px;background:var(--surface-sunken);border-radius:var(--r-md)}
+.banner .e{font-size:15px}
+.banner .tx{font-size:13px;color:var(--text-sub);flex:1}
+
+/* fab */
+.fab{position:absolute;right:20px;bottom:20px;height:56px;border-radius:var(--r-full);display:flex;align-items:center;gap:7px;padding:0 22px 0 18px;border:none;background:var(--primary);color:#fff;box-shadow:var(--sh-fab);z-index:20;font-size:15px;font-weight:600;letter-spacing:var(--tk)}
+
+/* tabbar */
+.tabbar{flex-shrink:0;display:grid;grid-template-columns:repeat(4,1fr);background:var(--surface-card);border-top:1px solid var(--border-subtle);padding-bottom:18px}
+.tabbar button{border:none;background:none;padding:9px 0 3px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--grey-400);font-family:inherit}
+.tabbar button.on{color:var(--primary)}
+.tabbar .lb{font-size:12px;font-weight:500;letter-spacing:var(--tk)}
+.tabbar button.on .lb{font-weight:700}
+.tbadge{position:absolute;top:-3px;right:-5px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--negative);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--surface-card)}
+
+/* blue promo card (home) */
+.promo{width:100%;border:none;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px;border-radius:var(--r-xl);background:var(--primary);box-shadow:var(--sh-fab)}
+.promo .h{font-size:18px;font-weight:600;color:#fff;letter-spacing:var(--tk)}
+.promo .s{font-size:13px;color:rgba(255,255,255,.86);margin-top:4px}
+.promo .em{width:52px;height:52px;border-radius:50%;flex-shrink:0;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:26px}
+
+/* textfield */
+.tf{padding-top:6px}
+.tf .lab{font-size:13px;color:var(--text-sub);letter-spacing:var(--tk)}
+.tf .val{margin-top:6px;padding-bottom:9px;font-size:16px;font-weight:500;color:var(--text-strong);border-bottom:1.5px solid var(--border-default)}
+.tf .val.ph{color:var(--text-weak);font-weight:400}
+.tf .val.focus{border-color:var(--primary)}
+
+/* calendar */
+.cal{padding:4px 20px 0}
+.cal .wk{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:4px}
+.cal .wk span{text-align:center;padding:4px 0;font-size:12px;font-weight:500;color:var(--text-weak)}
+.cal .wk span.sun{color:var(--negative)}
+.cal .days{display:grid;grid-template-columns:repeat(7,1fr);row-gap:2px}
+.cal .dc{display:flex;justify-content:center;align-items:center;height:40px}
+.cal .dc.band{background:var(--available-bg)}
+.cal .dc.lo{border-top-left-radius:var(--r-full);border-bottom-left-radius:var(--r-full)}
+.cal .dc.hi{border-top-right-radius:var(--r-full);border-bottom-right-radius:var(--r-full)}
+.cal .dc b{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:400;color:var(--text-body)}
+.cal .dc.band b{color:var(--primary-weak-fg);font-weight:400}
+.cal .dc.end b{background:var(--primary);color:#fff;font-weight:600}
+.pillbox{margin:10px 20px 0;display:flex;align-items:center;gap:8px;padding:12px 14px;background:var(--surface-sunken);border-radius:var(--r-md);font-size:15px;color:var(--text-strong);letter-spacing:var(--tk)}
+
+/* sheet */
+.sheet-wrap{position:absolute;inset:0;z-index:50;overflow:hidden}
+.scrim{position:absolute;inset:0;background:var(--surface-scrim)}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--surface-card);border-radius:var(--r-xl) var(--r-xl) 0 0;box-shadow:var(--sh-sheet);padding:8px 20px 26px}
+.grab{width:40px;height:4px;border-radius:2px;background:var(--grey-200);margin:0 auto 16px}
+.sheet h3{font-size:19px;font-weight:600;color:var(--text-strong);letter-spacing:var(--tk);margin-bottom:16px}
+
+/* chat */
+.chatbanner{display:flex;align-items:center;gap:6px;padding:0 20px 10px;margin-top:-4px}
+.chatbanner .tx{font-size:13px;color:var(--text-sub)}
+.msgs{flex:1;min-height:0;overflow:hidden;padding:16px 16px 8px;display:flex;flex-direction:column;gap:3px}
+.sysmsg{align-self:center;margin:10px 0;padding:7px 14px;border-radius:var(--r-full);background:var(--fill-weak);max-width:84%;text-align:center;font-size:13px;color:var(--text-weak);letter-spacing:var(--tk)}
+.mine{align-self:flex-end;display:flex;align-items:flex-end;gap:6px;max-width:78%;margin-top:3px}
+.mine .t{font-size:12px;color:var(--text-weak)}
+.mine .bub{padding:10px 13px;border-radius:16px 16px 4px 16px;background:var(--primary);color:#fff;font-size:15px;letter-spacing:var(--tk);line-height:1.45}
+.other{display:flex;gap:8px;max-width:86%;margin-top:12px}
+.other .av-wrap{width:38px;flex-shrink:0}
+.anonav{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.other .nm{font-size:13px;font-weight:600;margin:0 0 4px 2px}
+.other .line{display:flex;align-items:flex-end;gap:6px}
+.other .bub{padding:10px 13px;border-radius:16px 16px 16px 4px;background:var(--surface-card);border:1px solid var(--border-subtle);color:var(--text-strong);font-size:15px;letter-spacing:var(--tk);line-height:1.45}
+.other .t{font-size:12px;color:var(--text-weak)}
+.chatinput{flex-shrink:0;display:flex;align-items:flex-end;gap:8px;padding:10px 14px 22px;background:var(--surface-card);border-top:1px solid var(--border-subtle)}
+.chatinput .box{flex:1;height:44px;display:flex;align-items:center;border-radius:var(--r-full);background:var(--surface-sunken);padding:0 16px;font-size:15px;color:var(--text-weak)}
+.chatinput .send{width:44px;height:44px;border-radius:50%;flex-shrink:0;background:var(--grey-200);display:flex;align-items:center;justify-content:center}
+
+/* settings/toggle row + info */
+.trow{display:flex;align-items:center;gap:12px;padding:13px 18px}
+.trow .mid{flex:1;min-width:0}
+.trow .mid .t{font-size:16px;color:var(--text-strong);letter-spacing:var(--tk)}
+.trow .mid .d{font-size:13px;color:var(--text-weak);margin-top:1px}
+.inforow{display:flex;align-items:center;gap:12px;padding:15px 18px}
+.inforow .lab{font-size:15px;color:var(--text-weak);width:52px;flex-shrink:0}
+.inforow .val{flex:1;text-align:right;font-size:15px;color:var(--text-strong);letter-spacing:var(--tk)}
+.groupcard{margin:0 20px;background:var(--surface-card);border-radius:var(--r-lg);box-shadow:var(--sh-xs);overflow:hidden}
+.hero-status{margin:4px 20px 0;padding:18px;background:var(--surface-card);border-radius:var(--r-lg);box-shadow:var(--sh-xs)}
+
+footer.doc{padding:50px 0 70px;margin-top:40px;border-top:1px solid var(--line)}
+.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--doc-faint);font-size:13px}
+
+@media(max-width:520px){.wrap{padding:0 14px}.cell{width:340px}}
+
+/* ═══════════ THEME TOGGLE + DARK PRESENTATION ═══════════ */
+.theme-toggle{position:fixed;top:20px;right:20px;z-index:100;display:inline-flex;align-items:center;gap:8px;height:40px;
+  padding:0 15px 0 12px;border-radius:var(--r-full);border:1px solid var(--line);background:rgba(255,255,255,.74);
+  backdrop-filter:blur(10px);color:var(--doc-mut);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;
+  box-shadow:0 8px 24px -14px rgba(23,31,40,.5);transition:transform .2s,background .2s,color .2s}
+.theme-toggle:hover{transform:translateY(-1px)}
+.theme-toggle .ic{width:18px;height:18px}
+.theme-toggle .sun{display:none}
+.theme-toggle .tt-txt::after{content:"다크"}
+:root[data-theme="dark"] .theme-toggle .moon{display:none}
+:root[data-theme="dark"] .theme-toggle .sun{display:block}
+:root[data-theme="dark"] .theme-toggle .tt-txt::after{content:"라이트"}
+
+:root[data-theme="dark"]{--canvas:#0E1218;--doc-ink:#EDF1F6;--doc-mut:#9AA6B4;--doc-faint:#616B77;--line:rgba(255,255,255,.10)}
+:root[data-theme="dark"] body{background:
+  radial-gradient(1100px 620px at 18% -6%,rgba(74,123,240,.26) 0%,rgba(74,123,240,0) 56%),
+  radial-gradient(900px 560px at 94% 8%,rgba(126,163,250,.12) 0%,transparent 54%),
+  radial-gradient(1000px 700px at 78% 98%,rgba(58,98,222,.16) 0%,transparent 54%),
+  var(--canvas)}
+:root[data-theme="dark"] body::before{background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px)}
+:root[data-theme="dark"] .theme-toggle{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.13);color:var(--doc-ink)}
+:root[data-theme="dark"] .kick{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.09);box-shadow:none;color:var(--doc-mut)}
+:root[data-theme="dark"] .mtag{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.09)}
+:root[data-theme="dark"] .doc h1 .en{color:var(--doc-faint)}
+:root[data-theme="dark"] .showcase{background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02));border-color:rgba(255,255,255,.08);box-shadow:0 30px 60px -40px #000}
+:root[data-theme="dark"] .itile{background:rgba(255,255,255,.035);border-color:rgba(255,255,255,.08);box-shadow:none}
+:root[data-theme="dark"] .itile .glyph{background:rgba(255,255,255,.06);color:#D3DAE3}
+:root[data-theme="dark"] .itile:hover{border-color:rgba(49,130,246,.5)}
+:root[data-theme="dark"] .itile:hover .glyph{background:rgba(49,130,246,.2);color:#7FB4FF}
+:root[data-theme="dark"] .itile .nm{color:var(--doc-faint)}
+:root[data-theme="dark"] .spec{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.08);color:var(--doc-mut)}
+:root[data-theme="dark"] .sc-specs{border-top-color:rgba(255,255,255,.08)}
+:root[data-theme="dark"] .duo-row{background:rgba(49,130,246,.09);border-color:rgba(49,130,246,.24)}
+:root[data-theme="dark"] .duo-t{background:rgba(255,255,255,.05);border-color:rgba(49,130,246,.38);color:#7FB4FF;box-shadow:none}
+:root[data-theme="dark"] .cap .why{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08);color:#C4CCD6}
+:root[data-theme="dark"] .flowhead .no{background:var(--primary)}
+:root[data-theme="dark"] .flowhead .ln{background:linear-gradient(90deg,rgba(255,255,255,.16),transparent)}
+:root[data-theme="dark"] .phone{border-color:rgba(255,255,255,.08);box-shadow:0 2px 6px rgba(0,0,0,.5),0 26px 60px -24px rgba(0,0,0,.72),0 0 0 1px rgba(255,255,255,.07)}
+:root[data-theme="dark"] .cell:hover .dev .phone{box-shadow:0 44px 90px -34px rgba(0,0,0,.82),0 0 0 1px rgba(255,255,255,.1)}
+:root[data-theme="dark"] footer.doc{border-top-color:rgba(255,255,255,.08)}
+</style>
+
+<!-- ═══ SVG sprite · 사이 custom icon set (redesigned) ═══
+     24 grid · 1.8 stroke · round terminals · unified 2.4 corner language -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.6" y="5" width="16.8" height="15.2" rx="3.6"/><path d="M3.6 9.5h16.8"/><path d="M8 3.2v3.4"/><path d="M16 3.2v3.4"/><rect x="10.4" y="12.4" width="3.2" height="3.2" rx="1"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.3"/><path d="M12 7.4v4.9l3.3 1.9"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8.2" r="3.5"/><path d="M5.7 19.4c0-3.4 2.8-5.4 6.3-5.4s6.3 2 6.3 5.4"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6.3 10a5.7 5.7 0 0 1 11.4 0c0 3.3 1 4.9 1.8 5.7a.9.9 0 0 1-.62 1.55H5.12A.9.9 0 0 1 4.5 15.7c.8-.8 1.8-2.4 1.8-5.7Z"/><path d="M9.9 20a2.1 2.1 0 0 0 4.2 0"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.7" y="10.3" width="14.6" height="9.4" rx="3"/><path d="M8 10.3V7.7a4 4 0 0 1 8 0v2.6"/><path d="M12 14v2.4"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.8 12S6.3 5.8 12 5.8 21.2 12 21.2 12 17.7 18.2 12 18.2 2.8 12 2.8 12Z"/><circle cx="12" cy="12" r="2.7"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20.1c-4.2-3.2-8-6.6-8-10.2A4 4 0 0 1 12 7.4 4 4 0 0 1 20 9.9c0 3.6-3.8 7-8 10.2Z"/></symbol>
+<symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3.4c.6 4 1.7 5.1 5.7 5.7-4 .6-5.1 1.7-5.7 5.7-.6-4-1.7-5.1-5.7-5.7 4-.6 5.1-1.7 5.7-5.7Z"/><path d="M18.4 13.9c.28 1.8.78 2.3 2.6 2.6-1.82.3-2.32.8-2.6 2.6-.28-1.8-.78-2.3-2.6-2.6 1.82-.3 2.32-.8 2.6-2.6Z"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M4.8 12.5 9.7 17.4 19.2 7"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5.3v13.4"/><path d="M5.3 12h13.4"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="M14.4 5.7 18.3 9.6 9 18.9l-4.5 1.1 1.1-4.5Z"/><path d="M12.7 7.4 16.6 11.3"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 20.8c3.7-3.9 6.3-7.2 6.3-10.4a6.3 6.3 0 0 0-12.6 0c0 3.2 2.6 6.5 6.3 10.4Z"/><circle cx="12" cy="10.2" r="2.4"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M6 20.8V4.4"/><path d="M6 5.2h10.4a.4.4 0 0 1 .33.63L15 8.4l1.73 2.57a.4.4 0 0 1-.33.63H6"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M3.8 11.3 12 4.6l8.2 6.7"/><path d="M5.8 10v8.9a1.2 1.2 0 0 0 1.2 1.2h10a1.2 1.2 0 0 0 1.2-1.2V10"/><path d="M9.8 20.1v-4.3a1 1 0 0 1 1-1h2.4a1 1 0 0 1 1 1v4.3"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="M20.4 4.2 3.9 10.7a.45.45 0 0 0 .02.85l6.3 2.1 2.1 6.3a.45.45 0 0 0 .85.02Z"/><path d="M20.4 4.2 10.4 14.2"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.4"/><path d="M20 20 15.7 15.7"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 6.5h4"/><circle cx="10" cy="6.5" r="2"/><path d="M12 6.5h8"/><path d="M4 12h8"/><circle cx="14" cy="12" r="2"/><path d="M16 12h4"/><path d="M4 17.5h4"/><circle cx="10" cy="17.5" r="2"/><path d="M12 17.5h8"/></symbol>
+<symbol id="i-message" viewBox="0 0 24 24"><path d="M19.5 13A2.5 2.5 0 0 1 17 15.5H10l-4.2 3.1a.35.35 0 0 1-.56-.28V15.5A2.5 2.5 0 0 1 4.5 13V7.5A2.5 2.5 0 0 1 7 5h10a2.5 2.5 0 0 1 2.5 2.5Z"/><path d="M8.6 9.5h6.8"/><path d="M8.6 12h4.4"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.7 14.4 8.9 20.1 9.6 15.9 13.6 17 19.3 12 16.5 7 19.3 8.1 13.6 3.9 9.6 9.6 8.9Z"/></symbol>
+<symbol id="i-back" viewBox="0 0 24 24"><path d="M14.5 6 8.5 12l6 6"/></symbol>
+<symbol id="i-chevron" viewBox="0 0 24 24"><path d="M9.5 6l6 6-6 6"/></symbol>
+<symbol id="i-erase" viewBox="0 0 24 24"><path d="M8.3 20.4 4 16.1a1.8 1.8 0 0 1 0-2.55L12.5 5a1.8 1.8 0 0 1 2.55 0l4.05 4.05a1.8 1.8 0 0 1 0 2.55l-8.85 8.8Z"/><path d="M8.3 20.4H20.4"/><path d="M9.1 9.9 14.1 14.9"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path d="M9.6 14.4 14.4 9.6"/><path d="M8 11.6 6.2 13.4a3.4 3.4 0 0 0 4.8 4.8l1.8-1.8"/><path d="M16 12.4l1.8-1.8a3.4 3.4 0 0 0-4.8-4.8l-1.8 1.8"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><circle cx="6.2" cy="12" r="2.5"/><circle cx="17.2" cy="6.2" r="2.5"/><circle cx="17.2" cy="17.8" r="2.5"/><path d="M8.5 10.9 14.9 7.3"/><path d="M8.5 13.1l6.4 3.6"/></symbol>
+<!-- ── duotone variants (active / selected states) · soft body fill + line ── -->
+<symbol id="i-home-duo" viewBox="0 0 24 24"><path d="M5.8 10.4 12 5.4l6.2 5v8.7a1 1 0 0 1-1 1H6.8a1 1 0 0 1-1-1Z" fill="currentColor" fill-opacity=".16" stroke="none"/><path d="M3.8 11.3 12 4.6l8.2 6.7"/><path d="M5.8 10v8.9a1.2 1.2 0 0 0 1.2 1.2h10a1.2 1.2 0 0 0 1.2-1.2V10"/><path d="M9.8 20.1v-4.3a1 1 0 0 1 1-1h2.4a1 1 0 0 1 1 1v4.3"/></symbol>
+<symbol id="i-calendar-duo" viewBox="0 0 24 24"><rect x="3.6" y="5" width="16.8" height="15.2" rx="3.6" fill="currentColor" fill-opacity=".16" stroke="none"/><rect x="3.6" y="5" width="16.8" height="15.2" rx="3.6"/><path d="M3.6 9.5h16.8"/><path d="M8 3.2v3.4"/><path d="M16 3.2v3.4"/><rect x="10.4" y="12.4" width="3.2" height="3.2" rx="1" fill="currentColor" fill-opacity=".92" stroke="none"/></symbol>
+<symbol id="i-message-duo" viewBox="0 0 24 24"><path d="M19.5 13A2.5 2.5 0 0 1 17 15.5H10l-4.2 3.1a.35.35 0 0 1-.56-.28V15.5A2.5 2.5 0 0 1 4.5 13V7.5A2.5 2.5 0 0 1 7 5h10a2.5 2.5 0 0 1 2.5 2.5Z" fill="currentColor" fill-opacity=".16" stroke="none"/><path d="M19.5 13A2.5 2.5 0 0 1 17 15.5H10l-4.2 3.1a.35.35 0 0 1-.56-.28V15.5A2.5 2.5 0 0 1 4.5 13V7.5A2.5 2.5 0 0 1 7 5h10a2.5 2.5 0 0 1 2.5 2.5Z"/><path d="M8.6 9.5h6.8"/><path d="M8.6 12h4.4"/></symbol>
+<symbol id="i-user-duo" viewBox="0 0 24 24"><circle cx="12" cy="8.2" r="3.5" fill="currentColor" fill-opacity=".16" stroke="none"/><path d="M5.7 19.4c0-3.4 2.8-5.4 6.3-5.4s6.3 2 6.3 5.4Z" fill="currentColor" fill-opacity=".16" stroke="none"/><circle cx="12" cy="8.2" r="3.5"/><path d="M5.7 19.4c0-3.4 2.8-5.4 6.3-5.4s6.3 2 6.3 5.4"/></symbol>
+<symbol id="i-bell-duo" viewBox="0 0 24 24"><path d="M6.3 10a5.7 5.7 0 0 1 11.4 0c0 3.3 1 4.9 1.8 5.7a.9.9 0 0 1-.62 1.55H5.12A.9.9 0 0 1 4.5 15.7c.8-.8 1.8-2.4 1.8-5.7Z" fill="currentColor" fill-opacity=".16" stroke="none"/><path d="M6.3 10a5.7 5.7 0 0 1 11.4 0c0 3.3 1 4.9 1.8 5.7a.9.9 0 0 1-.62 1.55H5.12A.9.9 0 0 1 4.5 15.7c.8-.8 1.8-2.4 1.8-5.7Z"/><path d="M9.9 20a2.1 2.1 0 0 0 4.2 0"/></symbol>
+<symbol id="i-check-duo" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6" fill="currentColor" fill-opacity=".16" stroke="none"/><circle cx="12" cy="12" r="8.6"/><path d="M8.2 12.3l2.6 2.6 5-5.3"/></symbol>
+<symbol id="i-sparkle-duo" viewBox="0 0 24 24"><path d="M12 3.4c.6 4 1.7 5.1 5.7 5.7-4 .6-5.1 1.7-5.7 5.7-.6-4-1.7-5.1-5.7-5.7 4-.6 5.1-1.7 5.7-5.7Z" fill="currentColor" fill-opacity=".22" stroke="none"/><path d="M12 3.4c.6 4 1.7 5.1 5.7 5.7-4 .6-5.1 1.7-5.7 5.7-.6-4-1.7-5.1-5.7-5.7 4-.6 5.1-1.7 5.7-5.7Z"/><path d="M18.4 13.9c.28 1.8.78 2.3 2.6 2.6-1.82.3-2.32.8-2.6 2.6-.28-1.8-.78-2.3-2.6-2.6 1.82-.3 2.32-.8 2.6-2.6Z"/></symbol>
+<symbol id="i-erase-duo" viewBox="0 0 24 24"><path d="M8.3 20.4 4 16.1a1.8 1.8 0 0 1 0-2.55L12.5 5a1.8 1.8 0 0 1 2.55 0l4.05 4.05a1.8 1.8 0 0 1 0 2.55l-8.85 8.8Z" fill="currentColor" fill-opacity=".16" stroke="none"/><path d="M8.3 20.4 4 16.1a1.8 1.8 0 0 1 0-2.55L12.5 5a1.8 1.8 0 0 1 2.55 0l4.05 4.05a1.8 1.8 0 0 1 0 2.55l-8.85 8.8Z"/><path d="M8.3 20.4H20.4"/><path d="M9.1 9.9 14.1 14.9"/></symbol>
+<!-- ── 사이 S2 frosted-glass logo (vector recreation) ── -->
+<symbol id="logo-s2" viewBox="0 0 140 104">
+  <defs>
+    <g id="s2p">
+      <path d="M54 30.5C51 21.5 40 17 30.5 19.5C20 22.3 15.5 31 19 38.5C22 44.5 29 46.5 36 48.3C43.5 50.2 50.5 52.8 53 59.5C55.8 67.3 50 75.5 40 77.5C30 79.5 20.5 75.5 17.5 67.5"/>
+      <path d="M82.5 28.5C82.5 18 93 13 103 16C113 19 117.8 29 112.5 37.5C106 48 92 59.5 84.5 74Q83 76.5 83 78H122"/>
+    </g>
+    <linearGradient id="s2g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7EA3FA"/><stop offset=".5" stop-color="#4A7BF0"/><stop offset="1" stop-color="#3A62DE"/>
+    </linearGradient>
+    <filter id="s2sh" x="-25%" y="-25%" width="150%" height="175%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6.5" flood-color="#2F55C4" flood-opacity=".33"/>
+    </filter>
+    <filter id="s2bl" x="-35%" y="-35%" width="170%" height="170%"><feGaussianBlur stdDeviation="2.4"/></filter>
+  </defs>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#s2sh)">
+    <use href="#s2p" stroke="url(#s2g)" stroke-width="17"/>
+    <use href="#s2p" stroke="#B3CAFF" stroke-opacity=".42" stroke-width="9.5" filter="url(#s2bl)" transform="translate(0 -1.8)"/>
+    <use href="#s2p" stroke="#E6EEFF" stroke-opacity=".3" stroke-width="3.4" filter="url(#s2bl)" transform="translate(-.4 -2.6)"/>
+  </g>
+</symbol>
+<!-- ── share-target app icons ── -->
+<symbol id="app-kakao" viewBox="0 0 52 52">
+  <rect width="52" height="52" rx="12.5" fill="#FEE500"/>
+  <path fill="#3A1D1D" d="M26 13C17.2 13 10 18.4 10 25.1C10 29.4 12.9 33.2 17.3 35.4C17 36.5 16.1 39.8 15.9 40.6C15.7 41.5 16.3 41.8 16.9 41.4C17.5 41 21.2 38.5 22.7 37.4C23.8 37.6 24.9 37.7 26 37.7C34.8 37.7 42 32.2 42 25.4C42 18.5 34.8 13 26 13Z"/>
+  <text x="26" y="28.8" text-anchor="middle" font-family="Arial, 'Malgun Gothic', sans-serif" font-weight="900" font-size="9" fill="#FEE500" letter-spacing=".4" stroke="none">TALK</text>
+</symbol>
+<symbol id="app-imessage" viewBox="0 0 52 52">
+  <defs><linearGradient id="imsgG" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#6BE977"/><stop offset="1" stop-color="#12BF2E"/>
+  </linearGradient></defs>
+  <rect width="52" height="52" rx="12.5" fill="url(#imsgG)"/>
+  <path fill="#fff" d="M26 13.4C34.4 13.4 41.2 18.95 41.2 25.8C41.2 32.65 34.4 38.2 26 38.2C24.3 38.2 22.7 38 21.2 37.6C19.6 38.75 17.1 40 14.2 40.3C13.7 40.35 13.4 39.75 13.8 39.35C15.25 37.9 16.2 36 16.5 34.3C13 32.15 10.8 29.2 10.8 25.8C10.8 18.95 17.6 13.4 26 13.4Z"/>
+</symbol>
+<symbol id="app-more" viewBox="0 0 52 52">
+  <rect width="52" height="52" rx="12.5" fill="#EEF1F4"/>
+  <circle cx="17" cy="26" r="2.7" fill="#7A8694"/><circle cx="26" cy="26" r="2.7" fill="#7A8694"/><circle cx="35" cy="26" r="2.7" fill="#7A8694"/>
+</symbol>
+<!-- ── 유리 질감 링크 아이콘 (하늘색 × 블루 two-tone) ── -->
+<symbol id="glass-link" viewBox="0 0 96 96">
+  <defs>
+    <linearGradient id="glkSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9CCEFF"/><stop offset="1" stop-color="#5FA4FB"/></linearGradient>
+    <linearGradient id="glkBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5D8BF5"/><stop offset="1" stop-color="#3560DC"/></linearGradient>
+    <filter id="glkSh" x="-25%" y="-25%" width="150%" height="175%"><feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#2F55C4" flood-opacity=".3"/></filter>
+    <filter id="glkBl" x="-35%" y="-35%" width="170%" height="170%"><feGaussianBlur stdDeviation="1.7"/></filter>
+  </defs>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#glkSh)">
+    <path d="M64 49.6 71.2 42.4A13.6 13.6 0 0 0 52 23.2L44.8 30.4" stroke="url(#glkSky)" stroke-width="11"/>
+    <path d="M32 46.4 24.8 53.6A13.6 13.6 0 0 0 44 72.8L51.2 65.6" stroke="url(#glkBlue)" stroke-width="11"/>
+    <path d="M38.4 57.6 57.6 38.4" stroke="url(#glkBlue)" stroke-width="11"/>
+    <g stroke="#E6F1FF" stroke-opacity=".45" stroke-width="3.6" filter="url(#glkBl)" transform="translate(-.5 -1.8)">
+      <path d="M64 49.6 71.2 42.4A13.6 13.6 0 0 0 52 23.2L44.8 30.4"/>
+      <path d="M32 46.4 24.8 53.6A13.6 13.6 0 0 0 44 72.8L51.2 65.6"/>
+      <path d="M38.4 57.6 57.6 38.4"/>
+    </g>
+  </g>
+</symbol>
+</defs></svg>
+
+<button id="themeToggle" class="theme-toggle" type="button" aria-label="다크/라이트 모드 전환">
+  <svg class="ic moon" viewBox="0 0 24 24"><path d="M20 14.6A7.5 7.5 0 0 1 9.4 4a7.5 7.5 0 1 0 10.6 10.6Z"/></svg>
+  <svg class="ic sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2M12 19.4v2M4.8 4.8 6.2 6.2M17.8 17.8l1.4 1.4M2.6 12h2M19.4 12h2M4.8 19.2 6.2 17.8M17.8 6.2l1.4-1.4"/></svg>
+  <span class="tt-txt"></span>
+</button>
+
+<header class="doc"><div class="wrap">
+  <span class="kick">TOSS DESIGNER CHALLENGE 2026 · 화면 설계 핸드오프</span>
+  <div class="lock">
+    <img class="bigmark" alt="사이 로고" src="data:image/png;base64,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">
+    <span class="appmark"><svg viewBox="0 0 140 104" aria-label="사이 S2 로고" style="overflow:visible"><use href="#logo-s2"/></svg></span>
+    <h1>사이<span class="en">Sai · 익명 거부권 회의 일정</span></h1>
+  </div>
+  <div class="sub">좋은 시간을 찾지 말고, <b>싫은 시간만 익명으로 지우세요.</b></div>
+  <p class="desc">참석자가 부담스러운 시간만 익명으로 지우면(veto), 남은 시간 중에서 주최자가 확정하는 회의 일정 앱. 아래 화면은 TDS 토큰·컴포넌트·해요체 UX 라이팅을 그대로 따른 실제 플로우예요.</p>
+  <div class="metafoot">
+    <span class="mtag">TDS 토큰 그대로 · Toss Blue <b>#3182F6</b></span>
+    <span class="mtag">Pretendard / 해요체</span>
+    <span class="mtag">390×844 · 좌우 20px</span>
+    <span class="mtag">커스텀 아이콘 <b>24개</b> 리디자인</span>
+    <span class="mtag">로고 무드 · <b>Frosted Glass Blue</b></span>
+  </div>
+</div></header>
+
+<!-- ═══ ICON SYSTEM SHOWCASE ═══ -->
+<div class="wrap"><section class="showcase reveal">
+  <div class="sc-head">
+    <div>
+      <div class="sc-eyebrow">Icon System · Redesigned</div>
+      <h3>사이 전용 아이콘 세트</h3>
+    </div>
+    <p class="sc-note">24px 그리드·1.8 스트로크·둥근 종단으로 통일한 커스텀 라인 아이콘. 앱 전 화면·탭바·FAB에 동일 세트를 써요.</p>
+  </div>
+  <div class="iconwall">
+    <div class="itile hero-icon"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-erase"/></svg></span><span class="nm">지우기</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-home"/></svg></span><span class="nm">홈</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-calendar"/></svg></span><span class="nm">캘린더</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-clock"/></svg></span><span class="nm">시간</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-message"/></svg></span><span class="nm">채팅</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-bell"/></svg></span><span class="nm">알림</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-lock"/></svg></span><span class="nm">익명</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-eye"/></svg></span><span class="nm">공개</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-user"/></svg></span><span class="nm">참석자</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-pin"/></svg></span><span class="nm">위치</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-flag"/></svg></span><span class="nm">플래닝</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-star"/></svg></span><span class="nm">회고</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-check"/></svg></span><span class="nm">확정</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-plus"/></svg></span><span class="nm">추가</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-edit"/></svg></span><span class="nm">수정</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-search"/></svg></span><span class="nm">검색</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-settings"/></svg></span><span class="nm">설정</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-send"/></svg></span><span class="nm">보내기</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-link"/></svg></span><span class="nm">링크</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-share"/></svg></span><span class="nm">공유</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-heart"/></svg></span><span class="nm">소개</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-sparkle"/></svg></span><span class="nm">도움말</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-chevron"/></svg></span><span class="nm">이동</span></div>
+    <div class="itile"><span class="glyph"><svg class="ic" width="26" height="26"><use href="#i-back"/></svg></span><span class="nm">뒤로</span></div>
+  </div>
+  <div class="sc-specs">
+    <span class="spec"><i></i>24 × 24 그리드</span>
+    <span class="spec"><i></i>1.8px 스트로크</span>
+    <span class="spec"><i></i>둥근 cap · join</span>
+    <span class="spec"><i></i>2.4 코너 라디우스</span>
+    <span class="spec"><i></i>currentColor 상속</span>
+  </div>
+  <div class="duo-row">
+    <div class="duo-lab">
+      <div class="sc-eyebrow" style="color:var(--primary)">Duotone · 활성 / 선택</div>
+      <p>탭바 active·추천 카드처럼 강조가 필요한 곳엔, 같은 글리프에 소프트 채움을 더한 <b>듀오톤</b>으로 전환돼요.</p>
+    </div>
+    <div class="duo-tiles">
+      <span class="duo-t"><svg class="ic" width="24" height="24"><use href="#i-erase-duo"/></svg></span>
+      <span class="duo-t"><svg class="ic" width="24" height="24"><use href="#i-home-duo"/></svg></span>
+      <span class="duo-t"><svg class="ic" width="24" height="24"><use href="#i-calendar-duo"/></svg></span>
+      <span class="duo-t"><svg class="ic" width="24" height="24"><use href="#i-message-duo"/></svg></span>
+      <span class="duo-t"><svg class="ic" width="24" height="24"><use href="#i-user-duo"/></svg></span>
+      <span class="duo-t"><svg class="ic" width="24" height="24"><use href="#i-bell-duo"/></svg></span>
+      <span class="duo-t"><svg class="ic" width="24" height="24"><use href="#i-check-duo"/></svg></span>
+      <span class="duo-t"><svg class="ic" width="24" height="24"><use href="#i-sparkle-duo"/></svg></span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ USER FLOW MAP ═══ -->
+<section class="showcase reveal flowmap" style="margin-top:26px">
+  <div class="sc-head">
+    <div>
+      <div class="sc-eyebrow">User Flow · 연결 구조</div>
+      <h3>주최자와 참석자가 만나는 지점</h3>
+    </div>
+    <p class="sc-note">모든 화면이 하나의 루프로 이어져요. 점선 구간은 익명 — 이름이 흐르지 않아요.</p>
+  </div>
+  <div class="lanes">
+    <div class="lane">
+      <span class="lane-tag org">주최자</span>
+      <span class="node">홈</span><span class="arr">→</span>
+      <span class="node">회의 만들기</span><span class="arr">→</span>
+      <span class="node">참석자 · 필수/선택</span><span class="arr">→</span>
+      <span class="node">초대 링크</span><span class="arr">→</span>
+      <span class="node anon">집계 · 추천</span><span class="arr">→</span>
+      <span class="node emph">확정</span><span class="arr">→</span>
+      <span class="node">상세 · 캘린더</span>
+    </div>
+    <div class="bridge">
+      <span>초대 링크 공유 <b>⤵</b></span>
+      <span><b>⤴</b> 익명 응답 집계 (이름 없이 숫자만)</span>
+    </div>
+    <div class="lane">
+      <span class="lane-tag part">참석자</span>
+      <span class="node">링크 진입 · 로그인 없음</span><span class="arr">→</span>
+      <span class="node anon">싫은 시간 지우기</span><span class="arr">→</span>
+      <span class="node anon">사유 태그 (선택)</span><span class="arr">→</span>
+      <span class="node">제출 완료</span><span class="arr">→</span>
+      <span class="node">확정 알림 수신</span>
+    </div>
+  </div>
+  <div class="flow-note">
+    <i><span class="sw-anon"></span>익명 구간 — 누가 지웠는지 어디에도 남지 않아요</i>
+    <i>💬 익명 채팅·🔔 알림은 모든 화면 우상단에서 병행 진입</i>
+  </div>
+</section></div>
+
+<main class="wrap">
+
+<!-- ══════════ 1. 시작 & 만들기 ══════════ -->
+<div class="flowhead"><span class="no">A</span><h2>시작 · 회의 만들기</h2><div class="ln"></div></div>
+<div class="gal">
+
+  <!-- HOME -->
+  <div class="cell reveal">
+    <div class="dev"><div class="phone">
+      <div class="statusbar"><span class="time">9:41</span><div class="island"></div>
+        <div class="sb-icons">
+          <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#191F28"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#191F28"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#191F28"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#191F28"/></svg>
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="#191F28"><path d="M8.5 2.2c2.7 0 5.2 1 7 2.8l-1.5 1.6A7.7 7.7 0 0 0 8.5 4.4 7.7 7.7 0 0 0 3 6.6L1.5 5A9.9 9.9 0 0 1 8.5 2.2Z"/><path d="M8.5 6c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8.5 8.3c-.9 0-1.7.3-2.3.9L4.6 7.6A5.5 5.5 0 0 1 8.5 6Z"/><circle cx="8.5" cy="10.6" r="1.4"/></svg>
+          <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#191F28" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#191F28"/><path d="M24.5 4.2v4.6c1-.4 1-4.2 0-4.6Z" fill="#191F28" fill-opacity=".5"/></svg>
+        </div>
+      </div>
+      <div class="stage"><div class="scroll page">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px 4px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <img alt="사이" style="width:30px;height:30px;object-fit:contain" src="data:image/png;base64,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">
+            <span class="minimark"><svg viewBox="0 0 140 104" aria-label="사이"><use href="#logo-s2"/></svg></span>
+            <span style="font-size:20px;font-weight:600;color:var(--text-strong);letter-spacing:var(--tk-tight)">사이</span>
+          </div>
+          <button class="iconbtn"><svg class="ic" width="22" height="22"><use href="#i-bell"/></svg><span style="position:absolute;top:5px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--negative);border:1.5px solid var(--surface-page)"></span></button>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:12px 20px 28px">
+          <div class="promo"><div><div class="h">새 회의를 잡아요</div><div class="s">좋은 시간을 찾지 말고, 싫은 시간을 지워요</div></div><div class="em">🗓️</div></div>
+          <div class="lh" style="padding:26px 0 8px"><div class="row"><span class="t">지금 확인해요</span></div></div>
+          <div class="mcard">
+            <div class="hd">
+              <span class="asset sq t-primary" style="width:44px;height:44px"><svg class="ic" width="22" height="22" style="color:var(--primary)"><use href="#i-calendar-duo"/></svg></span>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span class="nm">주간 디자인 리뷰</span><span class="badge primary">응답 대기</span></div>
+                <div class="meta">4월 2일 ~ 4일 · 후보 27개</div>
+              </div>
+            </div>
+            <div class="prog"><i style="width:67%"></i></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
+              <span class="stack">
+                <span class="av" style="width:26px;height:26px;background:var(--grey-200);color:var(--grey-500)"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="currentColor" opacity=".85"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" fill="currentColor" opacity=".85"/></svg></span>
+                <span class="av" style="width:26px;height:26px;background:var(--grey-200);color:var(--grey-500)"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="currentColor" opacity=".85"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" fill="currentColor" opacity=".85"/></svg></span>
+                <span class="av" style="width:26px;height:26px;background:var(--grey-200);color:var(--grey-500)"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="currentColor" opacity=".85"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" fill="currentColor" opacity=".85"/></svg></span>
+                <span class="av-more" style="width:26px;height:26px">+3</span>
+              </span>
+              <span class="cap1" style="color:var(--text-weak)">6명 중 4명 응답</span>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:14px">
+              <button class="btn md weak" style="flex:1">자세히</button>
+              <button class="btn md pri" style="flex:1">싫은 시간 지우기</button>
+            </div>
+          </div>
+          <div class="lh" style="padding:26px 0 8px"><div class="row"><span class="t">다가오는 회의</span></div></div>
+          <div class="mcard">
+            <div class="hd">
+              <span class="asset sq t-positive" style="width:44px;height:44px"><svg class="ic" width="22" height="22" style="color:var(--green-600)"><use href="#i-flag"/></svg></span>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span class="nm">분기 플래닝</span><span class="badge positive">확정</span></div>
+                <div class="meta">4월 8일 화 · 오전 11시</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px">
+              <span class="stack">
+                <span class="av" style="width:26px;height:26px;background:#E4EEFC;color:#3B6FC9;font-size:10px">김</span>
+                <span class="av" style="width:26px;height:26px;background:#DFF2F0;color:#1F7F78;font-size:10px">이</span>
+                <span class="av" style="width:26px;height:26px;background:#E3F3E4;color:#3F8548;font-size:10px">박</span>
+                <span class="av-more" style="width:26px;height:26px">+5</span>
+              </span>
+              <span class="cap1" style="display:inline-flex;align-items:center;gap:4px;color:var(--text-weak)"><svg class="ic" width="14" height="14" style="color:var(--grey-400)"><use href="#i-pin"/></svg>브릿지 회의실</span>
+            </div>
+          </div>
+        </div>
+        <button class="fab"><svg class="ic" width="22" height="22" style="color:#fff"><use href="#i-plus"/></svg>회의 만들기</button>
+      </div>
+      <div class="tabbar">
+        <button class="on" style="position:relative"><svg class="ic" width="25" height="25"><use href="#i-home-duo"/></svg><span class="lb">홈</span></button>
+        <button><svg class="ic" width="25" height="25"><use href="#i-calendar"/></svg><span class="lb">회의</span></button>
+        <button style="position:relative"><span style="position:relative"><svg class="ic" width="25" height="25"><use href="#i-message"/></svg><span class="tbadge">2</span></span><span class="lb">채팅</span></button>
+        <button><svg class="ic" width="25" height="25"><use href="#i-user"/></svg><span class="lb">마이</span></button>
+      </div>
+      </div>
+      <div class="home-ind"></div>
+    </div></div>
+    <div class="cap"><b>홈 (Home)</b><span>로고 + 진행 중인 회의 카드(응답 4/6·프로그레스), 확정 회의, FAB, 하단 탭바.</span><i class="next">다음 ▸ 회의 만들기 · 상세 · 지우기</i>
+      <div class="why">첫 화면부터 “좋은 시간을 찾지 말고, 싫은 시간을 지워요”로 반전된 멘탈 모델을 각인시켜요.</div></div>
+  </div>
+
+  <!-- NOTIF SHEET -->
+  <div class="cell reveal">
+    <div class="dev"><div class="phone">
+      <div class="statusbar"><span class="time">9:41</span><div class="island"></div>
+        <div class="sb-icons">
+          <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#191F28"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#191F28"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#191F28"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#191F28"/></svg>
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="#191F28"><path d="M8.5 2.2c2.7 0 5.2 1 7 2.8l-1.5 1.6A7.7 7.7 0 0 0 8.5 4.4 7.7 7.7 0 0 0 3 6.6L1.5 5A9.9 9.9 0 0 1 8.5 2.2Z"/><path d="M8.5 6c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8.5 8.3c-.9 0-1.7.3-2.3.9L4.6 7.6A5.5 5.5 0 0 1 8.5 6Z"/><circle cx="8.5" cy="10.6" r="1.4"/></svg>
+          <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#191F28" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#191F28"/><path d="M24.5 4.2v4.6c1-.4 1-4.2 0-4.6Z" fill="#191F28" fill-opacity=".5"/></svg>
+        </div>
+      </div>
+      <div class="stage"><div class="scroll page">
+        <div style="flex:1;overflow:hidden;opacity:.45">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px 4px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span class="minimark"><svg viewBox="0 0 140 104" aria-label="사이"><use href="#logo-s2"/></svg></span>
+              <span style="font-size:20px;font-weight:600;color:var(--text-strong);letter-spacing:var(--tk-tight)">사이</span>
+            </div>
+            <button class="iconbtn"><svg class="ic" width="22" height="22" style="color:var(--primary)"><use href="#i-bell-duo"/></svg></button>
+          </div>
+          <div style="padding:12px 20px">
+            <div class="promo"><div><div class="h">새 회의를 잡아요</div><div class="s">좋은 시간을 찾지 말고, 싫은 시간을 지워요</div></div><div class="em">🗓️</div></div>
+          </div>
+        </div>
+        <div class="sheet-wrap"><div class="scrim"></div>
+          <div class="sheet">
+            <div class="grab"></div>
+            <h3>알림</h3>
+            <div style="margin:0 -20px">
+              <div class="lr" style="min-height:auto;padding:11px 20px"><span class="asset ci t-neutral" style="width:40px;height:40px;font-size:22px">🕶️</span><div class="mid"><span class="t" style="font-weight:400;font-size:15.5px;color:var(--text-body)">익명 참석자가 싫은 시간을 지웠어요</span><span class="d">주간 디자인 리뷰 · 방금</span></div><svg class="ic" width="20" height="20" style="color:var(--grey-400);flex-shrink:0"><use href="#i-chevron"/></svg></div>
+              <div class="bd" style="margin:0 20px"></div>
+              <div class="lr" style="min-height:auto;padding:11px 20px"><span class="asset ci t-neutral" style="width:40px;height:40px;font-size:22px">💬</span><div class="mid"><span class="t" style="font-weight:400;font-size:15.5px;color:var(--text-body)">새 익명 메시지 2개</span><span class="d">주간 디자인 리뷰 · 오후 2:16</span></div><svg class="ic" width="20" height="20" style="color:var(--grey-400);flex-shrink:0"><use href="#i-chevron"/></svg></div>
+              <div class="bd" style="margin:0 20px"></div>
+              <div class="lr" style="min-height:auto;padding:11px 20px"><span class="asset ci t-neutral" style="width:40px;height:40px;font-size:22px">🎉</span><div class="mid"><span class="t" style="font-weight:400;font-size:15.5px;color:var(--text-body)">회의 시간이 정해졌어요</span><span class="d">분기 플래닝 · 어제</span></div><svg class="ic" width="20" height="20" style="color:var(--grey-400);flex-shrink:0"><use href="#i-chevron"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div></div>
+      <div class="home-ind"></div>
+    </div></div>
+    <div class="cap"><b>알림 (NotifSheet)</b><span>벨 탭 → 익명 응답·새 메시지·확정 소식. 열람하면 벨의 빨간 점이 사라져요.</span><i class="next">탭하면 ▸ 상세 · 익명 채팅</i>
+      <div class="why">“익명 참석자가 지웠어요”처럼 주체를 밝히지 않는 카피로 알림에서도 익명을 지켜요.</div></div>
+  </div>
+
+  <!-- CREATE -->
+  <div class="cell reveal">
+    <div class="dev"><div class="phone">
+      <div class="statusbar"><span class="time">9:41</span><div class="island"></div>
+        <div class="sb-icons">
+          <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#191F28"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#191F28"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#191F28"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#191F28"/></svg>
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="#191F28"><path d="M8.5 2.2c2.7 0 5.2 1 7 2.8l-1.5 1.6A7.7 7.7 0 0 0 8.5 4.4 7.7 7.7 0 0 0 3 6.6L1.5 5A9.9 9.9 0 0 1 8.5 2.2Z"/><path d="M8.5 6c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8.5 8.3c-.9 0-1.7.3-2.3.9L4.6 7.6A5.5 5.5 0 0 1 8.5 6Z"/><circle cx="8.5" cy="10.6" r="1.4"/></svg>
+          <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#191F28" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#191F28"/><path d="M24.5 4.2v4.6c1-.4 1-4.2 0-4.6Z" fill="#191F28" fill-opacity=".5"/></svg>
+        </div>
+      </div>
+      <div class="stage"><div class="scroll">
+        <div class="nav"><button class="back">✕</button><span class="ttl hid">회의 만들기</span><div class="rt"></div></div>
+        <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+          <div class="top"><h1>어떤 회의인가요?</h1><p>기간과 시간대만 열어두면, 나머지는 사이가 정리해요.</p></div>
+          <div style="padding:8px 20px 0"><div class="tf"><div class="lab">회의 이름</div><div class="val focus">주간 디자인 리뷰</div></div></div>
+          <div class="lh"><div class="row"><span class="t">기간</span></div><span class="d">언제부터 언제까지 잡을까요?</span></div>
+          <div class="cal">
+            <div class="wk"><span class="sun">일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>
+            <div class="days">
+              <span></span>
+              <div class="dc"><b>1</b></div><div class="dc band lo end"><b>2</b></div><div class="dc band"><b>3</b></div><div class="dc band hi end"><b>4</b></div><div class="dc"><b>5</b></div><div class="dc"><b>6</b></div>
+              <div class="dc"><b>7</b></div><div class="dc"><b>8</b></div><div class="dc"><b>9</b></div><div class="dc"><b>10</b></div><div class="dc"><b>11</b></div><div class="dc"><b>12</b></div><div class="dc"><b>13</b></div>
+              <div class="dc"><b>14</b></div><div class="dc"><b>15</b></div><div class="dc"><b>16</b></div><div class="dc"><b>17</b></div><div class="dc"><b>18</b></div><div class="dc"><b>19</b></div><div class="dc"><b>20</b></div>
+            </div>
+          </div>
+          <div class="pillbox"><svg class="ic" width="18" height="18" style="color:var(--primary)"><use href="#i-calendar"/></svg>4월 2일 ~ 4월 4일 · 3일간</div>
+          <div class="lh"><div class="row"><span class="t">시간대</span></div><span class="d">회의를 열 수 있는 시간만 남겨요</span></div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 20px">
+            <span class="chip on">오전 9시</span><span class="chip on">오전 10시</span><span class="chip on">오전 11시</span><span class="chip on">낮 12시</span>
+            <span class="chip on">오후 1시</span><span class="chip on">오후 2시</span><span class="chip on">오후 3시</span><span class="chip on">오후 4시</span>
+            <span class="chip on">오후 5시</span><span class="chip">오후 6시</span><span class="chip">저녁 7시</span><span class="chip">저녁 8시</span>
+          </div>
+        </div>
+        <div class="dock"><button class="btn lg pri">다음</button></div>
+      </div></div>
+      <div class="home-ind"></div>
+    </div></div>
+    <div class="cap"><b>회의 만들기 (Create)</b><span>이름 · 4월 범위 캘린더 · 시간대 칩. TDS TextField 언더라인, Chip 다중선택.</span><i class="next">다음 ▸ 참석자 구분</i>
+      <div class="why">입력을 “여는” 방향으로만 — 되는 시간을 칠하는 노동 없이 후보 범위만 던져요.</div></div>
+  </div>
+
+  <!-- PARTICIPANTS -->
+  <div class="cell reveal">
+    <div class="dev"><div class="phone">
+      <div class="statusbar"><span class="time">9:41</span><div class="island"></div>
+        <div class="sb-icons">
+          <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#191F28"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#191F28"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#191F28"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#191F28"/></svg>
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="#191F28"><path d="M8.5 2.2c2.7 0 5.2 1 7 2.8l-1.5 1.6A7.7 7.7 0 0 0 8.5 4.4 7.7 7.7 0 0 0 3 6.6L1.5 5A9.9 9.9 0 0 1 8.5 2.2Z"/><path d="M8.5 6c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8.5 8.3c-.9 0-1.7.3-2.3.9L4.6 7.6A5.5 5.5 0 0 1 8.5 6Z"/><circle cx="8.5" cy="10.6" r="1.4"/></svg>
+          <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#191F28" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#191F28"/><path d="M24.5 4.2v4.6c1-.4 1-4.2 0-4.6Z" fill="#191F28" fill-opacity=".5"/></svg>
+        </div>
+      </div>
+      <div class="stage"><div class="scroll">
+        <div class="nav"><button class="back">✕</button><span class="ttl hid">회의 만들기</span><div class="rt"></div></div>
+        <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+          <div class="lh"><div class="row"><span class="t">참석자</span><button class="btn sm ghost" style="color:var(--text-body);height:auto;padding:0;font-weight:600">초대</button></div><span class="d">응답 3/6명 · 필수 3명</span></div>
+          <div>
+            <div class="lr"><span class="av" style="width:40px;height:40px;background:#E4EEFC;color:#3B6FC9;font-size:16px">김</span><div class="mid"><span class="t">김지원</span><span class="d" style="display:inline-flex;align-items:center;gap:5px;color:var(--green-600)"><span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>응답 완료</span></div><div class="rt"><span class="cap2" style="color:var(--primary)">필수</span><span class="sw on"><i></i></span></div></div>
+            <div class="bd" style="margin:0 20px"></div>
+            <div class="lr"><span class="av" style="width:40px;height:40px;background:#DFF2F0;color:#1F7F78;font-size:16px">이</span><div class="mid"><span class="t">이서준</span><span class="d" style="display:inline-flex;align-items:center;gap:5px;color:var(--green-600)"><span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>응답 완료</span></div><div class="rt"><span class="cap2" style="color:var(--primary)">필수</span><span class="sw on"><i></i></span></div></div>
+            <div class="bd" style="margin:0 20px"></div>
+            <div class="lr"><span class="av" style="width:40px;height:40px;background:#E3F3E4;color:#3F8548;font-size:16px">박</span><div class="mid"><span class="t">박민서</span><span class="d" style="display:inline-flex;align-items:center;gap:5px;color:var(--green-600)"><span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>응답 완료</span></div><div class="rt"><span class="cap2" style="color:var(--primary)">필수</span><span class="sw on"><i></i></span></div></div>
+            <div class="bd" style="margin:0 20px"></div>
+            <div class="lr"><span class="av" style="width:40px;height:40px;background:#FBEEDF;color:#A9702C;font-size:16px">정</span><div class="mid"><span class="t">정하윤</span><span class="d" style="display:inline-flex;align-items:center;gap:5px;color:var(--green-600)"><span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>응답 완료</span></div><div class="rt"><span class="cap2" style="color:var(--text-weak)">필수</span><span class="sw"><i></i></span></div></div>
+            <div class="bd" style="margin:0 20px"></div>
+            <div class="lr"><span class="av" style="width:40px;height:40px;background:#FBE9EC;color:#BA5468;font-size:16px;opacity:.5">최</span><div class="mid"><span class="t">최도현</span><span class="d" style="display:inline-flex;align-items:center;gap:5px;color:#B77900"><span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>초대함 · 응답 대기 중</span></div><div class="rt"><span class="cap2" style="color:var(--text-weak)">필수</span><span class="sw"><i></i></span></div></div>
+          </div>
+          <div style="padding:8px 20px 0;font-size:13px;color:var(--text-weak)">← 삭제하려면 왼쪽으로 밀어요</div>
+        </div>
+        <div class="dock"><button class="btn lg pri">다음</button></div>
+      </div></div>
+      <div class="home-ind"></div>
+    </div></div>
+    <div class="cap"><b>참석자 · 필수/선택 (Create)</b><span>“필수” 스위치로 구분. 선택 참석자가 빠져도 회의는 성립해요. 대기자는 옅게 표시.</span><i class="next">다음 ▸ 초대 링크</i>
+      <div class="why">필수 전원 가능 여부가 추천 로직의 핵심 조건 — 소수의 선택 참석자 때문에 무한정 미뤄지지 않게.</div></div>
+  </div>
+
+  <!-- INVITE -->
+  <div class="cell reveal">
+    <div class="dev"><div class="phone">
+      <div class="statusbar"><span class="time">9:41</span><div class="island"></div>
+        <div class="sb-icons">
+          <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#191F28"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#191F28"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#191F28"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#191F28"/></svg>
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="#191F28"><path d="M8.5 2.2c2.7 0 5.2 1 7 2.8l-1.5 1.6A7.7 7.7 0 0 0 8.5 4.4 7.7 7.7 0 0 0 3 6.6L1.5 5A9.9 9.9 0 0 1 8.5 2.2Z"/><path d="M8.5 6c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8.5 8.3c-.9 0-1.7.3-2.3.9L4.6 7.6A5.5 5.5 0 0 1 8.5 6Z"/><circle cx="8.5" cy="10.6" r="1.4"/></svg>
+          <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#191F28" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#191F28"/><path d="M24.5 4.2v4.6c1-.4 1-4.2 0-4.6Z" fill="#191F28" fill-opacity=".5"/></svg>
+        </div>
+      </div>
+      <div class="stage"><div class="scroll">
+        <div class="nav"><button class="back">‹</button><span class="ttl hid"></span><div class="rt"></div></div>
+        <div style="flex:1;overflow:hidden;padding:0 20px;display:flex;flex-direction:column;align-items:center;text-align:center">
+          <div style="margin-top:24px"><svg width="92" height="92" style="display:block;overflow:visible" aria-label="링크"><use href="#glass-link"/></svg></div>
+          <h1 style="margin-top:24px;font-size:24px;font-weight:700;color:var(--text-strong);letter-spacing:var(--tk-tight)">링크가 준비됐어요</h1>
+          <p style="margin-top:8px;font-size:15px;color:var(--text-sub);line-height:1.53">참석자에게 링크를 보내면<br>각자 싫은 시간만 지우면 돼요.</p>
+          <div style="width:100%;margin-top:28px;display:flex;align-items:center;gap:10px;padding:14px 16px;background:var(--surface-sunken);border-radius:var(--r-md)">
+            <span style="flex:1;text-align:left;font-size:15px;color:var(--text-sub);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">sai.im/j/x7f2k9</span>
+            <button class="btn sm weak">복사</button>
+          </div>
+          <div style="display:flex;gap:16px;margin-top:20px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:7px"><svg class="shareic" width="52" height="52"><use href="#app-kakao"/></svg><span style="font-size:13px;color:var(--text-sub)">카톡</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:7px"><svg class="shareic" width="52" height="52"><use href="#app-imessage"/></svg><span style="font-size:13px;color:var(--text-sub)">문자</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:7px"><svg class="shareic" width="52" height="52"><use href="#app-more"/></svg><span style="font-size:13px;color:var(--text-sub)">더보기</span></div>
+          </div>
+        </div>
+        <div class="dock"><button class="btn lg pri">내가 먼저 지울게요</button></div>
+      </div></div>
+      <div class="home-ind"></div>
+    </div></div>
+    <div class="cap"><b>초대 (Invite)</b><span>링크 카드 + 복사 · 카톡/문자/더보기는 실제 앱 아이콘으로. 참석자는 로그인 없이 진입.</span><i class="next">다음 ▸ 싫은 시간 지우기</i>
+      <div class="why">진입 장벽 제거 — 설문상 “도구 사용 11.5%”의 벽을 링크 한 번으로 낮춰요.</div></div>
+  </div>
+
+</div>
+
+<!-- ══════════ B. 핵심 루프: 지우기 → 집계 → 확정 ══════════ -->
+<div class="flowhead"><span class="no">B</span><h2>핵심 루프 · 싫은 시간 지우기 → 집계 → 확정</h2><div class="ln"></div></div>
+<div class="gal">
+
+  <!-- VETO -->
+  <div class="cell reveal">
+    <div class="dev"><div class="phone">
+      <div class="statusbar"><span class="time">9:41</span><div class="island"></div>
+        <div class="sb-icons">
+          <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#191F28"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#191F28"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#191F28"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#191F28"/></svg>
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="#191F28"><path d="M8.5 2.2c2.7 0 5.2 1 7 2.8l-1.5 1.6A7.7 7.7 0 0 0 8.5 4.4 7.7 7.7 0 0 0 3 6.6L1.5 5A9.9 9.9 0 0 1 8.5 2.2Z"/><path d="M8.5 6c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8.5 8.3c-.9 0-1.7.3-2.3.9L4.6 7.6A5.5 5.5 0 0 1 8.5 6Z"/><circle cx="8.5" cy="10.6" r="1.4"/></svg>
+          <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#191F28" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#191F28"/><path d="M24.5 4.2v4.6c1-.4 1-4.2 0-4.6Z" fill="#191F28" fill-opacity=".5"/></svg>
+        </div>
+      </div>
+      <div class="stage"><div class="scroll">
+        <div class="nav"><button class="back">‹</button><span class="ttl hid">주간 디자인 리뷰</span><div class="rt"><button class="iconbtn"><svg class="ic" width="22" height="22" style="color:var(--grey-600)"><use href="#i-message"/></svg></button></div></div>
+        <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+          <div class="top"><h1>싫은 시간을 지워요</h1><p>주간 디자인 리뷰 · 4월 2일 ~ 4일 · 6명</p></div>
+          <div class="banner"><span class="e">🕶️</span><span class="tx">익명으로 집계돼요. 지금까지 4명이 지웠어요.</span></div>
+          <div class="lh" style="padding:16px 20px 8px"><div class="row"><span class="t">4월 2일 화요일</span></div><span class="d">2개 지웠어요</span></div>
+          <div class="vgrid">
+            <div class="vcell"><span class="main">9시</span><span class="sub">오전</span></div>
+            <div class="vcell"><span class="main">10시</span><span class="sub">오전</span></div>
+            <div class="vcell"><span class="main">11시</span><span class="sub">오전</span></div>
+            <div class="vcell"><span class="main">12시</span><span class="sub">낮</span></div>
+            <div class="vcell veto"><span class="main">1시</span><span class="sub">오후</span></div>
+            <div class="vcell"><span class="main">2시</span><span class="sub">오후</span></div>
+            <div class="vcell"><span class="main">3시</span><span class="sub">오후</span></div>
+            <div class="vcell veto"><span class="main">4시</span><span class="sub">오후</span></div>
+            <div class="vcell"><span class="main">5시</span><span class="sub">오후</span></div>
+          </div>
+          <div class="lh" style="padding:16px 20px 8px"><div class="row"><span class="t">4월 3일 수요일</span></div></div>
+          <div class="vgrid">
+            <div class="vcell"><span class="main">9시</span><span class="sub">오전</span></div>
+            <div class="vcell"><span class="main">10시</span><span class="sub">오전</span></div>
+            <div class="vcell"><span class="main">11시</span><span class="sub">오전</span></div>
+          </div>
+        </div>
+        <div class="dock"><button class="btn lg pri">다 지웠어요 · 2개</button></div>
+      </div></div>
+      <div class="home-ind"></div>
+    </div></div>
+    <div class="cap"><b>싫은 시간 지우기 (Veto) · 핵심</b><span>기본은 중립 회색 칸. 탭하면 빨간 취소선 veto 상태로. “되는 시간” 칠하기는 존재하지 않아요.</span><i class="next">탭 ▸ 사유 태그 시트</i>
+      <div class="why">침묵을 동의로 처리하지 않도록, 오직 거부만 데이터가 돼요 — VetoCell은 초록/available 상태를 아예 안 그려요.</div></div>
+  </div>
+
+  <!-- VETO FULL GRID -->
+  <div class="cell reveal">
+    <div class="dev"><div class="phone">
+      <div class="statusbar"><span class="time">9:41</span><div class="island"></div>
+        <div class="sb-icons">
+          <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#191F28"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#191F28"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#191F28"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#191F28"/></svg>
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="#191F28"><path d="M8.5 2.2c2.7 0 5.2 1 7 2.8l-1.5 1.6A7.7 7.7 0 0 0 8.5 4.4 7.7 7.7 0 0 0 3 6.6L1.5 5A9.9 9.9 0 0 1 8.5 2.2Z"/><path d="M8.5 6c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8.5 8.3c-.9 0-1.7.3-2.3.9L4.6 7.6A5.5 5.5 0 0 1 8.5 6Z"/><circle cx="8.5" cy="10.6" r="1.4"/></svg>
+          <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#191F28" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#191F28"/><path d="M24.5 4.2v4.6c1-.4 1-4.2 0-4.6Z" fill="#191F28" fill-opacity=".5"/></svg>
+        </div>
+      </div>
+      <div class="stage"><div class="scroll">
+        <div class="nav"><button class="back"><svg class="ic" width="24" height="24" style="color:var(--text-strong)"><use href="#i-back"/></svg></button><span class="ttl hid">주간 디자인 리뷰</span><div class="rt"><button class="iconbtn"><svg class="ic" width="22" height="22" style="color:var(--grey-600)"><use href="#i-message"/></svg></button></div></div>
+        <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+          <div class="top"><h1>싫은 시간을 지워요</h1><p>주간 디자인 리뷰 · 4월 2일 ~ 4일 · 6명</p></div>
+          <div class="banner"><span class="e">🕶️</span><span class="tx">익명으로 집계돼요. 지금까지 4명이 지웠어요.</span></div>
+          <div class="lh" style="padding:16px 20px 8px"><div class="row"><span class="t">4월 2일 화요일</span></div><span class="d">3개 지웠어요</span></div>
+          <div class="vgrid">
+            <div class="vcell"><span class="main">9시</span><span class="sub">오전</span></div>
+            <div class="vcell"><span class="main">10시</span><span class="sub">오전</span></div>
+            <div class="vcell veto"><span class="main">11시</span><span class="sub">오전</span></div>
+            <div class="vcell veto"><span class="main">12시</span><span class="sub">낮</span></div>
+            <div class="vcell veto"><span class="main">1시</span><span class="sub">오후</span></div>
+            <div class="vcell"><span class="main">2시</span><span class="sub">오후</span></div>
+            <div class="vcell"><span class="main">3시</span><span class="sub">오후</span></div>
+            <div class="vcell"><span class="main">4시</span><span class="sub">오후</span></div>
+            <div class="vcell"><span class="main">5시</span><span class="sub">오후</span></div>
+          </div>
+          <div class="lh" style="padding:16px 20px 8px"><div class="row"><span class="t">4월 3일 수요일</span></div></div>
+          <div class="vgrid">
+            <div class="vcell"><span class="main">9시</span><span class="sub">오전</span></div>
+            <div class="vcell"><span class="main">10시</span><span class="sub">오전</span></div>
+            <div class="vcell"><span class="main">11시</span><span class="sub">오전</span></div>
+            <div class="vcell"><span class="main">12시</span><span class="sub">낮</span></div>
+            <div class="vcell"><span class="main">1시</span><span class="sub">오후</span></div>
+            <div class="vcell"><span class="main">2시</span><span class="sub">오후</span></div>
+          </div>
+        </div>
+        <div class="dock"><button class="btn lg pri">다 지웠어요 · 3개</button></div>
+      </div></div>
+      <div class="home-ind"></div>
+    </div></div>
+    <div class="cap"><b>지우기 · 전체 시간대</b><span>후보 시간대(9–17시)를 요일별 3열 그리드로. 여러 칸을 연속으로 지워도 부담 없이 한 번에.</span><i class="next">다 지웠어요 ▸ 집계</i>
+      <div class="why">요일 헤더의 “N개 지웠어요” 카운터로 내 입력만 즉시 피드백 — 남의 응답은 안 보여요.</div></div>
+  </div>
+
+  <!-- REASON SHEET -->
+  <div class="cell reveal">
+    <div class="dev"><div class="phone">
+      <div class="statusbar"><span class="time">9:41</span><div class="island"></div>
+        <div class="sb-icons">
+          <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#191F28"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#191F28"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#191F28"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#191F28"/></svg>
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="#191F28"><path d="M8.5 2.2c2.7 0 5.2 1 7 2.8l-1.5 1.6A7.7 7.7 0 0 0 8.5 4.4 7.7 7.7 0 0 0 3 6.6L1.5 5A9.9 9.9 0 0 1 8.5 2.2Z"/><path d="M8.5 6c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8.5 8.3c-.9 0-1.7.3-2.3.9L4.6 7.6A5.5 5.5 0 0 1 8.5 6Z"/><circle cx="8.5" cy="10.6" r="1.4"/></svg>
+          <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#191F28" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#191F28"/><path d="M24.5 4.2v4.6c1-.4 1-4.2 0-4.6Z" fill="#191F28" fill-opacity=".5"/></svg>
+        </div>
+      </div>
+      <div class="stage"><div class="scroll">
+        <div class="nav"><button class="back">‹</button><span class="ttl hid">주간 디자인 리뷰</span><div class="rt"><button class="iconbtn"><svg class="ic" width="22" height="22" style="color:var(--grey-600)"><use href="#i-message"/></svg></button></div></div>
+        <div style="flex:1;overflow:hidden;display:flex;flex-direction:column;opacity:.5">
+          <div class="top"><h1>싫은 시간을 지워요</h1><p>주간 디자인 리뷰 · 4월 2일 ~ 4일 · 6명</p></div>
+          <div class="banner"><span class="e">🕶️</span><span class="tx">익명으로 집계돼요. 지금까지 3명이 지웠어요.</span></div>
+          <div class="lh" style="padding:16px 20px 8px"><div class="row"><span class="t">4월 2일 화요일</span></div></div>
+          <div class="vgrid">
+            <div class="vcell"><span class="main">9시</span><span class="sub">오전</span></div>
+            <div class="vcell"><span class="main">10시</span><span class="sub">오전</span></div>
+            <div class="vcell veto"><span class="main">1시</span><span class="sub">오후</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="sheet-wrap"><div class="scrim"></div>
+        <div class="sheet">
+          <div class="grab"></div>
+          <h3>왜 부담스러운가요?</h3>
+          <p class="b2" style="color:var(--text-sub);margin:-8px 0 16px;font-size:15px">사유는 숫자로만 모여요. 이름은 붙지 않아요. (선택)</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px">
+            <span class="chip onneg">외근</span><span class="chip">점심 직후</span><span class="chip">개인 일정</span>
+            <span class="chip">이동 시간</span><span class="chip">아침 일정</span><span class="chip">늦은 시간</span>
+          </div>
+          <button class="btn md weak">사유 없이 지우기</button>
+        </div>
+      </div>
+      </div>
+      <div class="home-ind"></div>
+    </div></div>
+    <div class="cap"><b>사유 태그 시트 (BottomSheet)</b><span>거부 즉시 하단 시트로 사유를 받되, 필수는 아니에요. 태그는 집계용 숫자로만 쓰여요.</span><i class="next">선택 ▸ 지우기 계속</i>
+      <div class="why">‘취소’ 대신 ‘닫기/사유 없이 지우기’, 부정 대신 “~해도 괜찮아요”로 부담을 계속 덜어요.</div></div>
+  </div>
+
+  <!-- RESULT PICKS -->
+  <div class="cell reveal">
+    <div class="dev"><div class="phone">
+      <div class="statusbar"><span class="time">9:41</span><div class="island"></div>
+        <div class="sb-icons">
+          <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#191F28"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#191F28"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#191F28"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#191F28"/></svg>
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="#191F28"><path d="M8.5 2.2c2.7 0 5.2 1 7 2.8l-1.5 1.6A7.7 7.7 0 0 0 8.5 4.4 7.7 7.7 0 0 0 3 6.6L1.5 5A9.9 9.9 0 0 1 8.5 2.2Z"/><path d="M8.5 6c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8.5 8.3c-.9 0-1.7.3-2.3.9L4.6 7.6A5.5 5.5 0 0 1 8.5 6Z"/><circle cx="8.5" cy="10.6" r="1.4"/></svg>
+          <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#191F28" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#191F28"/><path d="M24.5 4.2v4.6c1-.4 1-4.2 0-4.6Z" fill="#191F28" fill-opacity=".5"/></svg>
+        </div>
+      </div>
+      <div class="stage"><div class="scroll page">
+        <div class="nav" style="background:transparent"><button class="back">‹</button><span class="ttl hid">좋은 시간을 찾았어요</span><div class="rt"></div></div>
+        <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+          <div class="top"><h1>좋은 시간을 찾았어요</h1><p>아무도 부담스러워하지 않는 시간이 있어요.</p></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:0 20px 12px">
+            <span class="stack">
+              <span class="av" style="width:26px;height:26px;background:var(--grey-200);color:var(--grey-500)"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="currentColor" opacity=".85"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" fill="currentColor" opacity=".85"/></svg></span>
+              <span class="av" style="width:26px;height:26px;background:var(--grey-200);color:var(--grey-500)"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="currentColor" opacity=".85"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" fill="currentColor" opacity=".85"/></svg></span>
+              <span class="av" style="width:26px;height:26px;background:var(--grey-200);color:var(--grey-500)"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="currentColor" opacity=".85"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" fill="currentColor" opacity=".85"/></svg></span>
+              <span class="av-more" style="width:26px;height:26px">+3</span>
+            </span>
+            <span class="cap1" style="color:var(--text-weak)">6명 중 5명 응답 · 중간 집계예요</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;padding:0 20px">
+            <div class="pcard rec">
+              <div class="ph"><div><span class="date">4월 3일 수요일</span><div class="time">낮 12시</div></div><span class="recbadge"><svg class="ic" width="13" height="13"><use href="#i-sparkle-duo"/></svg>사이 추천</span></div>
+              <div class="pstatus clear"><span>🙆</span><span>아무도 부담스러워하지 않아요</span></div>
+              <button class="btn md pri">이 시간으로 정하기</button>
+            </div>
+            <div class="pcard">
+              <div class="ph"><div><span class="date">4월 4일 목요일</span><div class="time">오전 10시</div></div></div>
+              <div class="pstatus warn"><span>🙅</span><span>1명이 부담스러워해요</span></div>
+              <div class="rchips"><span class="rchip tint">외근<b>1</b></span></div>
+              <button class="btn md weak">이 시간으로 정하기</button>
+            </div>
+          </div>
+        </div>
+      </div></div>
+      <div class="home-ind"></div>
+    </div></div>
+    <div class="cap"><b>집계 · 추천 (Result)</b><span>거부 0·필수 전원 가능한 시간을 “사이 추천”으로 하나. 나머지는 부담 순 ProposalCard.</span><i class="next">정하기 ▸ 확정</i>
+      <div class="why">주최자는 “누가”가 아니라 “몇 명이, 왜”만 봐요. 사유는 이름 없는 카운트 칩으로만.</div></div>
+  </div>
+
+  <!-- RESULT GRID -->
+  <div class="cell reveal">
+    <div class="dev"><div class="phone">
+      <div class="statusbar"><span class="time">9:41</span><div class="island"></div>
+        <div class="sb-icons">
+          <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#191F28"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#191F28"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#191F28"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#191F28"/></svg>
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="#191F28"><path d="M8.5 2.2c2.7 0 5.2 1 7 2.8l-1.5 1.6A7.7 7.7 0 0 0 8.5 4.4 7.7 7.7 0 0 0 3 6.6L1.5 5A9.9 9.9 0 0 1 8.5 2.2Z"/><path d="M8.5 6c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8.5 8.3c-.9 0-1.7.3-2.3.9L4.6 7.6A5.5 5.5 0 0 1 8.5 6Z"/><circle cx="8.5" cy="10.6" r="1.4"/></svg>
+          <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#191F28" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#191F28"/><path d="M24.5 4.2v4.6c1-.4 1-4.2 0-4.6Z" fill="#191F28" fill-opacity=".5"/></svg>
+        </div>
+      </div>
+      <div class="stage"><div class="scroll page">
+        <div class="nav"><button class="back">‹</button><span class="ttl">좋은 시간을 찾았어요</span><div class="rt"></div></div>
+        <div style="flex:1;overflow:hidden;padding:8px 20px 24px">
+          <p class="b2" style="color:var(--text-sub);margin:0 0 16px;font-size:15px">각 시간을 몇 명이 지웠는지, 사유까지 익명으로 모아서 보여드려요.</p>
+          <div style="font-size:18px;font-weight:600;color:var(--text-strong);margin-bottom:8px;letter-spacing:var(--tk)">4월 2일 화요일</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+              <div class="vcell clear"><span class="corner">✓</span><span class="main">10시</span><span class="sub">오전</span></div>
+              <div class="vcell" style="background:color-mix(in srgb,var(--veto) 17%,var(--grey-50));color:var(--red-600)"><span class="corner">1</span><span class="main">11시</span><span class="sub">오전</span></div>
+              <div class="vcell" style="background:color-mix(in srgb,var(--veto) 33%,var(--grey-50));color:var(--red-600)"><span class="corner">2</span><span class="main">12시</span><span class="sub">낮</span></div>
+            </div>
+            <div class="aggrow">
+              <div class="top"><span style="font-size:16px">🙅</span><span class="head">오후 1시</span><span class="cnt">3명이 부담스러워해요</span></div>
+              <div class="rchips"><span class="rchip white">점심 직후<b>2</b></span><span class="rchip white">외근<b>1</b></span></div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+              <div class="vcell" style="background:color-mix(in srgb,var(--veto) 17%,var(--grey-50));color:var(--red-600)"><span class="corner">1</span><span class="main">2시</span><span class="sub">오후</span></div>
+              <div class="vcell clear"><span class="corner">✓</span><span class="main">3시</span><span class="sub">오후</span></div>
+              <div class="vcell" style="background:color-mix(in srgb,var(--veto) 67%,var(--grey-50));color:#fff"><span class="corner">4</span><span class="main">4시</span><span class="sub">오후</span></div>
+            </div>
+          </div>
+          <div style="height:16px"></div>
+          <div style="font-size:18px;font-weight:600;color:var(--text-strong);margin-bottom:8px;letter-spacing:var(--tk)">4월 3일 수요일</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+            <div class="vcell" style="background:color-mix(in srgb,var(--veto) 33%,var(--grey-50));color:var(--red-600)"><span class="corner">2</span><span class="main">9시</span><span class="sub">오전</span></div>
+            <div class="vcell clear"><span class="corner">✓</span><span class="main">10시</span><span class="sub">오전</span></div>
+            <div class="vcell" style="background:color-mix(in srgb,var(--veto) 17%,var(--grey-50));color:var(--red-600)"><span class="corner">1</span><span class="main">11시</span><span class="sub">오전</span></div>
+          </div>
+        </div>
+      </div></div>
+      <div class="home-ind"></div>
+    </div></div>
+    <div class="cap"><b>전체 거부 현황 (Aggregate)</b><span>같은 VetoCell을 집계 모드로 — 빨간 농도가 거부 수에 비례, 거부 0은 파란 ✓.</span><i class="next">돌아가기 ▸ 추천 시간</i>
+      <div class="why">정보 설계로 “왜/얼마나”는 드러내되 “누구”는 끝까지 감춰요. 이름은 어디에도 없어요.</div></div>
+  </div>
+
+  <!-- CONFIRM -->
+  <div class="cell reveal">
+    <div class="dev"><div class="phone">
+      <div class="statusbar"><span class="time">9:41</span><div class="island"></div>
+        <div class="sb-icons">
+          <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#191F28"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#191F28"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#191F28"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#191F28"/></svg>
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="#191F28"><path d="M8.5 2.2c2.7 0 5.2 1 7 2.8l-1.5 1.6A7.7 7.7 0 0 0 8.5 4.4 7.7 7.7 0 0 0 3 6.6L1.5 5A9.9 9.9 0 0 1 8.5 2.2Z"/><path d="M8.5 6c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8.5 8.3c-.9 0-1.7.3-2.3.9L4.6 7.6A5.5 5.5 0 0 1 8.5 6Z"/><circle cx="8.5" cy="10.6" r="1.4"/></svg>
+          <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#191F28" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#191F28"/><path d="M24.5 4.2v4.6c1-.4 1-4.2 0-4.6Z" fill="#191F28" fill-opacity=".5"/></svg>
+        </div>
+      </div>
+      <div class="stage"><div class="scroll">
+        <div style="flex:1;overflow:hidden;padding:0 20px;display:flex;flex-direction:column;align-items:center;text-align:center">
+          <div style="margin-top:48px"><span class="asset sq t-primary" style="width:92px;height:92px;font-size:52px">🎉</span></div>
+          <h1 style="margin-top:24px;font-size:24px;font-weight:700;color:var(--text-strong);letter-spacing:var(--tk-tight)">회의 시간을 정했어요</h1>
+          <p style="margin-top:8px;font-size:15px;color:var(--text-sub)">참석자 모두에게 알림을 보냈어요.</p>
+          <div style="width:100%;margin-top:20px;padding:12px 14px;border-radius:var(--r-lg);background:var(--surface-sunken);display:flex;align-items:center;gap:10px;text-align:left">
+            <span style="font-size:18px">🕶️</span><span style="font-size:13px;color:var(--text-sub);line-height:1.5;letter-spacing:var(--tk)">누가 어떤 시간을 지웠는지는 끝까지 비밀이에요. 정해진 시간만 모두에게 공유돼요.</span>
+          </div>
+          <div style="width:100%;margin-top:28px;padding:20px;border-radius:var(--r-xl);background:var(--surface-sunken);text-align:left">
+            <div style="font-size:13px;color:var(--text-sub)">4월 3일 수요일</div>
+            <div style="font-size:28px;font-weight:700;color:var(--text-strong);letter-spacing:var(--tk-tight);margin:4px 0 14px">낮 12시</div>
+            <div class="bd"></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px">
+              <span style="font-size:15px;color:var(--text-sub)">주간 디자인 리뷰</span>
+              <span class="stack">
+                <span class="av" style="width:28px;height:28px;background:#E4EEFC;color:#3B6FC9;font-size:11px">김</span>
+                <span class="av" style="width:28px;height:28px;background:#DFF2F0;color:#1F7F78;font-size:11px">이</span>
+                <span class="av" style="width:28px;height:28px;background:#E3F3E4;color:#3F8548;font-size:11px">박</span>
+                <span class="av-more" style="width:28px;height:28px">+3</span>
+              </span>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:10px;font-size:15px;color:var(--text-sub)"><svg class="ic" width="16" height="16" style="color:var(--grey-500)"><use href="#i-pin"/></svg><span>장소 미정 · 온라인</span></div>
+            <div style="margin-top:14px;padding:10px 12px;border-radius:var(--r-md);background:var(--available-bg);font-size:13px;color:var(--primary-weak-fg)">🙆 아무도 부담스러워하지 않은 시간이에요</div>
+          </div>
+        </div>
+        <div class="dock solid"><button class="btn lg weak" style="flex:1">회의 목록</button><button class="btn lg pri" style="flex:2">캘린더에 추가</button></div>
+      </div></div>
+      <div class="home-ind"></div>
+    </div></div>
+    <div class="cap"><b>확정 (Confirm)</b><span>🎉 + 확정 시간 카드. “아무도 부담스러워하지 않은 시간”이라는 앱의 약속으로 마무리.</span><i class="next">완료 ▸ 홈 · 캘린더 추가</i>
+      <div class="why">단순 일정 확정을 넘어, “누구도 참지 않은 시간”이라는 가치를 결과 화면에 새겨요.</div></div>
+  </div>
+
+</div>
+
+<!-- ══════════ C. 상세 · 익명 채팅 · 마이 ══════════ -->
+<div class="flowhead"><span class="no">C</span><h2>회의 상세 · 익명 채팅 · 마이</h2><div class="ln"></div></div>
+<div class="gal">
+
+  <!-- DETAIL -->
+  <div class="cell reveal">
+    <div class="dev"><div class="phone">
+      <div class="statusbar"><span class="time">9:41</span><div class="island"></div>
+        <div class="sb-icons">
+          <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#191F28"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#191F28"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#191F28"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#191F28"/></svg>
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="#191F28"><path d="M8.5 2.2c2.7 0 5.2 1 7 2.8l-1.5 1.6A7.7 7.7 0 0 0 8.5 4.4 7.7 7.7 0 0 0 3 6.6L1.5 5A9.9 9.9 0 0 1 8.5 2.2Z"/><path d="M8.5 6c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8.5 8.3c-.9 0-1.7.3-2.3.9L4.6 7.6A5.5 5.5 0 0 1 8.5 6Z"/><circle cx="8.5" cy="10.6" r="1.4"/></svg>
+          <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#191F28" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#191F28"/><path d="M24.5 4.2v4.6c1-.4 1-4.2 0-4.6Z" fill="#191F28" fill-opacity=".5"/></svg>
+        </div>
+      </div>
+      <div class="stage"><div class="scroll page">
+        <div class="nav"><button class="back">‹</button><span class="ttl hid">주간 디자인 리뷰</span><div class="rt"><button class="iconbtn"><svg class="ic" width="22" height="22" style="color:var(--grey-600)"><use href="#i-settings"/></svg></button></div></div>
+        <div style="flex:1;overflow:hidden;display:flex;flex-direction:column">
+          <div class="top"><h1>주간 디자인 리뷰</h1><p>4월 2일 ~ 4월 4일 · 3일간 · 6명</p></div>
+          <div class="hero-status">
+            <div style="display:flex;align-items:center;justify-content:space-between"><span class="head">응답 현황</span><span class="badge primary">응답 대기</span></div>
+            <div style="display:flex;align-items:baseline;gap:6px;margin-top:12px"><span style="font-size:28px;font-weight:700;color:var(--primary);letter-spacing:var(--tk-tight)">4</span><span style="font-size:18px;font-weight:600;color:var(--text-weak)">/ 6명 응답</span></div>
+            <div style="height:8px;border-radius:4px;background:var(--grey-100);margin-top:12px;overflow:hidden"><div style="width:67%;height:100%;background:var(--primary);border-radius:4px"></div></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:14px">
+              <span class="stack">
+                <span class="av" style="width:28px;height:28px;background:var(--grey-200);color:var(--grey-500)"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="currentColor" opacity=".85"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" fill="currentColor" opacity=".85"/></svg></span>
+                <span class="av" style="width:28px;height:28px;background:var(--grey-200);color:var(--grey-500)"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="currentColor" opacity=".85"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" fill="currentColor" opacity=".85"/></svg></span>
+                <span class="av" style="width:28px;height:28px;background:var(--grey-200);color:var(--grey-500)"><svg width="14" height="14" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="currentColor" opacity=".85"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" fill="currentColor" opacity=".85"/></svg></span>
+                <span class="av-more" style="width:28px;height:28px">+3</span>
+              </span>
+              <span class="cap1" style="color:var(--text-weak)">2명이 아직 안 지웠어요</span>
+            </div>
+          </div>
+          <div class="lh"><div class="row"><span class="t">지금까지 좋은 시간</span><button class="btn sm ghost" style="height:auto;padding:0;color:var(--text-body);font-weight:600">전체 보기</button></div><span class="d">응답이 모일수록 더 정확해져요</span></div>
+          <div style="padding:0 20px">
+            <div class="pcard rec">
+              <div class="ph"><div><span class="date">4월 3일 수요일</span><div class="time">낮 12시</div></div><span class="recbadge"><svg class="ic" width="13" height="13"><use href="#i-sparkle-duo"/></svg>사이 추천</span></div>
+              <div class="pstatus clear"><span>🙆</span><span>아무도 부담스러워하지 않아요</span></div>
+              <button class="btn md pri">이 시간으로 정하기</button>
+            </div>
+          </div>
+          <div class="lh"><div class="row"><span class="t">참석자</span></div><span class="d">익명 회의라 이름은 가려져요</span></div>
+          <div class="groupcard">
+            <div class="lr"><span class="anonav" style="background:#FEF3E2">🐿️</span><div class="mid"><span class="t">익명 다람쥐 · 나</span><span class="d" style="display:inline-flex;align-items:center;gap:5px;color:var(--green-600)"><span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>응답 완료</span></div><div class="rt"><span class="cap2" style="color:var(--primary)">필수</span></div></div>
+            <div class="bd" style="margin:0 20px 0 52px"></div>
+            <div class="lr"><span class="anonav" style="background:#FDECEE">🦊</span><div class="mid"><span class="t">익명 여우</span><span class="d" style="display:inline-flex;align-items:center;gap:5px;color:var(--green-600)"><span style="width:6px;height:6px;border-radius:50%;background:currentColor"></span>응답 완료</span></div><div class="rt"><span class="cap2" style="color:var(--primary)">필수</span></div></div>
+          </div>
+        </div>
+        <div class="dock solid"><button class="btn lg weak" style="flex:1">익명 채팅</button><button class="btn lg pri" style="flex:2">싫은 시간 지우기</button></div>
+      </div></div>
+      <div class="home-ind"></div>
+    </div></div>
+    <div class="cap"><b>회의 상세 (Detail)</b><span>응답 현황 + 지금까지 좋은 시간 + 참석자(익명 동물). 설정 ⚙로 정보 수정·알림 토글.</span><i class="next">CTA ▸ 지우기 · 익명 채팅</i>
+      <div class="why">주최자 화면에서도 참석자는 익명 동물로 — 응답 여부만 보이고 정체는 가려져요.</div></div>
+  </div>
+
+  <!-- SETTINGS SHEET -->
+  <div class="cell reveal">
+    <div class="dev"><div class="phone">
+      <div class="statusbar"><span class="time">9:41</span><div class="island"></div>
+        <div class="sb-icons">
+          <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#191F28"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#191F28"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#191F28"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#191F28"/></svg>
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="#191F28"><path d="M8.5 2.2c2.7 0 5.2 1 7 2.8l-1.5 1.6A7.7 7.7 0 0 0 8.5 4.4 7.7 7.7 0 0 0 3 6.6L1.5 5A9.9 9.9 0 0 1 8.5 2.2Z"/><path d="M8.5 6c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8.5 8.3c-.9 0-1.7.3-2.3.9L4.6 7.6A5.5 5.5 0 0 1 8.5 6Z"/><circle cx="8.5" cy="10.6" r="1.4"/></svg>
+          <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#191F28" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#191F28"/><path d="M24.5 4.2v4.6c1-.4 1-4.2 0-4.6Z" fill="#191F28" fill-opacity=".5"/></svg>
+        </div>
+      </div>
+      <div class="stage"><div class="scroll page">
+        <div style="flex:1;overflow:hidden;opacity:.45">
+          <div class="nav"><button class="back"><svg class="ic" width="24" height="24" style="color:var(--text-strong)"><use href="#i-back"/></svg></button><span class="ttl hid">주간 디자인 리뷰</span><div class="rt"><button class="iconbtn"><svg class="ic" width="22" height="22" style="color:var(--primary)"><use href="#i-settings"/></svg></button></div></div>
+          <div class="top"><h1>주간 디자인 리뷰</h1><p>4월 2일 ~ 4월 4일 · 3일간 · 6명</p></div>
+          <div class="hero-status">
+            <div style="display:flex;align-items:center;justify-content:space-between"><span class="head">응답 현황</span><span class="badge primary">응답 대기</span></div>
+            <div style="display:flex;align-items:baseline;gap:6px;margin-top:12px"><span style="font-size:28px;font-weight:700;color:var(--primary);letter-spacing:var(--tk-tight)">4</span><span style="font-size:18px;font-weight:600;color:var(--text-weak)">/ 6명 응답</span></div>
+          </div>
+        </div>
+        <div class="sheet-wrap"><div class="scrim"></div>
+          <div class="sheet">
+            <div class="grab"></div>
+            <h3>회의 설정</h3>
+            <div style="margin:0 -20px">
+              <div class="lr" style="min-height:auto;padding:12px 20px"><span class="asset ci t-neutral" style="width:40px;height:40px"><svg class="ic" width="19" height="19" style="color:var(--grey-600)"><use href="#i-edit"/></svg></span><div class="mid"><span class="t">회의 정보 수정</span><span class="d">이름 · 기간 · 시간대 · 참석자</span></div><svg class="ic" width="20" height="20" style="color:var(--grey-400);flex-shrink:0"><use href="#i-chevron"/></svg></div>
+              <div class="bd" style="margin:0 20px"></div>
+              <div class="lr" style="min-height:auto;padding:12px 20px"><span class="asset ci t-neutral" style="width:40px;height:40px;font-size:20px">🔗</span><div class="mid"><span class="t">초대 링크 보내기</span><span class="d">아직 안 지운 사람에게 다시 공유해요</span></div><svg class="ic" width="20" height="20" style="color:var(--grey-400);flex-shrink:0"><use href="#i-chevron"/></svg></div>
+              <div class="bd" style="margin:0 20px"></div>
+              <div class="trow" style="padding:13px 20px"><span class="asset ci t-neutral" style="width:28px;height:28px"><svg class="ic" width="18" height="18" style="color:var(--grey-600)"><use href="#i-bell"/></svg></span><div class="mid"><div class="t">이 회의 알림</div><div class="d">응답과 확정 소식을 알려드려요</div></div><span class="sw on"><i></i></span></div>
+            </div>
+          </div>
+        </div>
+      </div></div>
+      <div class="home-ind"></div>
+    </div></div>
+    <div class="cap"><b>회의 설정 (BottomSheet)</b><span>⚙ 탭 → 정보 수정 · 초대 링크 재전송 · 이 회의 알림 토글(Switch).</span><i class="next">이동 ▸ 만들기 · 초대</i>
+      <div class="why">“아직 안 지운 사람에게 다시 공유해요” — 독촉이 아니라 도움 주는 톤으로 재초대를 안내해요.</div></div>
+  </div>
+
+  <!-- CHAT THREAD -->
+  <div class="cell reveal">
+    <div class="dev"><div class="phone">
+      <div class="statusbar"><span class="time">9:41</span><div class="island"></div>
+        <div class="sb-icons">
+          <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#191F28"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#191F28"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#191F28"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#191F28"/></svg>
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="#191F28"><path d="M8.5 2.2c2.7 0 5.2 1 7 2.8l-1.5 1.6A7.7 7.7 0 0 0 8.5 4.4 7.7 7.7 0 0 0 3 6.6L1.5 5A9.9 9.9 0 0 1 8.5 2.2Z"/><path d="M8.5 6c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8.5 8.3c-.9 0-1.7.3-2.3.9L4.6 7.6A5.5 5.5 0 0 1 8.5 6Z"/><circle cx="8.5" cy="10.6" r="1.4"/></svg>
+          <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#191F28" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#191F28"/><path d="M24.5 4.2v4.6c1-.4 1-4.2 0-4.6Z" fill="#191F28" fill-opacity=".5"/></svg>
+        </div>
+      </div>
+      <div class="stage"><div class="scroll page">
+        <div style="background:var(--surface-card);border-bottom:1px solid var(--border-subtle);flex-shrink:0">
+          <div class="nav" style="border-bottom:none"><button class="back">‹</button><span class="ttl">주간 디자인 리뷰</span><div class="rt"><button class="iconbtn"><svg class="ic" width="20" height="20" style="color:var(--grey-500)"><use href="#i-lock"/></svg></button></div></div>
+          <div class="chatbanner"><span style="font-size:13px">🕶️</span><span class="tx" style="flex:1">익명 채팅 · 6명 · 이름은 보이지 않아요</span><span style="background:var(--fill-weak);height:28px;padding:0 12px;border-radius:var(--r-full);font-size:13px;font-weight:600;color:var(--primary);display:flex;align-items:center">회의 보기</span></div>
+        </div>
+        <div class="msgs">
+          <div class="sysmsg">사이가 익명 채팅을 열었어요. 이름은 아무에게도 보이지 않아요.</div>
+          <div class="other"><div class="av-wrap"><span class="anonav" style="background:#FEF3E2">🐿️</span></div><div><div class="nm" style="color:#F59E0B">익명 다람쥐</div><div class="line"><div class="bub">안녕하세요! 이번 리뷰 기대되네요 😊</div><span class="t">오후 2:03</span></div></div></div>
+          <div class="other"><div class="av-wrap"><span class="anonav" style="background:#FDECEE">🦊</span></div><div><div class="nm" style="color:#F04452">익명 여우</div><div class="line"><div class="bub">저도요~ 지난번 피드백 반영한 것들 보여드릴게요</div><span class="t">오후 2:05</span></div></div></div>
+          <div class="other"><div class="av-wrap"><span class="anonav" style="background:#F1ECFD">🐱</span></div><div><div class="nm" style="color:#8B5CF6">익명 고양이</div><div class="line"><div class="bub">혹시 리뷰 때 프로토타입도 같이 보나요?</div><span class="t">오후 2:09</span></div></div></div>
+          <div class="mine"><span class="t">오후 2:11</span><div class="bub">네 링크 미리 공유해둘게요 🙌</div></div>
+          <div class="sysmsg">아직 2명이 싫은 시간을 안 지웠어요. 시간은 ‘지우기’에서 정해요.</div>
+        </div>
+        <div class="chatinput"><div class="box">익명으로 메시지를 보내요</div><div class="send"><svg class="ic" width="20" height="20" style="color:#fff"><use href="#i-send"/></svg></div></div>
+      </div></div>
+      <div class="home-ind"></div>
+    </div></div>
+    <div class="cap"><b>익명 채팅 (Thread)</b><span>참석자는 동물 이름 익명 아바타. 🔒로 익명 안내 시트. 채팅은 일정을 정하는 곳이 아닌 가벼운 곁채널.</span><i class="next">회의 보기 ▸ 상세</i>
+      <div class="why">채팅에서도 이름을 숨겨, 위계 없이 편하게 — 스케줄링은 어디까지나 ‘지우기’에서만.</div></div>
+  </div>
+
+  <!-- MY -->
+  <div class="cell reveal">
+    <div class="dev"><div class="phone">
+      <div class="statusbar"><span class="time">9:41</span><div class="island"></div>
+        <div class="sb-icons">
+          <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#191F28"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#191F28"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#191F28"/><rect x="15" y="0.5" width="3" height="11.5" rx="1" fill="#191F28"/></svg>
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="#191F28"><path d="M8.5 2.2c2.7 0 5.2 1 7 2.8l-1.5 1.6A7.7 7.7 0 0 0 8.5 4.4 7.7 7.7 0 0 0 3 6.6L1.5 5A9.9 9.9 0 0 1 8.5 2.2Z"/><path d="M8.5 6c1.5 0 2.9.6 3.9 1.6l-1.6 1.6A2.9 2.9 0 0 0 8.5 8.3c-.9 0-1.7.3-2.3.9L4.6 7.6A5.5 5.5 0 0 1 8.5 6Z"/><circle cx="8.5" cy="10.6" r="1.4"/></svg>
+          <svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#191F28" stroke-opacity=".4" fill="none"/><rect x="2" y="2" width="18" height="9" rx="2" fill="#191F28"/><path d="M24.5 4.2v4.6c1-.4 1-4.2 0-4.6Z" fill="#191F28" fill-opacity=".5"/></svg>
+        </div>
+      </div>
+      <div class="stage"><div class="scroll page">
+        <div style="padding:14px 20px 8px"><span style="font-size:24px;font-weight:700;color:var(--text-strong);letter-spacing:var(--tk-tight)">마이</span></div>
+        <div style="flex:1;overflow:hidden">
+          <div style="display:flex;align-items:center;gap:14px;padding:12px 20px 8px">
+            <span class="av" style="width:56px;height:56px;background:#E4EEFC;color:#3B6FC9;font-size:22px">지</span>
+            <div><div style="font-size:18px;font-weight:600;color:var(--text-strong);letter-spacing:var(--tk)">지원님</div><div style="font-size:13px;color:var(--text-sub);margin-top:2px">sai.im 계정으로 로그인했어요</div></div>
+          </div>
+          <div class="lh"><div class="row"><span class="t">익명</span></div><span class="d">사이의 기본값이에요</span></div>
+          <div class="groupcard">
+            <div class="trow"><span class="asset ci t-neutral" style="width:28px;height:28px"><svg class="ic" width="18" height="18" style="color:var(--grey-600)"><use href="#i-lock"/></svg></span><div class="mid"><div class="t">익명으로 참여</div><div class="d">회의에서 내 이름을 숨겨요</div></div><span class="sw on"><i></i></span></div>
+            <div class="bd" style="margin:0 20px 0 52px"></div>
+            <div class="trow"><span class="asset ci t-neutral" style="width:28px;height:28px"><svg class="ic" width="18" height="18" style="color:var(--grey-600)"><use href="#i-eye"/></svg></span><div class="mid"><div class="t">실명 공개 요청 받기</div><div class="d">꼭 필요할 때만 상대가 요청할 수 있어요</div></div><span class="sw"><i></i></span></div>
+          </div>
+          <div class="lh"><div class="row"><span class="t">알림</span></div></div>
+          <div class="groupcard">
+            <div class="trow"><span class="asset ci t-neutral" style="width:28px;height:28px"><svg class="ic" width="18" height="18" style="color:var(--grey-600)"><use href="#i-bell"/></svg></span><div class="mid"><div class="t">응답 알림</div><div class="d">참석자가 시간을 지우면 알려드려요</div></div><span class="sw on"><i></i></span></div>
+            <div class="bd" style="margin:0 20px 0 52px"></div>
+            <div class="trow"><span class="asset ci t-neutral" style="width:28px;height:28px"><svg class="ic" width="18" height="18" style="color:var(--grey-600)"><use href="#i-message"/></svg></span><div class="mid"><div class="t">채팅 알림</div><div class="d">새 익명 메시지를 알려드려요</div></div><span class="sw on"><i></i></span></div>
+          </div>
+          <div class="lh"><div class="row"><span class="t">사이</span></div></div>
+          <div class="groupcard">
+            <div class="lr" style="min-height:auto;padding:14px 18px"><span class="asset ci t-neutral" style="width:28px;height:28px"><svg class="ic" width="18" height="18" style="color:var(--grey-600)"><use href="#i-heart"/></svg></span><div class="mid"><span class="t" style="font-size:17px">사이 소개</span></div><svg class="ic" width="20" height="20" style="color:var(--grey-400);flex-shrink:0"><use href="#i-chevron"/></svg></div>
+            <div class="bd" style="margin:0 20px 0 52px"></div>
+            <div class="lr" style="min-height:auto;padding:14px 18px"><span class="asset ci t-neutral" style="width:28px;height:28px"><svg class="ic" width="18" height="18" style="color:var(--grey-600)"><use href="#i-sparkle"/></svg></span><div class="mid"><span class="t" style="font-size:17px">도움말</span></div><svg class="ic" width="20" height="20" style="color:var(--grey-400);flex-shrink:0"><use href="#i-chevron"/></svg></div>
+          </div>
+        </div>
+      </div>
+      <div class="tabbar">
+        <button style="position:relative"><svg class="ic" width="25" height="25"><use href="#i-home"/></svg><span class="lb">홈</span></button>
+        <button><svg class="ic" width="25" height="25"><use href="#i-calendar"/></svg><span class="lb">회의</span></button>
+        <button style="position:relative"><svg class="ic" width="25" height="25"><use href="#i-message"/></svg><span class="lb">채팅</span></button>
+        <button class="on"><svg class="ic" width="25" height="25"><use href="#i-user-duo"/></svg><span class="lb">마이</span></button>
+      </div>
+      </div>
+      <div class="home-ind"></div>
+    </div></div>
+    <div class="cap"><b>마이 (My)</b><span>“익명으로 참여”가 기본 ON. 실명 공개 요청은 선택. 알림·소개·도움말.</span><i class="next">전역 설정 · 모든 회의에 적용</i>
+      <div class="why">익명은 강제가 아니라 기본값 + 안전장치 — “실명 공개 요청 받기”는 꼭 필요할 때만 열 수 있어요.</div></div>
+  </div>
+
+</div>
+
+</main>
+
+<footer class="doc"><div class="wrap foot">
+  <div><b style="color:var(--doc-ink)">사이 (Sai)</b> · 화면 설계 핸드오프 — TDS 토큰·컴포넌트·해요체 UX 라이팅 그대로</div>
+  <div>Toss Designer Challenge 2026</div>
+</div></footer>
+
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
+<script>
+(function(){
+  var els = [].slice.call(document.querySelectorAll('.reveal'));
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || !('IntersectionObserver' in window)) { els.forEach(function(e){ e.classList.add('in'); }); return; }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
+  els.forEach(function(e){ io.observe(e); });
+  // safety: reveal everything after 2.5s no matter what
+  setTimeout(function(){ els.forEach(function(e){ e.classList.add('in'); }); }, 2500);
+})();
+// theme toggle
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  if(!btn) return;
+  btn.addEventListener('click',function(){ root.dataset.theme = (root.dataset.theme==='dark') ? '' : 'dark'; });
+})();
+</script>

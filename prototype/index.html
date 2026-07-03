@@ -1,0 +1,161 @@
+<!-- @dsCard group="사이 App" viewport="520x820" name="사이 — 회의 일정 앱" subtitle="홈·채팅(익명)·마이 탭 + 진행 중인 회의 상세 → 지우기 → 집계 → 확정" -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>사이 — TDS UI Kit</title>
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  html, body { margin: 0; height: 100%; background: #EAF1FB; font-family: var(--font-sans); }
+  body {
+    background:
+      radial-gradient(circle at 20% 12%, #DCE9FF 0%, transparent 42%),
+      radial-gradient(circle at 88% 84%, #E4FBF2 0%, transparent 42%),
+      #EEF2F7;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  #stage { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  #scaler { transform-origin: center center; }
+  .devbar { display: flex; gap: 6px; align-items: center; background: rgba(255,255,255,0.7); backdrop-filter: blur(8px); padding: 6px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); }
+  .devbar button { border: none; background: transparent; font: var(--font-caption-2); color: var(--text-sub); padding: 7px 12px; border-radius: var(--radius-full); cursor: pointer; letter-spacing: var(--tracking-normal); }
+  .devbar button.on { background: var(--primary); color: #fff; }
+  * { -webkit-font-smoothing: antialiased; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../_ds_bundle.js"></script>
+<script type="text/babel" src="frame.jsx"></script>
+<script type="text/babel" src="screens-a.jsx"></script>
+<script type="text/babel" src="screens-b.jsx"></script>
+<script type="text/babel" src="screens-c.jsx"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+const STEPS = [
+  { key: "home", label: "홈" },
+  { key: "meetings", label: "회의" },
+  { key: "detail", label: "상세" },
+  { key: "chat", label: "채팅" },
+  { key: "my", label: "마이" },
+  { key: "create", label: "만들기" },
+  { key: "veto", label: "지우기" },
+  { key: "result", label: "집계" },
+  { key: "confirm", label: "확정" },
+];
+
+const ROOTS = ["home", "meetings", "chat", "my"];
+
+function initialState() {
+  return {
+    name: "주간 디자인 리뷰",
+    range: { from: 2, to: 4 },
+    days: window.saiDaysInRange(2, 4),
+    times: window.SAI_TIMES.map((t) => t.key),
+    location: "",
+    myVetoes: {},
+    // 김지원 = 나. 나와 한서영이 아직 안 지움 → 4/6 응답. 내가 지우면 5/6으로 전역 반영.
+    participants: window.SAI_PARTICIPANTS.map((p, i) => ({
+      ...p, me: i === 0, status: i === 0 || i === 5 ? "pending" : "responded",
+    })),
+  };
+}
+
+function App() {
+  const [screen, setScreen] = React.useState("home");
+  const [history, setHistory] = React.useState([]);
+  const [state, setState] = React.useState(initialState);
+  const [chosen, setChosen] = React.useState(null);
+  const [activeChat, setActiveChat] = React.useState(null);
+  const [anonymous, setAnonymous] = React.useState(true);
+  const [readChats, setReadChats] = React.useState({});
+  const [empty, setEmpty] = React.useState(false); // 첫 실행(빈 상태) 미리보기
+  const [notifSeen, setNotifSeen] = React.useState(false); // 알림 시트를 열어봤는지
+  const [scale, setScale] = React.useState(1);
+
+  React.useEffect(() => {
+    const fit = () => {
+      const s = Math.min(1, (window.innerHeight - 96) / 844, (window.innerWidth - 32) / 390);
+      setScale(s);
+    };
+    fit();
+    window.addEventListener("resize", fit);
+    return () => window.removeEventListener("resize", fit);
+  }, []);
+
+  // forward navigation — remembers where we came from
+  const go = (next) => {
+    if (next === "home") setHistory([]);
+    else setHistory((h) => [...h, screen]);
+    setScreen(next);
+  };
+  // back — pops the real previous screen (falls back to home)
+  const back = () => {
+    setHistory((h) => {
+      if (h.length === 0) { setScreen("home"); return h; }
+      const prev = h[h.length - 1];
+      setScreen(prev);
+      return h.slice(0, -1);
+    });
+  };
+  // dev jump — resets the stack so back stays sane
+  const jump = (s) => { setHistory([]); setScreen(s); };
+  // full demo reset (devbar)
+  const resetAll = () => { setState(initialState()); setChosen(null); setReadChats({}); setNotifSeen(false); setHistory([]); setScreen("home"); };
+  // open an anonymous chat thread from anywhere — clears its unread badge
+  const openThread = (chat) => { setActiveChat(chat); setReadChats((r) => ({ ...r, [chat.id]: true })); go("thread"); };
+  const unreadCount = window.SAI_CHATS.reduce((n, c) => n + (readChats[c.id] ? 0 : c.unread), 0);
+  // live meeting card stays in sync with the veto flow (내 응답 포함) — and,
+  // once a slot is chosen, every surface flips to "확정" together.
+  const liveResponded = state.participants.filter((p) => p.status === "responded").length;
+  const liveMeeting = chosen
+    ? { ...window.SAI_MEETINGS.live, status: "confirmed", meta: `4월 ${chosen.day.d}일 ${chosen.day.dow} · ${chosen.time.label}`, location: state.location || "장소 미정", responded: liveResponded }
+    : { ...window.SAI_MEETINGS.live, responded: liveResponded };
+  const meResponded = state.participants.some((p) => p.me && p.status === "responded");
+
+  const { PhoneFrame, HomeScreen, MeetingsScreen, CreateScreen, InviteScreen, VetoScreen, ResultScreen, ConfirmScreen,
+          AppShell, ChatListScreen, ChatThreadScreen, DetailScreen, MyScreen } = window;
+
+  let view = null;
+  if (screen === "home") view = <HomeScreen go={go} openThread={openThread} empty={empty} live={liveMeeting} meResponded={meResponded} notifSeen={notifSeen} onNotifSeen={() => setNotifSeen(true)} />;
+  else if (screen === "meetings") view = <MeetingsScreen go={go} openThread={openThread} empty={empty} live={liveMeeting} notifSeen={notifSeen} onNotifSeen={() => setNotifSeen(true)} />;
+  else if (screen === "chat") view = <ChatListScreen openThread={openThread} readChats={readChats} empty={empty} />;
+  else if (screen === "my") view = <MyScreen anonymous={anonymous} setAnonymous={setAnonymous} />;
+  else if (screen === "detail") view = <DetailScreen back={back} go={go} state={state} choose={setChosen} openThread={openThread} anonymous={anonymous} chosen={chosen} />;
+  else if (screen === "thread") view = <ChatThreadScreen back={back} go={go} chat={activeChat} chosen={chosen} />;
+  else if (screen === "create") view = <CreateScreen go={go} back={back} state={state} setState={setState} />;
+  else if (screen === "invite") view = <InviteScreen go={go} back={back} state={state} />;
+  else if (screen === "veto") view = <VetoScreen go={go} back={back} state={state} setState={setState} openThread={openThread} />;
+  else if (screen === "result") view = <ResultScreen go={go} back={back} state={state} choose={setChosen} />;
+  else if (screen === "confirm") view = <ConfirmScreen go={go} chosen={chosen} state={state} />;
+
+  const content = ROOTS.includes(screen)
+    ? <AppShell active={screen} onTab={jump} unread={empty ? 0 : unreadCount}>{view}</AppShell>
+    : view;
+
+  return (
+    <div id="stage">
+      <div id="scaler" style={{ transform: `scale(${scale})` }}>
+        <PhoneFrame>{content}</PhoneFrame>
+      </div>
+      <div className="devbar">
+        {STEPS.map((s) => (
+          <button key={s.key} className={screen === s.key ? "on" : ""} onClick={() => jump(s.key)}>{s.label}</button>
+        ))}
+        <button className={empty ? "on" : ""} onClick={() => setEmpty((v) => !v)}>빈 상태</button>
+        <button onClick={resetAll}>처음부터</button>
+      </div>
+    </div>
+  );
+}
+
+const start = () => {
+  if (!window.TDSDesignSystem_58842e || !window.HomeScreen || !window.MeetingsScreen || !window.VetoScreen || !window.AppShell) { setTimeout(start, 40); return; }
+  ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+};
+start();
+</script>
+</body>
+</html>

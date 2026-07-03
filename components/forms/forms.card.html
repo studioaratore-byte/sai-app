@@ -1,0 +1,82 @@
+<!-- @dsCard group="Components" viewport="700x440" name="Forms" subtitle="TextField · Checkbox · Switch · Chip · Avatar" -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  html, body { margin: 0; background: var(--surface-page); font-family: var(--font-sans); }
+  #root { padding: 24px; }
+  .grid { display: flex; flex-direction: column; gap: 22px; max-width: 640px; }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .card { background: var(--surface-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-xs); padding: 18px 20px; }
+  .lbl { font: var(--font-caption-2); color: var(--text-weak); letter-spacing: var(--tracking-normal); margin-bottom: 8px; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { TextField, Checkbox, Switch, Chip, Avatar, AvatarStack } = window.TDSDesignSystem_58842e;
+
+function Demo() {
+  const [name, setName] = React.useState("주간 디자인 리뷰");
+  const [count, setCount] = React.useState("6");
+  const [req, setReq] = React.useState(true);
+  const [sel, setSel] = React.useState({ "외근": true, "점심 직후": false, "개인 일정": true });
+  const [agree, setAgree] = React.useState(true);
+  const toggle = (k) => setSel((s) => ({ ...s, [k]: !s[k] }));
+
+  return (
+    <div className="grid">
+      <div className="card">
+        <div className="row" style={{ gap: 24 }}>
+          <TextField label="회의 이름" value={name} onChange={setName} style={{ flex: 2, minWidth: 200 }} />
+          <TextField label="인원" value={count} onChange={setCount} suffix="명" style={{ flex: 1, minWidth: 90 }} />
+        </div>
+      </div>
+
+      <div>
+        <div className="lbl">사유 태그 (Chip)</div>
+        <div className="row">
+          {["외근", "점심 직후", "개인 일정", "이동 시간"].map((k) => (
+            <Chip key={k} tone="negative" selected={!!sel[k]} onClick={() => toggle(k)}>{k}</Chip>
+          ))}
+        </div>
+      </div>
+
+      <div className="row" style={{ gap: 32 }}>
+        <div>
+          <div className="lbl">Switch</div>
+          <div className="row"><Switch checked={req} onChange={setReq} /> <span style={{font:"var(--font-body-2)",color:"var(--text-body)"}}>필수 참석자</span></div>
+        </div>
+        <div>
+          <div className="lbl">Checkbox</div>
+          <div className="row" style={{ gap: 16 }}>
+            <Checkbox checked={agree} onChange={setAgree} label="동의" />
+            <Checkbox shape="square" checked={!agree} onChange={(v)=>setAgree(!v)} label="약관" />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div className="lbl">Avatar · 익명 / 참석자</div>
+        <div className="row" style={{ gap: 20 }}>
+          <div className="row" style={{ gap: 6 }}>
+            <Avatar name="김지원" index={0} /><Avatar name="이서준" index={1} /><Avatar anonymous />
+          </div>
+          <AvatarStack people={["김","이","박","정","최","한"]} max={4} />
+          <AvatarStack people={["김","이","박","정","최","한"]} max={4} anonymous />
+        </div>
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

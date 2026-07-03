@@ -1,0 +1,127 @@
+<title>사이 브랜드 자산</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Pretendard",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+    background:#F2F3F6;color:#191F28;padding:44px;display:flex;flex-direction:column;gap:26px;letter-spacing:-.02em}
+  h1{font-size:24px;font-weight:800;letter-spacing:-.03em}
+  h2{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#4A7BF0;margin-bottom:14px}
+  .panel{background:#fff;border:1px solid #E7EAEF;border-radius:20px;padding:28px;box-shadow:0 14px 34px -26px rgba(40,60,110,.35)}
+  .row{display:flex;gap:36px;align-items:flex-end;flex-wrap:wrap}
+  .item{display:flex;flex-direction:column;align-items:center;gap:10px}
+  .item small{font-size:11px;color:#8B95A1;font-weight:600}
+  .onapp{display:flex;flex-direction:column;align-items:center;gap:6px}
+  .onapp span{font-size:13px;color:#6B7684}
+  .shareic{display:block;filter:drop-shadow(0 6px 12px rgba(23,31,40,.16))}
+  .darkbg{background:#12161D;border-color:rgba(255,255,255,.08)}
+  .darkbg h2{color:#7FA6FF}
+</style>
+
+<!-- ═══ shared symbols ═══ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <!-- S2 frosted-glass logo -->
+  <symbol id="logo-s2" viewBox="0 0 140 104">
+    <defs>
+      <g id="s2p">
+        <path d="M54 30.5C51 21.5 40 17 30.5 19.5C20 22.3 15.5 31 19 38.5C22 44.5 29 46.5 36 48.3C43.5 50.2 50.5 52.8 53 59.5C55.8 67.3 50 75.5 40 77.5C30 79.5 20.5 75.5 17.5 67.5"/>
+        <path d="M82.5 28.5C82.5 18 93 13 103 16C113 19 117.8 29 112.5 37.5C106 48 92 59.5 84.5 74Q83 76.5 83 78H122"/>
+      </g>
+      <linearGradient id="s2g" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#7EA3FA"/><stop offset=".5" stop-color="#4A7BF0"/><stop offset="1" stop-color="#3A62DE"/>
+      </linearGradient>
+      <filter id="s2sh" x="-25%" y="-25%" width="150%" height="175%">
+        <feDropShadow dx="0" dy="6" stdDeviation="6.5" flood-color="#2F55C4" flood-opacity=".33"/>
+      </filter>
+      <filter id="s2bl" x="-35%" y="-35%" width="170%" height="170%"><feGaussianBlur stdDeviation="2.4"/></filter>
+    </defs>
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#s2sh)">
+      <use href="#s2p" stroke="url(#s2g)" stroke-width="17"/>
+      <use href="#s2p" stroke="#B3CAFF" stroke-opacity=".42" stroke-width="9.5" filter="url(#s2bl)" transform="translate(0 -1.8)"/>
+      <use href="#s2p" stroke="#E6EEFF" stroke-opacity=".3" stroke-width="3.4" filter="url(#s2bl)" transform="translate(-.4 -2.6)"/>
+    </g>
+  </symbol>
+
+  <!-- KakaoTalk -->
+  <symbol id="app-kakao" viewBox="0 0 52 52">
+    <rect width="52" height="52" rx="12.5" fill="#FEE500"/>
+    <path fill="#3A1D1D" d="M26 13C17.2 13 10 18.4 10 25.1C10 29.4 12.9 33.2 17.3 35.4C17 36.5 16.1 39.8 15.9 40.6C15.7 41.5 16.3 41.8 16.9 41.4C17.5 41 21.2 38.5 22.7 37.4C23.8 37.6 24.9 37.7 26 37.7C34.8 37.7 42 32.2 42 25.4C42 18.5 34.8 13 26 13Z"/>
+    <text x="26" y="28.8" text-anchor="middle" font-family="Arial, 'Malgun Gothic', sans-serif" font-weight="900" font-size="9" fill="#FEE500" letter-spacing=".4">TALK</text>
+  </symbol>
+
+  <!-- iMessage -->
+  <symbol id="app-imessage" viewBox="0 0 52 52">
+    <defs><linearGradient id="imsgG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6BE977"/><stop offset="1" stop-color="#12BF2E"/>
+    </linearGradient></defs>
+    <rect width="52" height="52" rx="12.5" fill="url(#imsgG)"/>
+    <path fill="#fff" d="M26 13.4C34.4 13.4 41.2 18.95 41.2 25.8C41.2 32.65 34.4 38.2 26 38.2C24.3 38.2 22.7 38 21.2 37.6C19.6 38.75 17.1 40 14.2 40.3C13.7 40.35 13.4 39.75 13.8 39.35C15.25 37.9 16.2 36 16.5 34.3C13 32.15 10.8 29.2 10.8 25.8C10.8 18.95 17.6 13.4 26 13.4Z"/>
+  </symbol>
+
+  <!-- 더보기 -->
+  <symbol id="app-more" viewBox="0 0 52 52">
+    <rect width="52" height="52" rx="12.5" fill="#EEF1F4"/>
+    <circle cx="17" cy="26" r="2.7" fill="#7A8694"/><circle cx="26" cy="26" r="2.7" fill="#7A8694"/><circle cx="35" cy="26" r="2.7" fill="#7A8694"/>
+  </symbol>
+
+  <!-- 유리 질감 링크 아이콘 (하늘색 × 블루 two-tone) -->
+  <symbol id="glass-link" viewBox="0 0 96 96">
+    <defs>
+      <linearGradient id="glkSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9CCEFF"/><stop offset="1" stop-color="#5FA4FB"/></linearGradient>
+      <linearGradient id="glkBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5D8BF5"/><stop offset="1" stop-color="#3560DC"/></linearGradient>
+      <filter id="glkSh" x="-25%" y="-25%" width="150%" height="175%"><feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#2F55C4" flood-opacity=".3"/></filter>
+      <filter id="glkBl" x="-35%" y="-35%" width="170%" height="170%"><feGaussianBlur stdDeviation="1.7"/></filter>
+    </defs>
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#glkSh)">
+      <path d="M64 49.6 71.2 42.4A13.6 13.6 0 0 0 52 23.2L44.8 30.4" stroke="url(#glkSky)" stroke-width="11"/>
+      <path d="M32 46.4 24.8 53.6A13.6 13.6 0 0 0 44 72.8L51.2 65.6" stroke="url(#glkBlue)" stroke-width="11"/>
+      <path d="M38.4 57.6 57.6 38.4" stroke="url(#glkBlue)" stroke-width="11"/>
+      <g stroke="#E6F1FF" stroke-opacity=".45" stroke-width="3.6" filter="url(#glkBl)" transform="translate(-.5 -1.8)">
+        <path d="M64 49.6 71.2 42.4A13.6 13.6 0 0 0 52 23.2L44.8 30.4"/>
+        <path d="M32 46.4 24.8 53.6A13.6 13.6 0 0 0 44 72.8L51.2 65.6"/>
+        <path d="M38.4 57.6 57.6 38.4"/>
+      </g>
+    </g>
+  </symbol>
+</defs></svg>
+
+<h1>사이 (Sai) · 브랜드 자산 시트</h1>
+
+<section class="panel">
+  <h2>Logo · S2 Frosted Glass — 벡터 재현</h2>
+  <div class="row">
+    <div class="item"><svg width="280" height="208"><use href="#logo-s2"/></svg><small>280px · 히어로</small></div>
+    <div class="item"><svg width="150" height="112"><use href="#logo-s2"/></svg><small>150px</small></div>
+    <div class="item"><svg width="76" height="56"><use href="#logo-s2"/></svg><small>76px</small></div>
+    <div class="item"><svg width="36" height="27"><use href="#logo-s2"/></svg><small>36px · 앱 헤더</small></div>
+  </div>
+</section>
+
+<section class="panel darkbg">
+  <h2>Logo on Dark</h2>
+  <div class="row">
+    <div class="item"><svg width="180" height="134"><use href="#logo-s2"/></svg></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>Glass Link — 초대 화면 링크 아이콘 (하늘색 × 블루)</h2>
+  <div class="row">
+    <div class="item"><svg width="88" height="88" style="overflow:visible"><use href="#glass-link"/></svg><small>88px · 초대 히어로</small></div>
+    <div class="item"><svg width="140" height="140" style="overflow:visible"><use href="#glass-link"/></svg><small>140px 확대 검수</small></div>
+    <div class="item"><svg width="44" height="44" style="overflow:visible"><use href="#glass-link"/></svg><small>44px</small></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>공유하기 아이콘 — 카카오톡 · 메시지 · 더보기</h2>
+  <div class="row">
+    <div class="onapp"><svg class="shareic" width="52" height="52"><use href="#app-kakao"/></svg><span>카톡</span></div>
+    <div class="onapp"><svg class="shareic" width="52" height="52"><use href="#app-imessage"/></svg><span>문자</span></div>
+    <div class="onapp"><svg class="shareic" width="52" height="52"><use href="#app-more"/></svg><span>더보기</span></div>
+    <div class="item" style="margin-left:24px"><svg class="shareic" width="96" height="96"><use href="#app-kakao"/></svg><small>96px 확대 검수</small></div>
+    <div class="item"><svg class="shareic" width="96" height="96"><use href="#app-imessage"/></svg><small>96px</small></div>
+  </div>
+</section>
+
+
+
+

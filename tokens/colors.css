@@ -1,0 +1,93 @@
+/* ─────────────────────────────────────────────────────────────
+   COLORS — Toss Design System (TDS) palette
+   Base scale + semantic aliases. Toss Blue is the signature.
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* ── Brand / Primary — Toss Blue ── */
+  --blue-50:  #E8F3FF;
+  --blue-100: #C9E2FF;
+  --blue-200: #90C2FF;
+  --blue-400: #4593FC;
+  --blue-500: #3182F6; /* PRIMARY — Toss Blue */
+  --blue-600: #2272EB;
+  --blue-700: #1B64DA; /* pressed */
+  --blue-800: #1957C2;
+
+  /* ── Grey scale — TDS greys ── */
+  --grey-0:   #FFFFFF;
+  --grey-50:  #F9FAFB;
+  --grey-100: #F2F4F6;
+  --grey-200: #E5E8EB;
+  --grey-300: #D1D6DB;
+  --grey-400: #B0B8C1;
+  --grey-500: #8B95A1;
+  --grey-600: #6B7684;
+  --grey-700: #4E5968;
+  --grey-800: #333D4B;
+  --grey-900: #191F28; /* near-black, primary text */
+
+  /* ── Semantic hues ── */
+  --red-50:    #FDEEEE;
+  --red-500:   #F04452; /* negative / error / veto */
+  --red-600:   #E42939;
+  --green-50:  #E7F9F1;
+  --green-500: #1BC47D; /* positive / success / available */
+  --green-600: #12A968;
+  --yellow-50: #FFF8E6;
+  --yellow-500:#FFB020; /* warning */
+  --teal-500:  #00B8CE;
+
+  /* ─────────────────────────────────────────
+     SEMANTIC ALIASES — reference these in UI
+     ───────────────────────────────────────── */
+
+  /* Text */
+  --text-strong:  var(--grey-900); /* titles */
+  --text-body:    var(--grey-800); /* body copy */
+  --text-sub:     var(--grey-600); /* secondary */
+  --text-weak:    var(--grey-500); /* captions, hints */
+  --text-disabled:var(--grey-400);
+  --text-on-primary: var(--grey-0);
+  --text-accent:  var(--blue-500);
+
+  /* Surfaces */
+  --surface-page:    var(--grey-100); /* app background */
+  --surface-card:    var(--grey-0);   /* white cards */
+  --surface-raised:  var(--grey-0);
+  --surface-sunken:  var(--grey-50);
+  --surface-inverse: var(--grey-900);
+  --surface-scrim:   rgba(0, 0, 0, 0.55); /* dim behind sheets */
+
+  /* Primary action */
+  --primary:         var(--blue-500);
+  --primary-pressed: var(--blue-700);
+  --primary-weak-bg: var(--blue-50);   /* tinted button bg */
+  --primary-weak-fg: var(--blue-600);
+
+  /* Fills (neutral buttons / chips) */
+  --fill-weak:    var(--grey-100);
+  --fill-medium:  var(--grey-200);
+  --fill-pressed: var(--grey-300);
+  --fill-dark:    var(--grey-800);
+
+  /* Borders */
+  --border-subtle: var(--grey-200);
+  --border-default:var(--grey-300);
+  --border-strong: var(--grey-400);
+
+  /* Status */
+  --negative:     var(--red-500);
+  --negative-bg:  var(--red-50);
+  --positive:     var(--green-500);
+  --positive-bg:  var(--green-50);
+  --warning:      var(--yellow-500);
+  --warning-bg:   var(--yellow-50);
+
+  /* ── App-specific: 빼요 veto semantics ── */
+  --veto:         var(--red-500);    /* a disliked / vetoed time */
+  --veto-bg:      var(--red-50);
+  --available:    var(--blue-500);   /* a proposed / clear time */
+  --available-bg: var(--blue-50);
+  --neutral-slot: var(--grey-100);   /* untouched time cell */
+}

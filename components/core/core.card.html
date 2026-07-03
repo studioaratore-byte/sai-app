@@ -1,0 +1,61 @@
+<!-- @dsCard group="Components" viewport="700x470" name="Core" subtitle="Button · BottomCTA · Badge · Border · ListRow · Asset · Paragraph" -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+  html, body { margin: 0; background: var(--surface-page); font-family: var(--font-sans); }
+  #root { padding: 24px; }
+  .grid { display: flex; flex-direction: column; gap: 20px; max-width: 640px; }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .card { background: var(--surface-card); border-radius: var(--radius-lg); box-shadow: var(--shadow-xs); overflow: hidden; }
+  .lbl { font: var(--font-caption-2); color: var(--text-weak); letter-spacing: var(--tracking-normal); }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { Button, Badge, Border, ListRow, ListHeader, Asset, Paragraph } = window.TDSDesignSystem_58842e;
+
+function Demo() {
+  return (
+    <div className="grid">
+      <div className="row">
+        <Button variant="primary">기본</Button>
+        <Button variant="weak">약하게</Button>
+        <Button variant="dark">어둡게</Button>
+        <Button variant="ghost">고스트</Button>
+        <Button variant="primary" loading>로딩</Button>
+        <Button variant="primary" disabled>비활성</Button>
+      </div>
+      <div className="row">
+        <Button variant="primary" size="lg">Large</Button>
+        <Button variant="primary" size="md">Medium</Button>
+        <Button variant="primary" size="sm">Small</Button>
+      </div>
+      <div className="row">
+        <Badge tone="primary">추천</Badge>
+        <Badge tone="positive">가능</Badge>
+        <Badge tone="negative" weak={false}>마감</Badge>
+        <Badge tone="warning">대기</Badge>
+        <Badge tone="neutral">선택</Badge>
+      </div>
+      <div className="card">
+        <ListHeader title="참석자" description="필수 2명 · 선택 1명" action={<Button variant="ghost" size="sm">추가</Button>} />
+        <ListRow left={<Asset emoji="🗓️" tone="primary" />} title="주간 디자인 리뷰" description="4월 첫째 주" chevron onClick={()=>{}} />
+        <Border inset={20} />
+        <ListRow left={<Asset emoji="🍽️" tone="warning" />} title="점심 직후는 빼주세요" description="사유 태그" right={<Paragraph typography="caption-1" color="weak">2명</Paragraph>} />
+      </div>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<Demo />);
+</script>
+</body>
+</html>

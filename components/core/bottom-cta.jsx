@@ -1,0 +1,30 @@
+import React from "react";
+
+/**
+ * BottomCTA — fixed bottom action dock.
+ * Pins one or two buttons to the screen bottom with a white→transparent
+ * protection gradient above and safe-area padding below. TDS pattern for
+ * the primary next/confirm action.
+ */
+function BottomCTA({ children, gradient = true, style }) {
+  return (
+    <div
+      style={{
+        position: "sticky",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        padding: `12px var(--screen-pad-x) calc(12px + env(safe-area-inset-bottom, 8px))`,
+        background: gradient
+          ? "linear-gradient(to top, var(--surface-card) 72%, rgba(255,255,255,0))"
+          : "var(--surface-card)",
+        display: "flex",
+        gap: 8,
+        zIndex: 20,
+        ...style,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
