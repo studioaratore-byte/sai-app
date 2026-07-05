@@ -347,10 +347,8 @@ function BottomCTA({
 }) {
   return /*#__PURE__*/React.createElement("div", {
     style: {
-      position: "sticky",
-      bottom: 0,
-      left: 0,
-      right: 0,
+      position: "relative",
+      flexShrink: 0,
       padding: `14px var(--screen-pad-x) calc(26px + env(safe-area-inset-bottom, 0px))`,
       background: gradient ? "linear-gradient(to top, var(--surface-card) 72%, rgba(255,255,255,0))" : "var(--surface-card)",
       display: "flex",
