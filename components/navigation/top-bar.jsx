@@ -7,7 +7,7 @@ import React from "react";
  */
 function TopBar({ title, description, align = "left", style }) {
   return (
-    <header style={{ padding: "8px var(--screen-pad-x) 16px", textAlign: align, ...style }}>
+    <header style={{ padding: "18px var(--screen-pad-x) 18px", textAlign: align, ...style }}>
       <h1 style={{
         margin: 0,
         font: "var(--font-title-1)",

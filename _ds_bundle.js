@@ -1650,7 +1650,7 @@ function TopBar({
 }) {
   return /*#__PURE__*/React.createElement("header", {
     style: {
-      padding: "8px var(--screen-pad-x) 16px",
+      padding: "18px var(--screen-pad-x) 18px",
       textAlign: align,
       ...style
     }
