@@ -208,7 +208,7 @@ function ConfirmScreen({ go, chosen, state }) {
           )}
         </div>
       </div>
-      <SBottomCTA gradient={false}>
+      <SBottomCTA gradient={false} style={{ borderTop: "1px solid var(--border-subtle)" }}>
         <SB variant="weak" size="lg" onClick={() => go("meetings")} style={{ flex: 1 }}>회의 목록</SB>
         <SB variant="primary" size="lg" onClick={addCal} style={{ flex: 2 }}>{calAdded ? "추가했어요 ✓" : "캘린더에 추가"}</SB>
       </SBottomCTA>

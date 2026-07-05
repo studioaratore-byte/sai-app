@@ -554,7 +554,7 @@ function DetailScreen({ back, go, state, choose, openThread, anonymous = true, c
         <div style={{ height: 16 }} />
       </div>
 
-      <CBottomCTA gradient={false}>
+      <CBottomCTA gradient={false} style={{ borderTop: "1px solid var(--border-subtle)" }}>
         <CB variant="weak" size="lg" onClick={() => openThread(window.SAI_CHAT_BY_ID.live)} style={{ flex: 1 }}>익명 채팅</CB>
         {chosen
           ? <CB variant="primary" size="lg" onClick={addCal} style={{ flex: 2 }}>{calAdded ? "추가했어요 ✓" : "캘린더에 추가"}</CB>
