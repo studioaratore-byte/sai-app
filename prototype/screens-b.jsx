@@ -128,6 +128,11 @@ function ResultScreen({ go, back, state, choose }) {
                 {responded === total ? `${total}명 모두 응답했어요` : `${total}명 중 ${responded}명 응답 · 중간 집계예요`}
               </span>
             </div>
+            {/* 배치 반영 — 개별 응답의 델타가 실시간으로 드러나면 마지막 응답자가 특정된다 */}
+            <div style={{ display: "flex", alignItems: "center", gap: 8, margin: "0 20px 12px", padding: "10px 14px", background: "var(--surface-sunken)", borderRadius: "var(--radius-md)" }}>
+              <span style={{ fontSize: 15 }}>🕶️</span>
+              <span style={{ font: "var(--font-caption-1)", color: "var(--text-sub)", flex: 1 }}>누가 지웠는지 특정할 수 없도록, 응답은 모아서 한 번에 반영돼요.</span>
+            </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12, padding: "0 20px" }}>
               {picks.map((s, i) => (
                 <SProposalCard key={s.key} recommended={i === 0}

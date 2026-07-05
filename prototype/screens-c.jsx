@@ -77,7 +77,7 @@ function BellButton({ onClick, dot }) {
 
 function NotifSheet({ open, onClose, go, openThread, empty }) {
   const items = [
-    { emoji: "🕶️", title: "익명 참석자가 싫은 시간을 지웠어요", desc: "주간 디자인 리뷰 · 방금", act: () => go && go("detail") },
+    { emoji: "🕶️", title: "새 응답이 모여 집계에 반영됐어요", desc: "주간 디자인 리뷰", act: () => go && go("detail") },
     { emoji: "💬", title: "새 익명 메시지 2개", desc: "주간 디자인 리뷰 · 오후 2:16", act: () => openThread && openThread(window.SAI_CHAT_BY_ID.live) },
     { emoji: "🎉", title: "회의 시간이 정해졌어요", desc: "분기 플래닝 · 어제", act: () => openThread && openThread(window.SAI_CHAT_BY_ID.q) },
   ];
@@ -526,15 +526,14 @@ function DetailScreen({ back, go, state, choose, openThread, anonymous = true, c
             const persona = window.SAI_ANON[i % window.SAI_ANON.length];
             return (
               <div key={p.name}>
+                {/* 동물별 응답 상태도 비공개 — 상태 변화 시점과 집계 델타를 대조하면
+                    동물 뒤의 실명이 특정될 수 있다. 응답 현황은 상단 집계(n/m)로만. */}
                 <CListRow
                   left={anonymous
-                    ? <div style={{ width: 40, height: 40, borderRadius: "50%", background: persona.bg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 21, opacity: pending ? 0.5 : 1 }}>{persona.emoji}</div>
-                    : <span style={{ display: "flex", opacity: pending ? 0.5 : 1 }}><CAvatar name={p.name} index={i} size={40} /></span>}
+                    ? <div style={{ width: 40, height: 40, borderRadius: "50%", background: persona.bg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 21 }}>{persona.emoji}</div>
+                    : <span style={{ display: "flex" }}><CAvatar name={p.name} index={i} size={40} /></span>}
                   title={(anonymous ? `익명 ${persona.name}` : p.name) + (p.me ? " · 나" : "")}
-                  description={<span style={{ display: "inline-flex", alignItems: "center", gap: 5, color: pending ? "#B77900" : "var(--green-600)" }}>
-                    <span style={{ width: 6, height: 6, borderRadius: "50%", background: "currentColor" }} />
-                    {pending ? "응답 대기 중" : "응답 완료"}
-                  </span>}
+                  description="익명으로 참여 중"
                   right={p.required ? <span style={{ font: "var(--font-caption-2)", color: "var(--primary)" }}>필수</span> : null}
                 />
                 {i < state.participants.length - 1 && <CBorder inset={52} />}
@@ -573,7 +572,7 @@ function DetailScreen({ back, go, state, choose, openThread, anonymous = true, c
             onClick={() => { setSettingsOpen(false); go("create"); }} />
           <CBorder inset={20} />
           <CListRow left={<CAsset emoji="🔗" tone="neutral" size={40} />}
-            title="초대 링크 보내기" description="아직 안 지운 사람에게 다시 공유해요" chevron
+            title="초대 링크 보내기" description="안 지운 사람에게는 사이가 대신 알려요" chevron
             onClick={() => { setSettingsOpen(false); go("invite"); }} />
           <CBorder inset={20} />
           <ToggleRow icon="bell" title="이 회의 알림" desc="응답과 확정 소식을 알려드려요" checked={remind} onChange={() => setRemind((v) => !v)} />
@@ -653,7 +652,7 @@ function MyScreen({ anonymous = true, setAnonymous }) {
       <window.BottomSheet open={help} onClose={() => setHelp(false)} title="도움말">
         {[
           ["🧽", "왜 ‘지우기’인가요?", "가능한 시간을 고르는 대신, 안 되는 시간만 지워요. 남은 시간 중 하나로 확정돼요."],
-          ["🕶️", "정말 익명인가요?", "누가 어떤 시간을 지웠는지는 아무도 볼 수 없어요. 사유도 숫자로만 모여요."],
+          ["🕶️", "정말 익명인가요?", "누가 어떤 시간을 지웠는지는 아무도 볼 수 없어요. 사유는 숫자로만 모이고, 응답은 모아서 반영돼 시점으로도 특정할 수 없어요."],
           ["🎯", "확정은 누가 하나요?", "만든 사람이 추천 시간 중에서 확정해요. 확정되면 모두에게 알림이 가요."],
         ].map(([e, t, d]) => (
           <div key={t} style={{ display: "flex", gap: 12, padding: "9px 0" }}>

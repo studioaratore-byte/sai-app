@@ -291,14 +291,13 @@ function CreateScreen({ go, back, state, setState }) {
             const pending = p.status === "pending";
             return (
               <div key={p.name}>
-                <SwipeRow onDelete={() => removeParticipant(i)} onTap={pending ? () => setStatusIdx(i) : undefined}>
+                {/* 개인별 응답 여부는 비공개 — 응답 상태 + 집계 변화의 타이밍 조합으로
+                    누가 무엇을 지웠는지 특정되는 것을 막는다. 응답은 집계(n/m)로만 보인다. */}
+                <SwipeRow onDelete={() => removeParticipant(i)}>
                   <ListRow
-                    left={<span style={{ display: "flex", opacity: pending ? 0.5 : 1 }}><Avatar name={p.name} index={i} size={40} /></span>}
+                    left={<span style={{ display: "flex" }}><Avatar name={p.name} index={i} size={40} /></span>}
                     title={p.name}
-                    description={<span style={{ display: "inline-flex", alignItems: "center", gap: 5, color: pending ? "#B77900" : "var(--green-600)" }}>
-                      <span style={{ width: 6, height: 6, borderRadius: "50%", background: "currentColor" }} />
-                      {pending ? "초대함 · 응답 대기 중" : "응답 완료"}
-                    </span>}
+                    description="초대함 · 응답 여부는 사이만 알아요"
                     right={<div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                       <span style={{ font: "var(--font-caption-2)", color: p.required ? "var(--primary)" : "var(--text-weak)" }}>필수</span>
                       <Switch checked={p.required} onChange={() => toggleReq(i)} />
@@ -340,15 +339,7 @@ function CreateScreen({ go, back, state, setState }) {
         </div>
       </window.BottomSheet>
 
-      <window.BottomSheet open={statusIdx != null} onClose={() => setStatusIdx(null)}
-        title={statusIdx != null && participants[statusIdx] ? `${participants[statusIdx].name}님은 아직 응답 전이에요` : ""}>
-        <Paragraph typography="body-2" color="sub" style={{ margin: "-8px 0 16px" }}>
-          초대는 보냈어요. 이 사람이 싫은 시간을 지우면 결과에 바로 반영돼요.
-        </Paragraph>
-        <Button variant="primary" size="md" fullWidth onClick={() => { setStatusIdx(null); go("veto"); }}>이 사람은 어떻게 정하는지 보기</Button>
-        <div style={{ height: 8 }} />
-        <Button variant="weak" size="md" fullWidth onClick={() => statusIdx != null && markResponded(statusIdx)}>응답 완료로 표시</Button>
-      </window.BottomSheet>
+      {/* 개인별 응답 상태 시트는 제거됨 — 응답 여부는 개인 단위로 노출하지 않는다 */}
     </div>
   );
 }
