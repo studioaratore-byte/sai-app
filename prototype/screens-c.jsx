@@ -184,7 +184,7 @@ const SAI_ICON_CHOICES = ["calendar", "flag", "star", "users", "clock", "message
 function IconPickSheet({ open, onClose, current, onPick }) {
   return (
     <window.BottomSheet open={open} onClose={onClose} title="회의 아이콘 바꾸기">
-      <CP typography="body-2" color="sub" style={{ margin: "-8px 0 16px" }}>회의를 대표하는 아이콘을 골라요. 색은 사이 블루로 통일돼요.</CP>
+      <CP typography="body-2" color="sub" style={{ margin: "-8px 0 16px" }}>회의를 대표하는 아이콘을 골라요.</CP>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 8 }}>
         {SAI_ICON_CHOICES.map((n) => (
           <button key={n} type="button" onClick={() => { onPick && onPick(n); onClose(); }}

@@ -1307,7 +1307,7 @@ const GLYPHS = {
     d: "M4 4l16 16"
   })),
   heart: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("path", {
-    d: "M12 20s-7-4.3-9.2-8.6C1.2 8.3 2.9 5 6 5c2 0 3.2 1.2 4 2.4C10.8 6.2 12 5 14 5c3.1 0 4.8 3.3 3.2 6.4C19 15.7 12 20 12 20Z"
+    d: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
   })),
   star: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("path", {
     d: "M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.9L12 17l-5.2 2.7 1-5.9-4.3-4.1 5.9-.9Z"
