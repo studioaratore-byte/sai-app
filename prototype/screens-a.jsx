@@ -69,8 +69,9 @@ function RangeCalendar({ range, onPick }) {
 }
 
 // ── HOME ────────────────────────────────────────────────────
-function MeetingsScreen({ go, openThread, empty, live, notifSeen, onNotifSeen }) {
+function MeetingsScreen({ go, openThread, empty, live, notifSeen, onNotifSeen, onChangeIcon }) {
   const [notifOpen, setNotifOpen] = React.useState(false);
+  const [iconPick, setIconPick] = React.useState(false);
   const openNotif = () => { setNotifOpen(true); onNotifSeen && onNotifSeen(); };
   const M = window.SAI_MEETINGS;
   const liveM = live || M.live;
@@ -93,7 +94,7 @@ function MeetingsScreen({ go, openThread, empty, live, notifSeen, onNotifSeen })
         {liveM.status === "collecting" ? (
           <>
         <ListHeader title="진행 중인 회의" style={{ padding: "16px 0 8px" }} />
-        <MeetingCard m={liveM} onOpen={() => go("detail")} />
+        <MeetingCard m={liveM} onOpen={() => go("detail")} onIconClick={onChangeIcon ? () => setIconPick(true) : undefined} />
 
         <ListHeader title="예정된 회의" style={{ padding: "26px 0 8px" }} />
         <MeetingCard m={M.q} onOpen={() => open("q")} />
@@ -102,7 +103,7 @@ function MeetingsScreen({ go, openThread, empty, live, notifSeen, onNotifSeen })
           <>
         <ListHeader title="예정된 회의" style={{ padding: "16px 0 8px" }} />
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          <MeetingCard m={liveM} onOpen={() => go("detail")} />
+          <MeetingCard m={liveM} onOpen={() => go("detail")} onIconClick={onChangeIcon ? () => setIconPick(true) : undefined} />
           <MeetingCard m={M.q} onOpen={() => open("q")} />
         </div>
           </>
@@ -119,6 +120,7 @@ function MeetingsScreen({ go, openThread, empty, live, notifSeen, onNotifSeen })
       {!empty && <window.Fab onClick={() => go("create")} />}
 
       <window.NotifSheet open={notifOpen} onClose={() => setNotifOpen(false)} go={go} openThread={openThread} empty={empty} />
+      <window.IconPickSheet open={iconPick} onClose={() => setIconPick(false)} current={liveM.icon} onPick={onChangeIcon} />
     </div>
   );
 }
@@ -212,7 +214,8 @@ const SAI_CONTACTS = [
   { name: "임채원", sub: "리서치" },
 ];
 function CreateScreen({ go, back, state, setState }) {
-  const { name, range, days, times, location, participants } = state;
+  const { name, icon, range, days, times, location, participants } = state;
+  const [iconOpen, setIconOpen] = React.useState(false);
   const [mapOpen, setMapOpen] = React.useState(false);
   const [pin, setPin] = React.useState(null);
   const [inviteOpen, setInviteOpen] = React.useState(false);
@@ -245,8 +248,9 @@ function CreateScreen({ go, back, state, setState }) {
       <NavigationBar backIcon="✕" onBack={back} title="회의 만들기" titleVisible={false} />
       <div style={{ flex: 1, overflowY: "auto" }}>
         <TopBar title="어떤 회의인가요?" description="기간과 시간대만 열어두면, 나머지는 사이가 정리해요." />
-        <div style={{ padding: "8px 20px 0" }}>
-          <TextField label="회의 이름" value={name} onChange={(v) => setState((s) => ({ ...s, name: v }))} maxLength={20} />
+        <div style={{ padding: "8px 20px 0", display: "flex", alignItems: "flex-end", gap: 14 }}>
+          <EditableIcon icon={icon || "calendar"} tone="primary" size={48} onEdit={() => setIconOpen(true)} />
+          <TextField label="회의 이름" value={name} onChange={(v) => setState((s) => ({ ...s, name: v }))} maxLength={20} style={{ flex: 1 }} />
         </div>
 
         <ListHeader title="기간" description="언제부터 언제까지 잡을까요?" />
@@ -340,6 +344,8 @@ function CreateScreen({ go, back, state, setState }) {
       </window.BottomSheet>
 
       {/* 개인별 응답 상태 시트는 제거됨 — 응답 여부는 개인 단위로 노출하지 않는다 */}
+      <window.IconPickSheet open={iconOpen} onClose={() => setIconOpen(false)} current={icon || "calendar"}
+        onPick={(n) => setState((s) => ({ ...s, icon: n }))} />
     </div>
   );
 }

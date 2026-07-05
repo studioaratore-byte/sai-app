@@ -123,17 +123,27 @@ function Fab({ onClick }) {
 }
 
 // ── Shared meeting card (one consistent card idiom everywhere) ──
-function MeetingCard({ m, onOpen, footer }) {
+function MeetingCard({ m, onOpen, footer, onIconClick }) {
   const tones = { primary: "var(--primary)", positive: "var(--green-600)", warning: "#B77900", neutral: "var(--grey-600)" };
   const iconColor = tones[m.iconTone] || tones.primary;
   const badge = m.status === "collecting" ? { tone: "primary", label: "응답 대기" }
     : m.status === "confirmed" ? { tone: "positive", label: "확정" } : null;
   const pct = m.total ? Math.round(((m.responded || 0) / m.total) * 100) : 0;
+  const iconAsset = <CAsset tone={m.iconTone} size={44} shape="squircle"><CIcon name={m.icon} size={22} color={iconColor} /></CAsset>;
   return (
     <div style={{ background: "var(--surface-card)", borderRadius: "var(--radius-lg)", boxShadow: "var(--shadow-xs)", padding: "16px 18px" }}>
       <div onClick={onOpen} style={{ cursor: onOpen ? "pointer" : "default" }}>
         <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-          <CAsset tone={m.iconTone} size={44} shape="squircle"><CIcon name={m.icon} size={22} color={iconColor} /></CAsset>
+          {onIconClick ? (
+            <button type="button" aria-label="회의 아이콘 바꾸기"
+              onClick={(e) => { e.stopPropagation(); onIconClick(); }}
+              style={{ position: "relative", border: "none", background: "transparent", padding: 0, cursor: "pointer", flexShrink: 0, WebkitTapHighlightColor: "transparent" }}>
+              {iconAsset}
+              <span style={{ position: "absolute", right: -3, bottom: -3, width: 18, height: 18, borderRadius: "50%", background: "var(--grey-800)", display: "flex", alignItems: "center", justifyContent: "center", border: "2px solid var(--surface-card)" }}>
+                <CIcon name="edit" size={9} color="#fff" strokeWidth={2.4} />
+              </span>
+            </button>
+          ) : iconAsset}
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
               <span style={{ font: "var(--font-head)", color: "var(--text-strong)", letterSpacing: "var(--tracking-normal)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{m.name}</span>
@@ -169,6 +179,27 @@ function MeetingCard({ m, onOpen, footer }) {
   );
 }
 
+// ── 회의 아이콘 선택 시트 — 색은 사이 블루 하나로 고정, 모양만 고른다 ──
+const SAI_ICON_CHOICES = ["calendar", "flag", "star", "users", "clock", "message", "heart", "sparkle", "coffee", "briefcase", "video", "pin"];
+function IconPickSheet({ open, onClose, current, onPick }) {
+  return (
+    <window.BottomSheet open={open} onClose={onClose} title="회의 아이콘 바꾸기">
+      <CP typography="body-2" color="sub" style={{ margin: "-8px 0 16px" }}>회의를 대표하는 아이콘을 골라요. 색은 사이 블루로 통일돼요.</CP>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 8 }}>
+        {SAI_ICON_CHOICES.map((n) => (
+          <button key={n} type="button" onClick={() => { onPick && onPick(n); onClose(); }}
+            style={{ border: n === current ? "1.5px solid var(--primary)" : "1.5px solid transparent",
+              background: n === current ? "var(--primary-weak-bg)" : "var(--surface-sunken)",
+              borderRadius: "var(--radius-lg)", padding: "15px 0", display: "flex", alignItems: "center", justifyContent: "center",
+              cursor: "pointer", WebkitTapHighlightColor: "transparent" }}>
+            <CIcon name={n} size={24} color="var(--primary)" />
+          </button>
+        ))}
+      </div>
+    </window.BottomSheet>
+  );
+}
+
 // ── HOME (dashboard tab) ────────────────────────────────────
 // ── Shared empty state ───────────────────────────────────
 function EmptyState({ emoji, title, desc, action }) {
@@ -182,8 +213,9 @@ function EmptyState({ emoji, title, desc, action }) {
   );
 }
 
-function HomeScreen({ go, openThread, empty, live, meResponded, notifSeen, onNotifSeen }) {
+function HomeScreen({ go, openThread, empty, live, meResponded, notifSeen, onNotifSeen, onChangeIcon }) {
   const [notifOpen, setNotifOpen] = React.useState(false);
+  const [iconPick, setIconPick] = React.useState(false);
   const openNotif = () => { setNotifOpen(true); onNotifSeen && onNotifSeen(); };
   const liveM = live || window.SAI_MEETINGS.live;
   const next = window.SAI_MEETINGS.q;
@@ -219,14 +251,14 @@ function HomeScreen({ go, openThread, empty, live, meResponded, notifSeen, onNot
           <>
             <CListHeader title="다가오는 회의" style={{ padding: "26px 0 8px" }} />
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <MeetingCard m={liveM} onOpen={() => go("detail")} />
+              <MeetingCard m={liveM} onOpen={() => go("detail")} onIconClick={onChangeIcon ? () => setIconPick(true) : undefined} />
               <MeetingCard m={next} onOpen={() => nextChat && openThread(nextChat)} />
             </div>
           </>
         ) : (
           <>
         <CListHeader title="지금 확인해요" style={{ padding: "26px 0 8px" }} />
-        <MeetingCard m={liveM} onOpen={() => go("detail")}
+        <MeetingCard m={liveM} onOpen={() => go("detail")} onIconClick={onChangeIcon ? () => setIconPick(true) : undefined}
           footer={<div style={{ display: "flex", gap: 8 }}>
             <CB variant="weak" size="md" onClick={() => go("detail")} style={{ flex: 1 }}>자세히</CB>
             {meResponded
@@ -242,6 +274,7 @@ function HomeScreen({ go, openThread, empty, live, meResponded, notifSeen, onNot
       )}
 
       <NotifSheet open={notifOpen} onClose={() => setNotifOpen(false)} go={go} openThread={openThread} empty={empty} />
+      <IconPickSheet open={iconPick} onClose={() => setIconPick(false)} current={liveM.icon} onPick={onChangeIcon} />
     </div>
   );
 }
@@ -683,4 +716,4 @@ function ToggleRow({ icon, title, desc, checked, onChange }) {
   );
 }
 
-Object.assign(window, { AppShell, Fab, MeetingCard, EmptyState, MsgIcon, BellButton, NotifSheet, HomeScreen, ChatListScreen, ChatThreadScreen, DetailScreen, MyScreen });
+Object.assign(window, { AppShell, Fab, MeetingCard, EmptyState, MsgIcon, BellButton, NotifSheet, IconPickSheet, HomeScreen, ChatListScreen, ChatThreadScreen, DetailScreen, MyScreen });

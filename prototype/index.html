@@ -5,7 +5,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>사이 — TDS UI Kit</title>
-<link rel="stylesheet" href="../styles.css?v=6" />
+<link rel="stylesheet" href="../styles.css?v=7" />
 <style>
   html, body { margin: 0; height: 100%; background: #EAF1FB; font-family: var(--font-sans); }
   body {
@@ -27,11 +27,11 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 <!-- ?v= 캐시버스터 — 자산이 바뀔 때 숫자를 올리면, Pages의 10분 캐시에 걸린
      재방문자도 index.html 갱신 즉시 새 파일을 받는다 (stale 번들 + 새 index 혼합 로드 방지) -->
-<script src="../_ds_bundle.js?v=6"></script>
-<script type="text/babel" src="frame.jsx?v=6"></script>
-<script type="text/babel" src="screens-a.jsx?v=6"></script>
-<script type="text/babel" src="screens-b.jsx?v=6"></script>
-<script type="text/babel" src="screens-c.jsx?v=6"></script>
+<script src="../_ds_bundle.js?v=7"></script>
+<script type="text/babel" src="frame.jsx?v=7"></script>
+<script type="text/babel" src="screens-a.jsx?v=7"></script>
+<script type="text/babel" src="screens-b.jsx?v=7"></script>
+<script type="text/babel" src="screens-c.jsx?v=7"></script>
 </head>
 <body>
 <div id="root"></div>
@@ -53,6 +53,7 @@ const ROOTS = ["home", "meetings", "chat", "my"];
 function initialState() {
   return {
     name: "주간 디자인 리뷰",
+    icon: "calendar",
     range: { from: 2, to: 4 },
     days: window.saiDaysInRange(2, 4),
     times: window.SAI_TIMES.map((t) => t.key),
@@ -113,16 +114,17 @@ function App() {
   // once a slot is chosen, every surface flips to "확정" together.
   const liveResponded = state.participants.filter((p) => p.status === "responded").length;
   const liveMeeting = chosen
-    ? { ...window.SAI_MEETINGS.live, status: "confirmed", meta: `4월 ${chosen.day.d}일 ${chosen.day.dow} · ${chosen.time.label}`, location: state.location || "장소 미정", responded: liveResponded }
-    : { ...window.SAI_MEETINGS.live, responded: liveResponded };
+    ? { ...window.SAI_MEETINGS.live, icon: state.icon || "calendar", status: "confirmed", meta: `4월 ${chosen.day.d}일 ${chosen.day.dow} · ${chosen.time.label}`, location: state.location || "장소 미정", responded: liveResponded }
+    : { ...window.SAI_MEETINGS.live, icon: state.icon || "calendar", responded: liveResponded };
   const meResponded = state.participants.some((p) => p.me && p.status === "responded");
+  const changeIcon = (ic) => setState((s) => ({ ...s, icon: ic }));
 
   const { PhoneFrame, HomeScreen, MeetingsScreen, CreateScreen, InviteScreen, VetoScreen, ResultScreen, ConfirmScreen,
           AppShell, ChatListScreen, ChatThreadScreen, DetailScreen, MyScreen } = window;
 
   let view = null;
-  if (screen === "home") view = <HomeScreen go={go} openThread={openThread} empty={empty} live={liveMeeting} meResponded={meResponded} notifSeen={notifSeen} onNotifSeen={() => setNotifSeen(true)} />;
-  else if (screen === "meetings") view = <MeetingsScreen go={go} openThread={openThread} empty={empty} live={liveMeeting} notifSeen={notifSeen} onNotifSeen={() => setNotifSeen(true)} />;
+  if (screen === "home") view = <HomeScreen go={go} openThread={openThread} empty={empty} live={liveMeeting} meResponded={meResponded} notifSeen={notifSeen} onNotifSeen={() => setNotifSeen(true)} onChangeIcon={changeIcon} />;
+  else if (screen === "meetings") view = <MeetingsScreen go={go} openThread={openThread} empty={empty} live={liveMeeting} notifSeen={notifSeen} onNotifSeen={() => setNotifSeen(true)} onChangeIcon={changeIcon} />;
   else if (screen === "chat") view = <ChatListScreen openThread={openThread} readChats={readChats} empty={empty} />;
   else if (screen === "my") view = <MyScreen anonymous={anonymous} setAnonymous={setAnonymous} />;
   else if (screen === "detail") view = <DetailScreen back={back} go={go} state={state} choose={setChosen} openThread={openThread} anonymous={anonymous} chosen={chosen} />;

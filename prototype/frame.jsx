@@ -102,8 +102,8 @@ const SAI_THREAD = [
 // Chat list — one anonymous room per meeting (ids match SAI_MEETINGS).
 const SAI_CHATS = [
   { id: "live",  name: "주간 디자인 리뷰", last: "굿굿 👍", t: "오후 2:16", unread: 2, people: 6, icon: "calendar", tone: "primary", live: true },
-  { id: "q",     name: "분기 플래닝",     last: "사이가 회의 시간을 정했어요 🎉",  t: "어제",     unread: 0, people: 8, icon: "flag",     tone: "positive" },
-  { id: "retro", name: "스프린트 회고",   last: "다들 확인 감사해요!",           t: "3월 28일", unread: 0, people: 6, icon: "star",     tone: "warning" },
+  { id: "q",     name: "분기 플래닝",     last: "사이가 회의 시간을 정했어요 🎉",  t: "어제",     unread: 0, people: 8, icon: "flag",     tone: "primary" },
+  { id: "retro", name: "스프린트 회고",   last: "다들 확인 감사해요!",           t: "3월 28일", unread: 0, people: 6, icon: "star",     tone: "primary" },
 ];
 const SAI_CHAT_BY_ID = Object.fromEntries(SAI_CHATS.map((c) => [c.id, c]));
 
@@ -114,8 +114,8 @@ const SAI_UPCOMING = { name: "디자인 싱크", date: "4월 8일 화요일", ti
 // Every surface (home, 회의 list, chat, detail) reads from here so numbers sync.
 const SAI_MEETINGS = {
   live:    { id: "live",    name: "주간 디자인 리뷰", icon: "calendar", iconTone: "primary",  status: "collecting", meta: "4월 2일 ~ 4일 · 후보 27개", total: 6, responded: 4, people: ["김","이","박","정","최","한"] },
-  q:       { id: "q",       name: "분기 플래닝",     icon: "flag",     iconTone: "positive", status: "confirmed",  meta: "4월 8일 화 · 오전 11시", date: "4월 8일 화요일", time: "오전 11시", location: "브릿지 회의실", total: 8, people: ["김","이","박","정","한","윤","강","임"] },
-  retro:   { id: "retro",   name: "스프린트 회고",   icon: "star",     iconTone: "warning",  status: "past", meta: "확정 · 3월 28일 오후 3시", total: 6, people: ["김","이","박","정","최","한"] },
+  q:       { id: "q",       name: "분기 플래닝",     icon: "flag",     iconTone: "primary",  status: "confirmed",  meta: "4월 8일 화 · 오전 11시", date: "4월 8일 화요일", time: "오전 11시", location: "브릿지 회의실", total: 8, people: ["김","이","박","정","한","윤","강","임"] },
+  retro:   { id: "retro",   name: "스프린트 회고",   icon: "star",     iconTone: "primary",  status: "past", meta: "확정 · 3월 28일 오후 3시", total: 6, people: ["김","이","박","정","최","한"] },
   onboard: { id: "onboard", name: "팀 온보딩",       icon: "users",    iconTone: "primary",  status: "past", meta: "확정 · 3월 14일 오후 2시", total: 5, people: ["김","이","박","정","최"] },
 };
 const SAI_MEETING_LIST = [SAI_MEETINGS.live, SAI_MEETINGS.q, SAI_MEETINGS.retro, SAI_MEETINGS.onboard];
