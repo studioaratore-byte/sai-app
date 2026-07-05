@@ -371,7 +371,7 @@ function ChatThreadScreen({ back, go, chat, chosen }) {
     : [];
   const base = chat && chat.id === "live"
     ? [...window.SAI_THREAD, ...finalNotice]
-    : [
+    : (chat && window.SAI_THREADS_BY_ID[chat.id]) || [
         { kind: "system", text: "사이가 회의 시간을 정했어요 🎉" },
         { from: "a", text: "다들 확인 감사해요!", t: "오후 5:20" },
         { from: "me", text: "네 그때 봬요 🙌", t: "오후 5:22" },

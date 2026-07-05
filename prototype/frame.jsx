@@ -99,6 +99,33 @@ const SAI_THREAD = [
   { from: "a", text: "굿굿 👍", t: "오후 2:16" },
 ];
 
+// 회의별 고유 스레드 — 마지막 메시지는 채팅 목록의 미리보기(last)와 일치해야 한다.
+const SAI_THREADS_BY_ID = {
+  q: [
+    { kind: "system", text: "사이가 익명 채팅을 열었어요. 이름은 아무에게도 보이지 않아요." },
+    { from: "b", text: "분기 OKR 초안은 미리 볼 수 있을까요?", t: "오전 10:12" },
+    { from: "me", text: "네, 회의 전날까지 노션에 올려둘게요 📄", t: "오전 10:15" },
+    { from: "d", text: "지난 분기 회고에서 나온 액션 아이템도 다루나요?", t: "오전 10:21" },
+    { from: "me", text: "좋은 지적이에요, 첫 안건으로 잡아둘게요", t: "오전 10:24" },
+    { kind: "system", text: "사이가 회의 시간을 정했어요 🎉 4월 8일 화요일 오전 11시 · 브릿지 회의실" },
+  ],
+  retro: [
+    { kind: "system", text: "사이가 익명 채팅을 열었어요. 이름은 아무에게도 보이지 않아요." },
+    { from: "a", text: "이번 스프린트 배포 이슈, 케이스 스터디로 짧게 공유해도 될까요?", t: "오후 2:31" },
+    { from: "me", text: "좋아요, 회고 마지막 10분 잡아둘게요", t: "오후 2:33" },
+    { from: "c", text: "잘된 점만큼 아쉬운 점도 편하게 얘기해요 🙂", t: "오후 2:40" },
+    { kind: "system", text: "사이가 회의 시간을 정했어요 🎉 3월 28일 오후 3시" },
+    { from: "a", text: "다들 확인 감사해요!", t: "오후 2:47" },
+  ],
+  onboard: [
+    { kind: "system", text: "사이가 익명 채팅을 열었어요. 이름은 아무에게도 보이지 않아요." },
+    { from: "e", text: "온보딩 자료는 어디서 볼 수 있어요?", t: "오전 9:40" },
+    { from: "me", text: "위키의 '첫 2주' 문서에 정리돼 있어요 🙌", t: "오전 9:43" },
+    { kind: "system", text: "사이가 회의 시간을 정했어요 🎉 3월 14일 오후 2시" },
+    { from: "d", text: "환영해요! 그때 봬요 😊", t: "오전 9:51" },
+  ],
+};
+
 // Chat list — one anonymous room per meeting (ids match SAI_MEETINGS).
 const SAI_CHATS = [
   { id: "live",  name: "주간 디자인 리뷰", last: "굿굿 👍", t: "오후 2:16", unread: 2, people: 6, icon: "calendar", tone: "primary", live: true },
@@ -122,7 +149,7 @@ const SAI_MEETING_LIST = [SAI_MEETINGS.live, SAI_MEETINGS.q, SAI_MEETINGS.retro,
 
 Object.assign(window, { SAI_MEETINGS, SAI_MEETING_LIST });
 
-Object.assign(window, { SAI_ANON, SAI_ANON_MAP, SAI_THREAD, SAI_CHATS, SAI_CHAT_BY_ID, SAI_UPCOMING });
+Object.assign(window, { SAI_ANON, SAI_ANON_MAP, SAI_THREAD, SAI_THREADS_BY_ID, SAI_CHATS, SAI_CHAT_BY_ID, SAI_UPCOMING });
 
 Object.assign(window, { SAI_DAYS, SAI_TIMES, SAI_ALL_TIMES, saiTimeLabel, SAI_SEED_VETOES, SAI_REASONS, SAI_PARTICIPANTS, SAI_TOTAL, SAI_DOW, SAI_MONTH, saiDay, saiDaysInRange });
 
