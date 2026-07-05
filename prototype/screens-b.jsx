@@ -190,7 +190,7 @@ function ConfirmScreen({ go, chosen, state }) {
           <SBorder />
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 14 }}>
             <span style={{ font: "var(--font-body-2)", color: "var(--text-sub)" }}>{meetingName}</span>
-            <SAvatarStack people={["김","이","박","정","최","한"]} max={5} size={28} />
+            <SAvatarStack people={["김","이","박","정","최","한"]} max={5} anonymous size={28} />
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 10, font: "var(--font-body-2)", color: "var(--text-sub)" }}>
             <SIcon name="pin" size={16} color="var(--grey-500)" />

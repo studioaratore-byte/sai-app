@@ -157,7 +157,7 @@ function MeetingCard({ m, onOpen, footer }) {
         )}
         {m.status === "confirmed" && (
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 14 }}>
-            <CAvatarStack people={m.people} max={5} size={26} />
+            <CAvatarStack people={m.people} max={5} anonymous size={26} />
             <span style={{ display: "inline-flex", alignItems: "center", gap: 4, font: "var(--font-caption-1)", color: "var(--text-weak)" }}>
               <CIcon name="pin" size={14} color="var(--grey-400)" />{m.location}
             </span>
