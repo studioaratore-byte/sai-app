@@ -1426,9 +1426,13 @@ const GLYPHS = {
   settings: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("circle", {
     cx: "12",
     cy: "12",
-    r: "3"
+    r: "6.8"
+  }), /*#__PURE__*/React.createElement("circle", {
+    cx: "12",
+    cy: "12",
+    r: "2.6"
   }), /*#__PURE__*/React.createElement("path", {
-    d: "M12 2.5v2.2M12 19.3v2.2M4.2 7l1.9 1.1M17.9 15l1.9 1.1M4.2 17l1.9-1.1M17.9 9l1.9-1.1"
+    d: "M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"
   })),
   message: /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("path", {
     d: "M20 13.4a2.6 2.6 0 0 1-2.6 2.6H10l-4.6 3.5V16H6.6A2.6 2.6 0 0 1 4 13.4V7.6A2.6 2.6 0 0 1 6.6 5h10.8A2.6 2.6 0 0 1 20 7.6Z"
