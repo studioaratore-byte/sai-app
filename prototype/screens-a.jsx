@@ -307,8 +307,9 @@ function CreateScreen({ go, back, state, setState }) {
                     left={<span style={{ display: "flex" }}><Avatar name={p.name} index={i} size={40} /></span>}
                     title={p.name}
                     description="초대함 · 응답 여부는 사이만 알아요"
-                    right={<div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                      <span style={{ font: "var(--font-caption-2)", color: p.required ? "var(--primary)" : "var(--text-weak)" }}>필수</span>
+                    right={<div onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}
+                      style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      {p.required && <span style={{ font: "var(--font-caption-2)", color: "var(--primary)" }}>필수</span>}
                       <Switch checked={p.required} onChange={() => toggleReq(i)} />
                     </div>}
                   />
