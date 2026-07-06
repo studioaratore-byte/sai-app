@@ -149,7 +149,9 @@ function VetoCell({
   }, /*#__PURE__*/React.createElement("span", {
     style: {
       textDecoration: mode === "input" && vetoed ? "line-through" : "none",
-      opacity: mode === "input" && vetoed ? 0.85 : 1
+      opacity: mode === "input" && vetoed ? 0.85 : 1,
+      animation: mode === "input" && vetoed ? "sai-erase 0.32s var(--ease-out)" : "none",
+      willChange: "opacity, transform"
     }
   }, label), sublabel && /*#__PURE__*/React.createElement("span", {
     style: {

@@ -16,3 +16,17 @@
   60%  { transform: scale(1.02); }
   100% { transform: scale(1); opacity: 1; }
 }
+
+/* 집계 스켈레톤 펄스 */
+@keyframes sai-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.45; }
+}
+
+/* 지우기 시그니처 — 탭하면 라벨이 '문질러 지워지듯' 흔들리며 옅어진다 */
+@keyframes sai-erase {
+  0%   { opacity: 1;   transform: translateX(0); }
+  45%  { opacity: 0.3; transform: translateX(2.5px); }
+  70%  { opacity: 0.3; transform: translateX(-1.5px); }
+  100% { opacity: 0.85; transform: translateX(0); }
+}

@@ -46,7 +46,7 @@ function VetoScreen({ go, back, state, setState, openThread }) {
         <STop title="싫은 시간을 지워요" description={`${state.name} · ${rangeText} · ${total}명`} />
         <div style={{ display: "flex", alignItems: "center", gap: 8, margin: "0 20px 8px", padding: "10px 14px", background: "var(--surface-sunken)", borderRadius: "var(--radius-md)" }}>
           <span style={{ fontSize: 15 }}>🕶️</span>
-          <span style={{ font: "var(--font-caption-1)", color: "var(--text-sub)", letterSpacing: "var(--tracking-normal)", flex: 1 }}>익명으로 집계돼요. 지금까지 {responded}명이 지웠어요.</span>
+          <span style={{ font: "var(--font-caption-1)", color: "var(--text-sub)", letterSpacing: "var(--tracking-normal)", flex: 1 }}>익명으로 집계돼요. 누가 몇 번째로 지웠는지는 아무도 몰라요.</span>
         </div>
 
         {days.map((d) => {
@@ -99,16 +99,43 @@ function computeSlots(state) {
       const reasons = [...seed];
       if (mine && typeof mine === "string") reasons.push(mine);
       const vetoCount = seed.length + (mine ? 1 : 0);
+      const requiredConflict = (window.SAI_REQUIRED_CONFLICTS || new Set()).has(key);
       const tally = {};
       reasons.forEach((r) => { tally[r] = (tally[r] || 0) + 1; });
-      out.push({ key, day: d, time: t, vetoCount, reasons: Object.entries(tally).map(([label, count]) => ({ label, count })) });
+      out.push({ key, day: d, time: t, vetoCount, requiredConflict, reasons: Object.entries(tally).map(([label, count]) => ({ label, count })) });
     });
   });
-  return out.sort((a, b) => a.vetoCount - b.vetoCount);
+  // 필수 참석자가 걸린 슬롯은 거부 수가 적어도 후순위로 — "필수 전원 가능 + 거부 최소"
+  return out.sort((a, b) => (a.requiredConflict - b.requiredConflict) || (a.vetoCount - b.vetoCount));
+}
+
+// 집계 리빌 스켈레톤 — "응답을 모아서 반영"하는 서사를 시각적으로 연결
+function ResultSkeleton() {
+  const bar = (w, h, mt) => <div style={{ width: w, height: h, marginTop: mt, borderRadius: 8, background: "var(--fill-weak)", animation: "sai-pulse 1.2s var(--ease-standard) infinite" }} />;
+  return (
+    <div style={{ padding: "8px 20px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--text-weak)", font: "var(--font-caption-1)", marginBottom: 16 }}>
+        <span style={{ width: 16, height: 16, borderRadius: "50%", border: "2px solid var(--grey-200)", borderTopColor: "var(--primary)", animation: "sai-spin .7s linear infinite" }} />
+        익명 응답을 모아 집계하는 중이에요…
+      </div>
+      {[0, 1].map((k) => (
+        <div key={k} style={{ padding: 20, borderRadius: "var(--radius-xl)", background: "var(--surface-card)", border: "1px solid var(--border-subtle)", marginBottom: 12 }}>
+          {bar("40%", 13, 0)}{bar("55%", 24, 8)}{bar("100%", 40, 16)}
+        </div>
+      ))}
+    </div>
+  );
 }
 
 function ResultScreen({ go, back, state, choose }) {
   const [view, setView] = React.useState("picks"); // picks | grid
+  const [ready, setReady] = React.useState(false);   // 집계 스켈레톤 → 리빌
+  const [escalate, setEscalate] = React.useState(null); // 뎁스2 핀포인트 대상 slot
+  const [reveal, setReveal] = React.useState(false);    // 뎁스3 자발 공개 시트
+  const [toast, setToast] = React.useState(null);
+  const toastRef = React.useRef(null);
+  const notify = (m) => { setToast(m); clearTimeout(toastRef.current); toastRef.current = setTimeout(() => setToast(null), 1800); };
+  React.useEffect(() => { const t = setTimeout(() => setReady(true), 650); return () => clearTimeout(t); }, []);
   const slots = React.useMemo(() => computeSlots(state), [state]);
   const picks = slots.slice(0, 3);
   const best = picks[0];
@@ -121,7 +148,7 @@ function ResultScreen({ go, back, state, choose }) {
       <div style={{ flex: 1, overflowY: "auto" }}>
         {view === "picks" ? (
           <>
-            <STop title="좋은 시간을 찾았어요" description={best.vetoCount === 0 ? "아무도 부담스러워하지 않는 시간이 있어요." : "가장 적게 걸리는 시간부터 보여드려요."} />
+            <STop title="좋은 시간을 찾았어요" description={best.vetoCount === 0 ? "아무도 부담스러워하지 않고, 필수 참석자도 전원 가능한 시간이에요." : "완벽한 시간이 없어요. 가장 적게 걸리는 시간부터 보여드려요."} />
             <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "0 20px 12px" }}>
               <SAvatarStack people={window.SAI_MEETINGS.live.people} max={6} anonymous size={26} />
               <span style={{ font: "var(--font-caption-1)", color: "var(--text-weak)" }}>
@@ -133,15 +160,28 @@ function ResultScreen({ go, back, state, choose }) {
               <span style={{ fontSize: 15 }}>🕶️</span>
               <span style={{ font: "var(--font-caption-1)", color: "var(--text-sub)", flex: 1 }}>누가 지웠는지 특정할 수 없도록, 응답은 모아서 한 번에 반영돼요.</span>
             </div>
+            {!ready ? <ResultSkeleton /> : (
             <div style={{ display: "flex", flexDirection: "column", gap: 12, padding: "0 20px" }}>
               {picks.map((s, i) => (
-                <SProposalCard key={s.key} recommended={i === 0}
-                  date={`${s.day.label}`} time={s.time.label}
-                  vetoCount={s.vetoCount} reasons={s.reasons}
-                  confirmLabel={i === 0 ? "이 시간으로 정하기" : "이 시간으로 정하기"}
-                  onConfirm={() => { choose(s); go("confirm"); }} />
+                <div key={s.key} style={{ animation: "sai-fade-up var(--dur-base) var(--ease-out) both", animationDelay: `${i * 70}ms` }}>
+                  <SProposalCard recommended={i === 0}
+                    date={`${s.day.label}`} time={s.time.label}
+                    vetoCount={s.vetoCount} reasons={s.reasons}
+                    confirmLabel={i === 0 && s.vetoCount === 0 ? "이 시간으로 확정하기" : "이 시간으로 정하기"}
+                    onConfirm={() => { choose(s); go("confirm"); }} />
+                  {s.vetoCount > 0 && (
+                    /* 뎁스2 — 익명 유지 핀포인트 재요청 */
+                    <button type="button" onClick={() => setEscalate(s)}
+                      style={{ width: "100%", marginTop: 8, border: "none", background: "transparent", cursor: "pointer",
+                        display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "8px 0",
+                        font: "var(--font-caption-1)", fontWeight: 600, color: "var(--primary)", WebkitTapHighlightColor: "transparent" }}>
+                      🕶️ 이 시간에 걸리는 {s.vetoCount}명에게만 다시 물어보기
+                    </button>
+                  )}
+                </div>
               ))}
             </div>
+            )}
             <div style={{ padding: "18px 20px 8px" }}>
               <SB variant="ghost" size="md" fullWidth onClick={() => setView("grid")}>전체 시간 거부 현황 보기</SB>
             </div>
@@ -165,6 +205,32 @@ function ResultScreen({ go, back, state, choose }) {
           </div>
         )}
       </div>
+
+      {/* ── 뎁스2 · 익명 유지 핀포인트 재요청 ── */}
+      <window.BottomSheet open={!!escalate} onClose={() => setEscalate(null)} title="걸리는 사람에게만 다시 물어볼게요">
+        <SP typography="body-2" color="sub" style={{ margin: "-8px 0 14px" }}>
+          완벽한 시간이 없을 때만 등장해요. {escalate ? `${escalate.day.label} ${escalate.time.label}에 ` : ""}부담을 느낀 {escalate ? escalate.vetoCount : 0}명에게만 익명으로 다시 물어요. 누구인지는 밝히지 않아요.
+        </SP>
+        {escalate && escalate.requiredConflict && (
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14, padding: "10px 12px", borderRadius: "var(--radius-md)", background: "var(--warning-bg)", font: "var(--font-caption-1)", color: "#B77900" }}>
+            ⚠️ 이 시간엔 필수 참석자가 걸려 있어요.
+          </div>
+        )}
+        <SB variant="primary" size="md" fullWidth onClick={() => { setEscalate(null); notify("걸리는 분들께 익명으로 다시 물었어요"); }}>익명으로 다시 묻기</SB>
+        <div style={{ height: 8 }} />
+        <SB variant="ghost" size="md" fullWidth onClick={() => { setEscalate(null); setReveal(true); }}>그래도 막히면, 이름 공개하고 직접 조율</SB>
+      </window.BottomSheet>
+
+      {/* ── 뎁스3 · 자발적 공개(최후 수단, 옵트인) ── */}
+      <window.BottomSheet open={reveal} onClose={() => setReveal(false)} title="밝혀도 괜찮다면, 직접 조율해요">
+        <SP typography="body-2" color="sub" style={{ margin: "-8px 0 16px" }}>
+          강제 공개가 아니라 선택적 커밍아웃이에요. 밝혀도 괜찮은 사람만 이름·사유를 열어 직접 조율하고, 끝까지 익명을 택한 사람은 드러나지 않아요.
+        </SP>
+        <SB variant="dark" size="md" fullWidth onClick={() => { setReveal(false); notify("공개한 사람끼리 조율을 시작했어요"); }}>공개하고 대화 시작</SB>
+        <SP typography="caption-1" color="weak" align="center" style={{ marginTop: 10 }}>드문 예외 상황을 위한 안전판이에요</SP>
+      </window.BottomSheet>
+
+      <window.Toast show={!!toast}>{toast}</window.Toast>
     </div>
   );
 }

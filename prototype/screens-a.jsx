@@ -293,7 +293,7 @@ function CreateScreen({ go, back, state, setState }) {
           </div>
         )}
 
-        <ListHeader title="참석자" description={`응답 ${participants.filter((p) => p.status === "responded").length}/${participants.length}명 · 필수 ${participants.filter((p) => p.required).length}명`}
+        <ListHeader title="참석자" description={`필수 ${participants.filter((p) => p.required).length}명 · 선택 ${participants.filter((p) => !p.required).length}명`}
           action={<Button variant="ghost" size="sm" onClick={() => setInviteOpen(true)}>초대</Button>} />
         <div style={{ background: "var(--surface-card)" }}>
           {participants.map((p, i) => {

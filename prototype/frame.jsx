@@ -50,6 +50,9 @@ const SAI_SEED_VETOES = {
   "4/4-17": ["늦은 시간", "늦은 시간"],
 };
 const SAI_REASONS = ["외근", "점심 직후", "개인 일정", "이동 시간", "아침 일정", "늦은 시간"];
+// 필수 참석자가 거부한 슬롯 — 익명 집계에선 이름이 안 보이지만, 시스템(백엔드)은
+// '필수 참석자 걸림' 여부를 알아 추천에서 후순위화한다. 피치의 "필수 전원 가능" 근거.
+const SAI_REQUIRED_CONFLICTS = new Set(["4/2-13", "4/3-14", "4/4-13", "4/4-16"]);
 const SAI_PARTICIPANTS = [
   { name: "김지원", required: true },
   { name: "이서준", required: true },
@@ -151,7 +154,7 @@ Object.assign(window, { SAI_MEETINGS, SAI_MEETING_LIST });
 
 Object.assign(window, { SAI_ANON, SAI_ANON_MAP, SAI_THREAD, SAI_THREADS_BY_ID, SAI_CHATS, SAI_CHAT_BY_ID, SAI_UPCOMING });
 
-Object.assign(window, { SAI_DAYS, SAI_TIMES, SAI_ALL_TIMES, saiTimeLabel, SAI_SEED_VETOES, SAI_REASONS, SAI_PARTICIPANTS, SAI_TOTAL, SAI_DOW, SAI_MONTH, saiDay, saiDaysInRange });
+Object.assign(window, { SAI_DAYS, SAI_TIMES, SAI_ALL_TIMES, saiTimeLabel, SAI_SEED_VETOES, SAI_REQUIRED_CONFLICTS, SAI_REASONS, SAI_PARTICIPANTS, SAI_TOTAL, SAI_DOW, SAI_MONTH, saiDay, saiDaysInRange });
 
 // ── Phone frame ─────────────────────────────────────────────
 function StatusBar({ dark = false }) {

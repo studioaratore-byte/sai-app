@@ -650,7 +650,7 @@ function MyScreen({ anonymous = true, setAnonymous }) {
         <div style={{ margin: "0 20px", background: "var(--surface-card)", borderRadius: "var(--radius-lg)", boxShadow: "var(--shadow-xs)", overflow: "hidden" }}>
           <ToggleRow icon="lock" title="익명으로 참여" desc="회의에서 내 이름을 숨겨요" checked={anonymous} onChange={() => setAnonymous && setAnonymous((v) => !v)} />
           <CBorder inset={52} />
-          <ToggleRow icon="eye" title="실명 공개 요청 받기" desc="꼭 필요할 때만 상대가 요청할 수 있어요" checked={reveal} onChange={() => setReveal((v) => !v)} />
+          <ToggleRow icon="eye" title="실명 공개 요청 받기" desc="교착일 때만, 원하면 이름을 밝혀 직접 조율해요 (3단계)" checked={reveal} onChange={() => setReveal((v) => !v)} />
         </div>
 
         <CListHeader title="알림" />
@@ -687,6 +687,7 @@ function MyScreen({ anonymous = true, setAnonymous }) {
           ["🧽", "왜 ‘지우기’인가요?", "가능한 시간을 고르는 대신, 안 되는 시간만 지워요. 남은 시간 중 하나로 확정돼요."],
           ["🕶️", "정말 익명인가요?", "누가 어떤 시간을 지웠는지는 아무도 볼 수 없어요. 사유는 숫자로만 모이고, 응답은 모아서 반영돼 시점으로도 특정할 수 없어요."],
           ["🎯", "확정은 누가 하나요?", "만든 사람이 추천 시간 중에서 확정해요. 확정되면 모두에게 알림이 가요."],
+          ["🪜", "답이 안 나오면요?", "① 대부분 거부 0인 시간이 있어 여기서 끝나요. ② 완벽한 시간이 없으면 걸리는 사람에게만 익명으로 다시 물어요. ③ 그래도 막히면 원하는 사람만 이름·사유를 공개해 직접 조율해요."],
         ].map(([e, t, d]) => (
           <div key={t} style={{ display: "flex", gap: 12, padding: "9px 0" }}>
             <span style={{ fontSize: 19 }}>{e}</span>
