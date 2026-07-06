@@ -178,7 +178,12 @@ function SwipeRow({ children, onDelete, onTap }) {
   const [x, setX] = React.useState(0);
   const r = React.useRef({ startX: 0, base: 0, drag: false, moved: false, x: 0 });
   const set = (v) => { r.current.x = v; setX(v); };
-  const down = (e) => { r.current.startX = e.clientX; r.current.base = r.current.x; r.current.drag = true; r.current.moved = false; e.currentTarget.setPointerCapture?.(e.pointerId); };
+  const down = (e) => {
+    // 스위치·버튼 등 인터랙티브 컨트롤에서 시작한 포인터는 스와이프가 가로채지 않는다
+    // (setPointerCapture가 자식 버튼의 클릭을 삼켜 토글이 안 눌리던 버그)
+    if (e.target.closest && e.target.closest('button, [role="switch"], input, a, label')) return;
+    r.current.startX = e.clientX; r.current.base = r.current.x; r.current.drag = true; r.current.moved = false; e.currentTarget.setPointerCapture?.(e.pointerId);
+  };
   const move = (e) => {
     if (!r.current.drag) return;
     const d = e.clientX - r.current.startX;

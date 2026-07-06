@@ -54,7 +54,7 @@ const SAI_PARTICIPANTS = [
   { name: "김지원", required: true },
   { name: "이서준", required: true },
   { name: "박민서", required: true },
-  { name: "정하윤", required: false },
+  { name: "정하윤", required: true },
   { name: "최도현", required: false },
   { name: "한서영", required: false },
 ];
